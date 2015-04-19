@@ -1,0 +1,14 @@
+
+hbar-container
+	hbar-chart-container
+		hbar-chart-stack-list
+			hbar-chart-stack 		hbar-yaxis
+				hbar-chart(ohlc)
+				hbar-chart(volume)
+				hbar-chart(bbands)
+			hbar-chart-stack 		hbar-yaxis
+				hbar-chart(macd)
+			hbar-chart-stack 		hbar-yaxis
+				hbar-chart(rsi)
+	hbar-xaxis-container
+		hbar-xaxis

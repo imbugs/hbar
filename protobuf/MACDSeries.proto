@@ -1,0 +1,18 @@
+syntax = "proto2";
+option java_package = "io.hbar.protobuf.schema";
+option java_outer_classname = "MACDSeriesSchema";
+
+message MACDSeries {
+
+	message MACD {
+
+		required int32 timestamp = 1;
+		required double macd = 2;
+		required double signal = 3;
+		required double histogram = 4;
+
+	}
+
+	repeated MACD series = 1;
+
+}

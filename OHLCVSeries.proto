@@ -1,0 +1,17 @@
+option syntax = "proto2";
+option java_package = "io.hbar.protobuf.schema";
+option java_outer_classname = "OHLCVSeriesSchema";
+
+message OHLCVSeries {
+
+	message OHLCV {
+		required int32 timestamp = 1;
+		required double open = 2;
+		required double high = 3;
+		required double low = 4;
+		required double close = 5;
+		required double volume = 6;
+	}
+
+	repeated OHLCV series = 1;
+}

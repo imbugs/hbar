@@ -1,0 +1,4 @@
+crypto-strats-server/target/*
+crypto-strats-server/data/*
+.vagrant
+.DS_Store

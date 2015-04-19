@@ -1,0 +1,73 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui, minimum-scale=1, maximum-scale=1, user-scalable=no">
+
+	<title>ℏbar</title>
+
+	<link rel="icon" type="image/png" href="favicon.ico">
+
+	<link rel="stylesheet" href="./resources/css/lib/jquery-ui.css">
+	<link rel="stylesheet" href="./resources/css/style.css">
+
+
+	<style>
+		
+	</style>
+	
+
+	<script src="./resources/js/lib/jquery-2.1.3.min.js"></script>
+	<script src="./resources/js/lib/jquery-ui.js"></script>
+	<script src="./resources/js/lib/extend/jquery-ui-reversible-resizable.js"></script>
+
+	<script src="./resources/js/lib/ByteBufferAB.min.js"></script>
+	<script src="./resources/js/lib/ProtoBuf.js"></script>
+	<script src="./resources/js/lib/sockjs.min.js"></script>
+	<script src='./resources/js/lib/vertxbus.js'></script>
+	
+	<script src="./resources/js/lib/pixi.dev.js"></script>
+
+	<script src="./resources/js/hbar/data/dao/DataRequest.js"></script>
+	<script src="./resources/js/hbar/data/ProtoSock.js"></script>
+
+	<script src="./resources/js/hbar/charts/axis/BaseAxis.js"></script>
+	<script src="./resources/js/hbar/charts/axis/TimeAxis.js"></script>
+	<script src="./resources/js/hbar/charts/axis/ValueAxis.js"></script>
+	<script src="./resources/js/hbar/charts/BaseChart.js"></script>
+	<script src="./resources/js/hbar/charts/LineChart.js"></script>
+	<script src="./resources/js/hbar/charts/MAChart.js"></script>
+	<script src="./resources/js/hbar/charts/BBandsChart.js"></script>
+	<script src="./resources/js/hbar/charts/RSIChart.js"></script>
+	<script src="./resources/js/hbar/charts/OHLCChart.js"></script>
+	<script src="./resources/js/hbar/charts/ChartStack.js"></script>
+</head>
+
+<body>
+	<div style="width: 100%; height: 100%;">
+		<div id="resizable" class="hbar-container" style="width: 100%; height: 70%; background-color: white; position: relative;">
+			<canvas id="hbar" class="hbar-chart"></canvas>
+		</div>
+
+		<div id="reverse" class="hbar-container" style="width: 100%; height: 30%; background-color: grey; position: relative;">
+			<canvas id="macd" class="hbar-chart"></canvas>
+		</div>
+	</div>
+
+	
+
+
+	<script src="./resources/js/main.js"></script>
+
+	<script>
+  $(function() {
+    $( "#resizable" ).resizable( { handles: 's',
+    		alsoResizeReverse: "#reverse"
+    	});
+  });
+  </script>
+
+</body>
+</html>
