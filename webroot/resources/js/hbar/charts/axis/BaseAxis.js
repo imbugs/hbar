@@ -2,6 +2,7 @@ function BaseAxis(width, height) {
 	PIXI.Graphics.call(this);
 	
 	this.w = width;
+	this.h = height;
 
 	this.min = 0;
 	this.max = 1;

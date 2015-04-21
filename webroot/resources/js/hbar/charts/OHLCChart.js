@@ -1,5 +1,5 @@
-function OHLCChart(name, datasource, symbol, indicator, width, height) {
-	BaseChart.call(this, name, datasource, symbol, indicator, width, height);
+function OHLCChart(name, datasource, symbol, indicator) {
+	BaseChart.call(this, name, datasource, symbol, indicator);
 
 	this.fields = ["open", "high", "low", "close"];
 
@@ -12,33 +12,29 @@ OHLCChart.prototype = Object.create(BaseChart.prototype);
 
 
 OHLCChart.prototype.draw = function(data) {
-	this.clear();
-
-	this.data = data != undefined ? data : this.getData();
+	BaseChart.prototype.draw.call(this, data);
 
 	if(this.data.length == 0) return;
 
 
-	for(var t = this.startTime; t <= this.endTime; t += this.period) {
+	for(var t = this.timeAxis.min; t <= this.timeAxis.max; t += this.timeAxis.period) {
 		if(!this.data[t]) continue;
 
 		var lineColor = this.data[t].close >= this.data[t].open ? this.colorUp : this.colorDown;
 		var fillColor = this.data[t].close >= this.data[t].open ? 0XFFFFFF : lineColor;
 
-		var x = (t - this.startTime) / this.period;
-
 		/*** High / Low Line ***/
 		this.lineStyle(1, lineColor, 1);
-		this.moveTo(x * this.delta + this.barSize / 2, this.valueAxis.getPosition(this.data[t].low));
-		this.lineTo(x * this.delta + this.barSize / 2, this.valueAxis.getPosition(this.data[t].high));
 
-
+		this.moveTo(this.timeAxis.getPosition(t), this.valueAxis.getPosition(this.data[t].low));
+		this.lineTo(this.timeAxis.getPosition(t), this.valueAxis.getPosition(this.data[t].high));
+		
 		/*** Open / Close Rect ***/
 		this.beginFill(fillColor);
 
 		var low = Math.min(this.data[t].open, this.data[t].close);
 
-		this.drawRect(x * this.delta, this.valueAxis.getPosition(low), this.barSize, this.valueAxis.getDelta(this.data[t].open, this.data[t].close));
+		this.drawRect(this.timeAxis.getMinPosition(t), this.valueAxis.getPosition(low), this.timeAxis.barSize - 1, this.valueAxis.getDelta(this.data[t].open, this.data[t].close));
 	}
 
 }

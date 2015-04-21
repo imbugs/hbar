@@ -40,7 +40,7 @@ public class DataManager {
 			cache.get(symbol).get(indicator).put(period, new HashMap<Integer, FieldSeries<?>>());
 		}
 		
-		int optionsHash = options.toMap().hashCode();
+		int optionsHash = options.toString().hashCode();
 		
 		if(!cache.get(symbol).get(indicator).get(period).containsKey(optionsHash)) {
 			if(indicator.equals("OHLCV")) {

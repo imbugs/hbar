@@ -6,9 +6,9 @@ function ProtoSock(url, builders, onReady)
 
 	this.cache = {};
 
-	this.eb = new vertx.EventBus(url);
+	this.eventBus = new vertx.EventBus(url);
 
-	this.eb.onopen = function() {
+	this.eventBus.onopen = function() {
 		console.log("connected to websocket!");
 
 		onReady();
@@ -37,9 +37,9 @@ ProtoSock.prototype.getData = function(request, cb)
 		seriesData.min = Math.min(seriesData.min, request.startTime);
 		seriesData.max = Math.max(seriesData.max, request.endTime);
 
-		this.eb.send('data', request, function(data)
+		this.eventBus.send('data', request, function(data)
 		{
-			var data = builders[request.indicator].decode64(data.replace(/\n/gm, "")).series;
+			var data = this.builders[request.indicator].decode64(data.replace(/\n/gm, "")).series;
 			for(var i = 0; i < data.length; i++)
 			{
 				seriesData.data[data[i].timestamp] = data[i];
@@ -48,7 +48,7 @@ ProtoSock.prototype.getData = function(request, cb)
 			}
 
 			if(cb) cb(seriesData.data);
-		});
+		}.bind(this));
 
 	}
 

@@ -42,32 +42,42 @@
 	<script src="./resources/js/hbar/charts/BBandsChart.js"></script>
 	<script src="./resources/js/hbar/charts/RSIChart.js"></script>
 	<script src="./resources/js/hbar/charts/OHLCChart.js"></script>
-	<script src="./resources/js/hbar/charts/ChartStack.js"></script>
+	<script src="./resources/js/hbar/ChartStack.js"></script>
+	<script src="./resources/js/hbar/ChartStackManager.js"></script>
+	<script src="./resources/js/hbar/HBAR.js"></script>
 </head>
 
 <body>
-	<div style="width: 100%; height: 100%;">
-		<div id="resizable" class="hbar-container" style="width: 100%; height: 70%; background-color: white; position: relative;">
-			<canvas id="hbar" class="hbar-chart"></canvas>
-		</div>
-
-		<div id="reverse" class="hbar-container" style="width: 100%; height: 30%; background-color: grey; position: relative;">
-			<canvas id="macd" class="hbar-chart"></canvas>
-		</div>
-	</div>
+	<div id="hbar" class="hbar-container"></div>
 
 	
 
-
-	<script src="./resources/js/main.js"></script>
-
 	<script>
-  $(function() {
-    $( "#resizable" ).resizable( { handles: 's',
-    		alsoResizeReverse: "#reverse"
-    	});
-  });
-  </script>
+		var hbar = new HBAR(document.getElementById("hbar"), function() 
+		{
+			var ohlcChart = new OHLCChart("OHLCChart", hbar.protoSock, "BTCUSD:Bitfinex", "OHLCV");
+
+			var smaChart = new MAChart("SMAChart", hbar.protoSock, "BTCUSD:Bitfinex", "SMA");
+
+			var emaChart = new MAChart("EMAChart", hbar.protoSock, "BTCUSD:Bitfinex", "EMA");
+			emaChart.valueColor = 0XFF6600;
+			emaChart.options.period = 26;
+
+			var linearRegChart = new LineChart("LinearRegChart", hbar.protoSock, "BTCUSD:Bitfinex", "LinearReg");
+			linearRegChart.valueColor = 0x000000;
+			linearRegChart.options.period = 14;
+
+			hbar.addChart("ohlc-chart", ohlcChart);
+			hbar.addChart("ohlc-chart", smaChart);
+			hbar.addChart("ohlc-chart", emaChart);
+			hbar.addChart("ohlc-chart", linearRegChart);
+
+
+			var rsiChart = new RSIChart("RSIChart", hbar.protoSock, "BTCUSD:Bitfinex", "RSI");
+			
+			hbar.addChart("rsi-chart", rsiChart);
+		});
+	</script>
 
 </body>
 </html>
