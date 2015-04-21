@@ -37,9 +37,12 @@
 	<script src="./resources/js/hbar/charts/axis/TimeAxis.js"></script>
 	<script src="./resources/js/hbar/charts/axis/ValueAxis.js"></script>
 	<script src="./resources/js/hbar/charts/BaseChart.js"></script>
+	<script src="./resources/js/hbar/charts/HistogramChart.js"></script>
+	<script src="./resources/js/hbar/charts/VolumeChart.js"></script>
 	<script src="./resources/js/hbar/charts/LineChart.js"></script>
 	<script src="./resources/js/hbar/charts/MAChart.js"></script>
 	<script src="./resources/js/hbar/charts/BBandsChart.js"></script>
+	<script src="./resources/js/hbar/charts/MACDChart.js"></script>
 	<script src="./resources/js/hbar/charts/RSIChart.js"></script>
 	<script src="./resources/js/hbar/charts/OHLCChart.js"></script>
 	<script src="./resources/js/hbar/ChartStack.js"></script>
@@ -57,25 +60,37 @@
 		{
 			var ohlcChart = new OHLCChart("OHLCChart", hbar.protoSock, "BTCUSD:Bitfinex", "OHLCV");
 
+			var volumeChart = new VolumeChart("VolumeChart", hbar.protoSock, "BTCUSD:Bitfinex", "OHLCV");
+
 			var smaChart = new MAChart("SMAChart", hbar.protoSock, "BTCUSD:Bitfinex", "SMA");
 
 			var emaChart = new MAChart("EMAChart", hbar.protoSock, "BTCUSD:Bitfinex", "EMA");
-			emaChart.valueColor = 0XFF6600;
+			emaChart.valueColor = 0xFF6600;
 			emaChart.options.period = 26;
 
 			var linearRegChart = new LineChart("LinearRegChart", hbar.protoSock, "BTCUSD:Bitfinex", "LinearReg");
 			linearRegChart.valueColor = 0x000000;
 			linearRegChart.options.period = 14;
 
+			var bbandsChart = new BBandsChart("BBandsChart", hbar.protoSock, "BTCUSD:Bitfinex", "BBands");
+
 			hbar.addChart("ohlc-chart", ohlcChart);
+			hbar.addChart("ohlc-chart", volumeChart);
 			hbar.addChart("ohlc-chart", smaChart);
 			hbar.addChart("ohlc-chart", emaChart);
 			hbar.addChart("ohlc-chart", linearRegChart);
+			hbar.addChart("ohlc-chart", bbandsChart);
 
 
 			var rsiChart = new RSIChart("RSIChart", hbar.protoSock, "BTCUSD:Bitfinex", "RSI");
-			
+
 			hbar.addChart("rsi-chart", rsiChart);
+
+
+			var macdChart = new MACDChart("MACDChart", hbar.protoSock, "BTCUSD:Bitfinex", "MACD");
+
+			hbar.addChart("macd-chart", macdChart);
+
 		});
 	</script>
 

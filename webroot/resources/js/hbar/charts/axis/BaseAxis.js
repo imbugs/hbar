@@ -5,7 +5,7 @@ function BaseAxis(width, height) {
 	this.h = height;
 
 	this.min = 0;
-	this.max = 1;
+	this.max = 0;
 }
 
 BaseAxis.constructor = BaseAxis;

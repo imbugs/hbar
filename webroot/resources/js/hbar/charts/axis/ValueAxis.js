@@ -11,7 +11,7 @@ ValueAxis.prototype.getPosition = function(value) {
 	return this.h - (value - this.min) * this.getScale() - this.padding;
 }
 
-ValueAxis.prototype.getDelta = function(value1, value2) {
+ValueAxis.prototype.getDelta = function(value1, value2, preserveSign) {
 	return -Math.max(0.1, Math.abs(value1 - value2) * this.getScale());
 }
 

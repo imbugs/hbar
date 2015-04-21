@@ -69,6 +69,14 @@ ChartStack.prototype.resize = function()
 
 	this.valueAxis.resize(width, height);
 
+	for(var i = 0; i < this.charts.length; i++)
+	{
+		if(this.charts[0].type != this.charts[i].type)
+		{
+			this.charts[i].valueAxis.resize(width, height);
+		}
+	}
+
 	this.draw();
 }
 
@@ -78,6 +86,7 @@ ChartStack.prototype.getLow = function()
 	var low = Number.MAX_VALUE;
 	for(var i = 0; i < this.charts.length; i++)
 	{
+		if(this.charts[0].type != this.charts[i].type) continue;
 		low = Math.min(low, this.charts[i].getLow());
 	}
 
@@ -90,6 +99,7 @@ ChartStack.prototype.getHigh = function()
 
 	for(var i = 0; i < this.charts.length; i++)
 	{
+		if(this.charts[0].type != this.charts[i].type) continue;
 		high = Math.max(high, this.charts[i].getHigh());
 	}
 

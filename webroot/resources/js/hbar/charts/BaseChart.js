@@ -1,6 +1,8 @@
 function BaseChart(name, datasource, symbol, indicator) {
 	PIXI.Graphics.call(this);
 
+	this.type = "price";
+
 	this.name = name;
 	this.datasource = datasource;
 	this.symbol = symbol;

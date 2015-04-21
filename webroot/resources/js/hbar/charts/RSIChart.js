@@ -1,6 +1,8 @@
 function RSIChart(name, datasource, symbol, indicator) {
 	LineChart.call(this, name, datasource, symbol, indicator);
 
+	this.type = "RSI";
+
 	this.valueColor = 0xBB00FF;
 
 	this.options.period = 14;
@@ -34,7 +36,5 @@ RSIChart.prototype.getHigh = function() {
 
 RSIChart.prototype.setValueAxis = function(valueAxis) {
 	BaseChart.prototype.setValueAxis.call(this, valueAxis);
-	valueAxis.padding = 0;
-
-	// this.valueAxis = valueAxis;
+	this.valueAxis.padding = 0;
 }
