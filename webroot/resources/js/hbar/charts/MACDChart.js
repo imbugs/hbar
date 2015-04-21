@@ -1,5 +1,5 @@
 function MACDChart(name, datasource, symbol, indicator) {
-	LineChart.call(this, name, datasource, symbol, indicator);
+	BaseChart.call(this, name, datasource, symbol, indicator);
 
 	this.fields = ["macd", "signal", "histogram"];
 	this.maFields = ["macd", "signal" ];
@@ -14,10 +14,12 @@ function MACDChart(name, datasource, symbol, indicator) {
 }
 
 MACDChart.constructor = MACDChart;
-MACDChart.prototype = Object.create(LineChart.prototype);
+MACDChart.prototype = Object.create(BaseChart.prototype);
 
 MACDChart.prototype.draw = function(data) {
 	BaseChart.prototype.draw.call(this, data);
+
+	if(this.data.length == 0) return;
 
 	this.drawMAs();
 
@@ -50,7 +52,7 @@ MACDChart.prototype.drawHistogram = function() {
 
 		var delta = this.valueAxis.getDelta(0, this.data[t].histogram);
 		var low = this.data[t].histogram < 0 ? this.data[t].histogram : 0;
-
+		
 		this.drawRect(this.timeAxis.getMinPosition(t), this.valueAxis.getPosition(low), this.timeAxis.barSize - 1, delta);
 	}
 }

@@ -9,7 +9,7 @@ function ChartStack(container, timeAxis)
 
 	var rendererOptions = {
 		antialiasing : false,
-		transparent : false,
+		transparent : true,
 		resolution : 1
 	}
 
