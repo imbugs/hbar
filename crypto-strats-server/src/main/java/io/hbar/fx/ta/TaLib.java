@@ -8,6 +8,7 @@ import io.hbar.fx.data.series.types.LinearReg;
 import io.hbar.fx.data.series.types.MACD;
 import io.hbar.fx.data.series.types.OHLCV;
 import io.hbar.fx.data.series.types.RSI;
+import io.hbar.fx.data.series.types.SAR;
 import io.hbar.fx.data.series.types.SMA;
 
 import java.lang.reflect.InvocationTargetException;
@@ -93,7 +94,6 @@ public class TaLib {
 	public static FieldSeries<MACD> macd(OHLCVSeries ohlcv, JsonObject options) {
 		return macd(ohlcv, options, OHLCV.Close);
 	}
-	
 	public static FieldSeries<MACD> macd(OHLCVSeries ohlcv, JsonObject options, OHLCV field) {
 		double inReal[] = ohlcv.getSeries(field);
 		
@@ -136,6 +136,25 @@ public class TaLib {
 		if( code != RetCode.Success ) return null;
 		
 		return createSeries(BBands.class, outBegIdx.value, ohlcv.getTimestamps(), upper, lower, middle);
+	}
+	
+	
+	public static FieldSeries<SAR> sar(OHLCVSeries ohlcv, JsonObject options) {
+		double inHigh[] = ohlcv.getSeries(OHLCV.High);
+		double inLow[] = ohlcv.getSeries(OHLCV.Low);
+		
+		double optInAcceleration = options.getNumber("acceleration").doubleValue();
+		double optInMaximum = options.getNumber("maximum").doubleValue();
+		
+		double outReal[] = new double[inHigh.length];
+		
+		MInteger outBegIdx = new MInteger();
+        MInteger outNbElement = new MInteger();
+        
+		RetCode code = core.sar(0, inHigh.length-1, inHigh, inLow, optInAcceleration, optInMaximum, outBegIdx, outNbElement, outReal);
+		if( code != RetCode.Success ) return null;
+		
+		return createSeries(SAR.class, outBegIdx.value, ohlcv.getTimestamps(), outReal);
 	}
 	
 	

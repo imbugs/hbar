@@ -10,7 +10,8 @@ function HBAR(container, onReady)
 		"BBands" : dcodeIO.ProtoBuf.loadProtoFile("./protobuf/BBandsSeries.proto").build("BBandsSeries"),
 		"MACD" : dcodeIO.ProtoBuf.loadProtoFile("./protobuf/MACDSeries.proto").build("MACDSeries"),
 		"RSI" : dcodeIO.ProtoBuf.loadProtoFile("./protobuf/RSISeries.proto").build("RSISeries"),
-		"LinearReg" : dcodeIO.ProtoBuf.loadProtoFile("./protobuf/LinearRegSeries.proto").build("LinearRegSeries")
+		"LinearReg" : dcodeIO.ProtoBuf.loadProtoFile("./protobuf/LinearRegSeries.proto").build("LinearRegSeries"),
+		"SAR" : dcodeIO.ProtoBuf.loadProtoFile("./protobuf/SARSeries.proto").build("SARSeries")
 	}
 
 	this.protoSock = new ProtoSock('http://localhost:8080/api', this.builders, onReady);

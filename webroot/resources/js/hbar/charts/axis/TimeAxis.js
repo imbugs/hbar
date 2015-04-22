@@ -9,7 +9,7 @@ function TimeAxis(width, height) {
 
 	this.zoomSpeed = 0.001;
 
-	this.period = 14400;
+	this.period = 300;
 	this.delta = this.barSize + this.barSpacing;
 	this.bars = Math.floor(this.w / this.delta);
 	this.min = this.periodize(new Date().getTime() / 1000) - this.bars * this.period;

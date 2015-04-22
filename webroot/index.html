@@ -37,6 +37,8 @@
 	<script src="./resources/js/hbar/charts/axis/TimeAxis.js"></script>
 	<script src="./resources/js/hbar/charts/axis/ValueAxis.js"></script>
 	<script src="./resources/js/hbar/charts/BaseChart.js"></script>
+	<script src="./resources/js/hbar/charts/PointChart.js"></script>
+	<script src="./resources/js/hbar/charts/SARChart.js"></script>
 	<script src="./resources/js/hbar/charts/HistogramChart.js"></script>
 	<script src="./resources/js/hbar/charts/VolumeChart.js"></script>
 	<script src="./resources/js/hbar/charts/LineChart.js"></script>
@@ -74,12 +76,15 @@
 
 			var bbandsChart = new BBandsChart("BBandsChart", hbar.protoSock, "BTCUSD:Bitfinex", "BBands");
 
+			var sarChart = new SARChart("SARChart", hbar.protoSock, "BTCUSD:Bitfinex", "SAR");
+
 			hbar.addChart("ohlc-chart", ohlcChart);
 			hbar.addChart("ohlc-chart", volumeChart);
-			hbar.addChart("ohlc-chart", smaChart);
-			hbar.addChart("ohlc-chart", emaChart);
+			// hbar.addChart("ohlc-chart", smaChart);
+			// hbar.addChart("ohlc-chart", emaChart);
 			hbar.addChart("ohlc-chart", linearRegChart);
 			hbar.addChart("ohlc-chart", bbandsChart);
+			hbar.addChart("ohlc-chart", sarChart);
 
 
 			var rsiChart = new RSIChart("RSIChart", hbar.protoSock, "BTCUSD:Bitfinex", "RSI");
