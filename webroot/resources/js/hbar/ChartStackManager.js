@@ -40,6 +40,17 @@ ChartStackManager.prototype.addChart = function(stack, chart)
 				resize: this.resize.bind(this)
 			});
 		}
+
+
+		div.addEventListener("mousemove",
+			function(event) {
+				this.stacks[stack].setHorizontalCrosshair(event.layerY);
+			}.bind(this), false);
+
+		div.addEventListener("mouseout",
+			function(event) {
+				this.stacks[stack].setHorizontalCrosshair(-1);
+			}.bind(this), false);
 	}
 
 	this.stacks[stack].addChart(chart);
@@ -62,5 +73,14 @@ ChartStackManager.prototype.resize = function()
 	for(var stack in this.stacks)
 	{
 		this.stacks[stack].resize();
+	}
+}
+
+ChartStackManager.prototype.drawCrosshair = function(x, y) 
+{
+	for(var stack in this.stacks)
+	{
+		this.stacks[stack].setVerticalCrosshair(x);
+		this.stacks[stack].render();
 	}
 }

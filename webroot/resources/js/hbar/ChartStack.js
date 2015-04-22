@@ -3,7 +3,13 @@ function ChartStack(container, timeAxis)
 {
 	this.container = container;
 
-	this.stage = new PIXI.Stage(0xFFFFFF);
+	this.stage = new PIXI.Container();
+	this.chartContainer = new PIXI.Container();
+	this.crosshair = new PIXI.Graphics();
+	this.crosshairPoint = new PIXI.Point(0, 0);
+
+	this.stage.addChild(this.chartContainer);
+	this.stage.addChild(this.crosshair);
 
 	this.paddingY = 20;
 
@@ -32,7 +38,7 @@ ChartStack.prototype.addChart = function(chart)
 	chart.setRedraw(this.draw.bind(this));
 
 	this.charts.push(chart);
-	this.stage.addChild(chart);
+	this.chartContainer.addChild(chart);
 
 	this.draw();
 }
@@ -46,6 +52,10 @@ ChartStack.prototype.draw = function()
 		this.charts[i].draw();
 	}
 
+	this.render();
+}
+
+ChartStack.prototype.render = function() {
 	this.renderer.render(this.stage);
 }
 
@@ -80,6 +90,32 @@ ChartStack.prototype.resize = function()
 	this.draw();
 }
 
+ChartStack.prototype.setVerticalCrosshair = function(x)
+{
+	this.crosshairPoint.x = x;
+
+	this.drawCrosshair();
+}
+
+ChartStack.prototype.setHorizontalCrosshair = function(y)
+{
+	this.crosshairPoint.y = y;
+
+	this.drawCrosshair();
+}
+
+ChartStack.prototype.drawCrosshair = function()
+{
+	this.crosshair.clear();
+
+	this.crosshair.lineStyle(1, 0x000000, 0.1);
+
+	this.crosshair.moveTo(this.crosshairPoint.x, 0);
+	this.crosshair.lineTo(this.crosshairPoint.x, this.renderer.height);
+
+	this.crosshair.moveTo(0, this.crosshairPoint.y);
+	this.crosshair.lineTo(this.renderer.width, this.crosshairPoint.y);
+}
 
 ChartStack.prototype.getLow = function() 
 {

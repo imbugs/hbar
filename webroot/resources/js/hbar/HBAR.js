@@ -32,6 +32,11 @@ function HBAR(container, onReady)
 		    return false;
 		}.bind(this), false);
 
+	container.addEventListener("mousemove",
+		function(event) {
+			this.chartStackManager.drawCrosshair(event.layerX, event.layerY);
+		}.bind(this), false);
+
 	window.addEventListener("resize",
 		function(event) {
 			this.chartStackManager.resize();
