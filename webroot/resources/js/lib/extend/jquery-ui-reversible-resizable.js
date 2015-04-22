@@ -51,7 +51,7 @@ $.ui.plugin.add("resizable", "alsoResizeReverse", {
             el.parents(ui.originalElement[0]).length ? ["width", "height"] : ["width", "height", "top", "left"];
 
           $.each(css, function(i, prop) {
-            var sum = (start[prop] || 0) - (delta[prop] || 0);
+            var sum = (start[prop] || 0) - (delta[prop] || 0) + 2;
             if (sum && sum >= 0) {
               style[prop] = sum || null;
             }
