@@ -4,8 +4,26 @@ body, html {
 	margin: 0;
 	padding: 0;
 	overflow: hidden;
-	background-color: #EEE;
+	background-color: #F6F6F6;
 }
+
+
+
+#hbar-ui {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	margin: 10px 10px;
+	opacity: 0.65;
+}
+
+#hbar-ui .btn-default.disabled {
+	color: #666666;
+	background-color: #e6e6e6;
+	border-color: #cfcfcf;
+	border-right: none;
+}
+
 
 
 div.hbar-container {
@@ -28,3 +46,8 @@ canvas.hbar-chart {
 	image-rendering: pixelated;
 	-ms-interpolation-mode: nearest-neighbor;
 }
+
+.ui-resizable-s {
+	height: 10px;
+}
+

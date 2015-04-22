@@ -1,5 +1,5 @@
-function OHLCChart(name, datasource, symbol, indicator) {
-	BaseChart.call(this, name, datasource, symbol, indicator);
+function OHLCChart(name, dataSource, symbol, indicator) {
+	BaseChart.call(this, name, dataSource, symbol, indicator);
 
 	this.fields = ["open", "high", "low", "close"];
 
@@ -11,8 +11,8 @@ OHLCChart.constructor = OHLCChart;
 OHLCChart.prototype = Object.create(BaseChart.prototype);
 
 
-OHLCChart.prototype.draw = function(data) {
-	BaseChart.prototype.draw.call(this, data);
+OHLCChart.prototype.draw = function() {
+	BaseChart.prototype.draw.call(this);
 
 	if(this.data.length == 0) return;
 

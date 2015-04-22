@@ -1,5 +1,5 @@
-function RSIChart(name, datasource, symbol, indicator) {
-	LineChart.call(this, name, datasource, symbol, indicator);
+function RSIChart(name, dataSource, symbol, indicator) {
+	LineChart.call(this, name, dataSource, symbol, indicator);
 
 	this.type = "RSI";
 
@@ -14,8 +14,8 @@ function RSIChart(name, datasource, symbol, indicator) {
 RSIChart.constructor = RSIChart;
 RSIChart.prototype = Object.create(LineChart.prototype);
 
-RSIChart.prototype.draw = function(data) {
-	LineChart.prototype.draw.call(this, data);
+RSIChart.prototype.draw = function() {
+	LineChart.prototype.draw.call(this);
 
 	var lowLine = this.valueAxis.getPosition(this.lowValue);
 	var highLine = this.valueAxis.getPosition(this.highValue);

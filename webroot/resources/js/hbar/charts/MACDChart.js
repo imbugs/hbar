@@ -1,5 +1,5 @@
-function MACDChart(name, datasource, symbol, indicator) {
-	BaseChart.call(this, name, datasource, symbol, indicator);
+function MACDChart(name, dataSource, symbol, indicator) {
+	BaseChart.call(this, name, dataSource, symbol, indicator);
 
 	this.fields = ["macd", "signal", "histogram"];
 	this.maFields = ["macd", "signal" ];
@@ -16,8 +16,8 @@ function MACDChart(name, datasource, symbol, indicator) {
 MACDChart.constructor = MACDChart;
 MACDChart.prototype = Object.create(BaseChart.prototype);
 
-MACDChart.prototype.draw = function(data) {
-	BaseChart.prototype.draw.call(this, data);
+MACDChart.prototype.draw = function() {
+	BaseChart.prototype.draw.call(this);
 
 	if(this.data.length == 0) return;
 

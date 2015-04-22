@@ -1,5 +1,5 @@
-function LineChart(name, datasource, symbol, indicator) {
-	BaseChart.call(this, name, datasource, symbol, indicator);
+function LineChart(name, dataSource, symbol, indicator) {
+	BaseChart.call(this, name, dataSource, symbol, indicator);
 
 	this.valueColor = 0x0099FF;
 }
@@ -8,8 +8,8 @@ LineChart.constructor = LineChart;
 LineChart.prototype = Object.create(BaseChart.prototype);
 
 
-LineChart.prototype.draw = function(data) {
-	BaseChart.prototype.draw.call(this, data);
+LineChart.prototype.draw = function() {
+	BaseChart.prototype.draw.call(this);
 
 	if(this.data.length == 0) return;
 

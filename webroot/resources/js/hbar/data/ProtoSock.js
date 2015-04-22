@@ -47,12 +47,38 @@ ProtoSock.prototype.getData = function(request, cb)
 				seriesData.max = Math.max(seriesData.max, data[i].timestamp);
 			}
 
-			if(cb) cb(seriesData.data);
+			if(cb) cb();
 		}.bind(this));
 
 	}
 
 	return seriesData.data;
+}
+
+ProtoSock.prototype.getMin = function(request, fields)
+{
+	var seriesData = this.getSeriesData(request.symbol, request.indicator, request.period, this.hashCode(request.options)).data;
+
+	var low = Number.MAX_VALUE;
+
+	for(var f in fields)
+		for(var t = request.startTime; t <= request.endTime; t += request.period)
+			if(seriesData[t]) low = Math.min(low, seriesData[t][fields[f]]);
+
+	return low;
+}
+
+ProtoSock.prototype.getMax = function(request, fields)
+{
+	var seriesData = this.getSeriesData(request.symbol, request.indicator, request.period, this.hashCode(request.options)).data;
+
+	var high = Number.MIN_VALUE;
+
+	for(var f in fields)
+		for(var t = request.startTime; t <= request.endTime; t += request.period)
+			if(seriesData[t]) high = Math.max(high, seriesData[t][fields[f]]);
+
+	return high;
 }
 
 ProtoSock.prototype.getSymbolData = function(symbol)

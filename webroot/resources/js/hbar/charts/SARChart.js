@@ -1,5 +1,5 @@
-function SARChart(name, datasource, symbol, indicator) {
-	PointChart.call(this, name, datasource, symbol, indicator);
+function SARChart(name, dataSource, symbol, indicator) {
+	PointChart.call(this, name, dataSource, symbol, indicator);
 
 	this.options.acceleration = 0.02;
 	this.options.maximum = 0.2;

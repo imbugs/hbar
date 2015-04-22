@@ -47,3 +47,8 @@ HBAR.prototype.addChart = function(stack, chart)
 {
 	this.chartStackManager.addChart(stack, chart);
 }
+
+HBAR.prototype.setPeriod = function(period)
+{
+	this.chartStackManager.setPeriod(period);
+}

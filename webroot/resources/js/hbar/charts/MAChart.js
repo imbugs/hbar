@@ -1,5 +1,5 @@
-function MAChart(name, datasource, symbol, indicator) {
-	LineChart.call(this, name, datasource, symbol, indicator);
+function MAChart(name, dataSource, symbol, indicator) {
+	LineChart.call(this, name, dataSource, symbol, indicator);
 
 	this.options.period = 9;
 }

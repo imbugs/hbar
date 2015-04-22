@@ -1,5 +1,5 @@
-function VolumeChart(name, datasource, symbol, indicator) {
-	BaseChart.call(this, name, datasource, symbol, indicator);
+function VolumeChart(name, dataSource, symbol, indicator) {
+	BaseChart.call(this, name, dataSource, symbol, indicator);
 
 	this.type = "volume";
 
@@ -12,10 +12,10 @@ VolumeChart.constructor = VolumeChart;
 VolumeChart.prototype = Object.create(HistogramChart.prototype);
 
 
-VolumeChart.prototype.draw = function(data) {
+VolumeChart.prototype.draw = function() {
 	this.valueAxis.setMinMax(0, this.getHigh());
 
-	HistogramChart.prototype.draw.call(this, data);
+	HistogramChart.prototype.draw.call(this);
 }
 
 VolumeChart.prototype.setValueAxis = function(_valueAxis) {

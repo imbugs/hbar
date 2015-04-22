@@ -1,5 +1,5 @@
-function PointChart(name, datasource, symbol, indicator) {
-	BaseChart.call(this, name, datasource, symbol, indicator);
+function PointChart(name, dataSource, symbol, indicator) {
+	BaseChart.call(this, name, dataSource, symbol, indicator);
 
 	this.valueColor = 0x00CC33;
 	this.valueRadius = 2;
@@ -9,8 +9,8 @@ PointChart.constructor = PointChart;
 PointChart.prototype = Object.create(BaseChart.prototype);
 
 
-PointChart.prototype.draw = function(data) {
-	BaseChart.prototype.draw.call(this, data);
+PointChart.prototype.draw = function() {
+	BaseChart.prototype.draw.call(this);
 
 	if(this.data.length == 0) return;
 

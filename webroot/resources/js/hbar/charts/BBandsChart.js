@@ -1,5 +1,5 @@
-function BBandsChart(name, datasource, symbol, indicator) {
-	LineChart.call(this, name, datasource, symbol, indicator);
+function BBandsChart(name, dataSource, symbol, indicator) {
+	LineChart.call(this, name, dataSource, symbol, indicator);
 
 	this.upperColor = 0x0099FF;
 	this.middleColor = 0x6699FF;

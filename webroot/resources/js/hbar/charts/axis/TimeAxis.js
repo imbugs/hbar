@@ -3,21 +3,26 @@ function TimeAxis(width, height) {
 
 	this.barSize = 3;
 	this.barSpacing = 1;
+	this.delta = this.barSize + this.barSpacing;
 
 	this.scrollSpeed = 0.001;
 	this.maxScrollSpeed = 0.5;
 
 	this.zoomSpeed = 0.001;
 
-	this.period = 1 * 60;
-	this.delta = this.barSize + this.barSpacing;
-	this.bars = Math.floor(this.w / this.delta);
-	this.min = this.periodize(new Date().getTime() / 1000) - this.bars * this.period;
-	this.max = this.min + this.period * this.bars;
+	this.setPeriod(3600);
 }
 
 TimeAxis.constructor = TimeAxis;
 TimeAxis.prototype = Object.create(BaseAxis.prototype);
+
+TimeAxis.prototype.setPeriod = function(period) {
+	this.period = period;
+	
+	this.bars = Math.floor(this.w / this.delta);
+	this.min = this.periodize(new Date().getTime() / 1000) - this.bars * this.period;
+	this.max = this.min + this.period * this.bars;
+}
 
 TimeAxis.prototype.getPosition = function(value) {
 	return this.getMinPosition(value) + Math.floor(this.barSize / 2);
@@ -56,7 +61,7 @@ TimeAxis.prototype.scroll = function(scrollX, scrollY) {
 		this.min += barDelta * this.period;
 		this.max = this.min + this.period * this.bars;
 	} else {
-		this.barSize = Math.max(0.1, this.barSize * (1 + scrollY * this.zoomSpeed));
+		this.barSize = Math.max(2, this.barSize * (1 + scrollY * this.zoomSpeed));
 
 		this.delta = this.barSize + this.barSpacing;
 		this.bars = Math.round(this.w / this.delta);

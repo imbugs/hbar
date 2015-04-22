@@ -56,6 +56,16 @@ ChartStackManager.prototype.addChart = function(stack, chart)
 	this.stacks[stack].addChart(chart);
 }
 
+ChartStackManager.prototype.setPeriod = function(period)
+{
+	this.timeAxis.setPeriod(period);
+	
+	for(var stack in this.stacks)
+	{
+		this.stacks[stack].draw();
+	}
+}
+
 ChartStackManager.prototype.scroll = function(scrollX, scrollY)
 {
 	this.timeAxis.scroll(scrollX, scrollY);

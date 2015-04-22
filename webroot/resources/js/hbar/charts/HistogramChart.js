@@ -1,5 +1,5 @@
-function HistogramChart(name, datasource, symbol, indicator) {
-	BaseChart.call(this, name, datasource, symbol, indicator);
+function HistogramChart(name, dataSource, symbol, indicator) {
+	BaseChart.call(this, name, dataSource, symbol, indicator);
 
 	this.valueColor = 0x0099FF;
 }
@@ -8,8 +8,8 @@ HistogramChart.constructor = HistogramChart;
 HistogramChart.prototype = Object.create(BaseChart.prototype);
 
 
-HistogramChart.prototype.draw = function(data) {
-	BaseChart.prototype.draw.call(this, data);
+HistogramChart.prototype.draw = function() {
+	BaseChart.prototype.draw.call(this);
 
 	if(this.data.length == 0) return;
 

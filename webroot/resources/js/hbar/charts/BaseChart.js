@@ -1,10 +1,10 @@
-function BaseChart(name, datasource, symbol, indicator) {
+function BaseChart(name, dataSource, symbol, indicator) {
 	PIXI.Graphics.call(this);
 
 	this.type = "price";
 
 	this.name = name;
-	this.datasource = datasource;
+	this.dataSource = dataSource;
 	this.symbol = symbol;
 	this.indicator = indicator;
 
@@ -18,14 +18,18 @@ BaseChart.constructor = BaseChart;
 BaseChart.prototype = Object.create(PIXI.Graphics.prototype);
 
 BaseChart.prototype.getData = function() {
-	var request = new DataRequest(this.symbol, this.indicator, this.timeAxis.period, this.timeAxis.min, this.timeAxis.max, this.options);
+	var request = this.getRequest();
 
-	return this.datasource.getData(request, this.redraw.bind(this));
+	return this.dataSource.getData(request, this.redraw.bind(this));
 }
 
-BaseChart.prototype.draw = function(data) { 
+BaseChart.prototype.getRequest = function() {
+	return new DataRequest(this.symbol, this.indicator, this.timeAxis.period, this.timeAxis.min, this.timeAxis.max, this.options);
+}
+
+BaseChart.prototype.draw = function() { 
 	this.clear();
-	this.data = data != undefined ? data : this.getData();
+	this.data = this.getData();
 }
 
 
@@ -42,21 +46,9 @@ BaseChart.prototype.setValueAxis = function(valueAxis) {
 }
 
 BaseChart.prototype.getLow = function() {
-	var low = Number.MAX_VALUE;
-
-	for(var f in this.fields)
-		for(var t = this.timeAxis.min; t <= this.timeAxis.max; t += this.timeAxis.period)
-			if(this.data[t]) low = Math.min(low, this.data[t][this.fields[f]]);
-
-	return low;
+	return this.dataSource.getMin(this.getRequest(), this.fields);
 }
 
 BaseChart.prototype.getHigh = function() {
-	var high = Number.MIN_VALUE;
-
-	for(var f in this.fields)
-		for(var t = this.timeAxis.min; t <= this.timeAxis.max; t += this.timeAxis.period)
-			if(this.data[t]) high = Math.max(high, this.data[t][this.fields[f]]);
-
-	return high;
+	return this.dataSource.getMax(this.getRequest(), this.fields);
 }
