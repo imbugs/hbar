@@ -2,6 +2,8 @@ function LineChart(name, dataSource, symbol, indicator) {
 	BaseChart.call(this, name, dataSource, symbol, indicator);
 
 	this.valueColor = 0x0099FF;
+	this.lineThickness = 2;
+	this.lineAlpha = 0.5;
 }
 
 LineChart.constructor = LineChart;
@@ -17,7 +19,7 @@ LineChart.prototype.draw = function() {
 	while(!this.data[firstTime] && firstTime <= this.timeAxis.max) firstTime += this.timeAxis.period;
 
 	for(var f in this.fields) {
-		this.lineStyle(2, this[this.fields[f] + "Color"], 0.5);
+		this.lineStyle(this.lineThickness, this[this.fields[f] + "Color"], this.lineAlpha);
 
 		if(this.data[firstTime])
 			this.moveTo(this.timeAxis.getPosition(firstTime), this.valueAxis.getPosition(this.data[firstTime][this.fields[f]]));
