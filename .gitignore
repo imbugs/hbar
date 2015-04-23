@@ -1,4 +1,5 @@
 crypto-strats-server/target/*
 crypto-strats-server/data/*
+crypto-strats-server/logs/*
 .vagrant
 .DS_Store
