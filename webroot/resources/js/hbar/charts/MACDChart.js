@@ -8,6 +8,8 @@ function MACDChart(name, dataSource, symbol, indicator) {
 	this.signalColor = 0xFF6600;
 	this.histogramColor = 0x9999FF;
 
+	this.type = "MACD";
+
 	this.options.fastPeriod = 12;
 	this.options.slowPeriod = 26;
 	this.options.signalPeriod = 9;

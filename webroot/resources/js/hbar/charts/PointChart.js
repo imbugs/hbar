@@ -1,8 +1,8 @@
 function PointChart(name, dataSource, symbol, indicator) {
 	BaseChart.call(this, name, dataSource, symbol, indicator);
 
-	this.valueColor = 0x00CC33;
-	this.valueRadius = 2;
+	this.valueColor = 0x00AA33;
+	this.valueRadius = 1;
 }
 
 PointChart.constructor = PointChart;
@@ -20,7 +20,7 @@ PointChart.prototype.draw = function() {
 		for(var t = this.timeAxis.min + this.timeAxis.period; t <= this.timeAxis.max; t += this.timeAxis.period) {
 			if(!this.data[t]) continue;
 
-			this.drawCircle(this.timeAxis.getPosition(t), this.valueAxis.getPosition(this.data[t][this.fields[f]]), this[this.fields[f] + "Radius"]);
+			this.drawCircle(this.timeAxis.getPosition(t), this.valueAxis.getPosition(this.data[t][this.fields[f]]), Math.min(2, this.timeAxis.barSize / 2));
 		}
 	}
 }

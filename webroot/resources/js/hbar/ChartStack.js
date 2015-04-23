@@ -33,6 +33,9 @@ function ChartStack(container, timeAxis)
 
 ChartStack.prototype.addChart = function(chart)
 {
+	if(!this.charts.length)
+		this.valueAxis.parentType = chart.type;
+	
 	chart.setValueAxis(this.valueAxis);
 	chart.setTimeAxis(this.timeAxis);
 	chart.setRedraw(this.draw.bind(this));

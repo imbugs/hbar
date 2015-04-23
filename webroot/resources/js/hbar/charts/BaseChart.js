@@ -30,6 +30,9 @@ BaseChart.prototype.getRequest = function() {
 BaseChart.prototype.draw = function() { 
 	this.clear();
 	this.data = this.getData();
+
+	if(this.type != this.valueAxis.parentType)
+		this.valueAxis.setMinMax(this.getLow(), this.getHigh());
 }
 
 
@@ -42,7 +45,15 @@ BaseChart.prototype.setTimeAxis = function(timeAxis) {
 }
 
 BaseChart.prototype.setValueAxis = function(valueAxis) {
-	this.valueAxis = valueAxis;
+	if(this.type != valueAxis.parentType)
+	{
+		this.valueAxis = new ValueAxis(valueAxis.y, valueAxis.h, valueAxis.padding);
+		this.valueAxis.parentType = valueAxis.parentType;
+	} 
+	else
+	{
+		this.valueAxis = valueAxis;
+	}
 }
 
 BaseChart.prototype.getLow = function() {
