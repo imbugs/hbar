@@ -61,7 +61,7 @@ TimeAxis.prototype.scroll = function(scrollX, scrollY) {
 		this.min += barDelta * this.period;
 		this.max = this.min + this.period * this.bars;
 	} else {
-		this.barSize = Math.max(2, this.barSize * (1 + scrollY * this.zoomSpeed));
+		this.barSize = Math.max(1, this.barSize * (1 + scrollY * this.zoomSpeed));
 
 		this.delta = this.barSize + this.barSpacing;
 		this.bars = Math.round(this.w / this.delta);

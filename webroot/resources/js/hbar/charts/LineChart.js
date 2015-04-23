@@ -13,7 +13,6 @@ LineChart.prototype.draw = function() {
 
 	if(this.data.length == 0) return;
 
-
 	var firstTime = this.timeAxis.min;
 	while(!this.data[firstTime] && firstTime <= this.timeAxis.max) firstTime += this.timeAxis.period;
 

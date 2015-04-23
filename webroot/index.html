@@ -42,6 +42,7 @@
 	<script src="./resources/js/hbar/charts/axis/TimeAxis.js"></script>
 	<script src="./resources/js/hbar/charts/axis/ValueAxis.js"></script>
 	<script src="./resources/js/hbar/charts/BaseChart.js"></script>
+	<script src="./resources/js/hbar/charts/CompositeChart.js"></script>
 	<script src="./resources/js/hbar/charts/PointChart.js"></script>
 	<script src="./resources/js/hbar/charts/SARChart.js"></script>
 	<script src="./resources/js/hbar/charts/HistogramChart.js"></script>
@@ -110,14 +111,13 @@
 			// hbar.addChart("ohlc-chart", smaChart);
 			// hbar.addChart("ohlc-chart", emaChart);
 			hbar.addChart("ohlc-chart", linearRegChart);
-			// hbar.addChart("ohlc-chart", bbandsChart);
+			hbar.addChart("ohlc-chart", bbandsChart);
 			hbar.addChart("ohlc-chart", sarChart);
 
 
 			var rsiChart = new RSIChart("RSIChart", hbar.protoSock, "BTCUSD:Bitfinex", "RSI");
 
 			hbar.addChart("rsi-chart", rsiChart);
-			// hbar.addChart("rsi-chart", bbandsChart);
 
 
 			var macdChart = new MACDChart("MACDChart", hbar.protoSock, "BTCUSD:Bitfinex", "MACD");

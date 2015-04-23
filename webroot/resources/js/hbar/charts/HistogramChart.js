@@ -13,14 +13,22 @@ HistogramChart.prototype.draw = function() {
 
 	if(this.data.length == 0) return;
 
-
 	for(var f in this.fields) {
 		this.lineStyle(1, this[this.fields[f] + "Color"], 0.5);
 
 		for(var t = this.timeAxis.min; t <= this.timeAxis.max; t += this.timeAxis.period) {
 			if(!this.data[t]) continue;
 
-			this.drawRect(this.timeAxis.getMinPosition(t), this.valueAxis.getPosition(0), this.timeAxis.barSize - 1, this.valueAxis.getDelta(0, this.data[t][this.fields[f]]));
+
+			if(this.timeAxis.barSize <= 1) {
+				this.moveTo(this.timeAxis.getMinPosition(t), this.valueAxis.getPosition(0));
+				this.lineTo(this.timeAxis.getMinPosition(t), this.valueAxis.getPosition(this.data[t][this.fields[f]]));
+			} 
+			else
+			{
+				var low = this.data[t][this.fields[f]] < 0 ? this.data[t][this.fields[f]] : 0;
+				this.drawRect(this.timeAxis.getMinPosition(t), this.valueAxis.getPosition(low), this.timeAxis.barSize - 1, this.valueAxis.getDelta(0, this.data[t][this.fields[f]]));
+			}
 		}
 	}
 }
