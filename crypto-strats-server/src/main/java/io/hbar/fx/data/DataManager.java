@@ -20,9 +20,9 @@ import org.vertx.java.core.json.JsonObject;
 public class DataManager {
 	final static Logger logger = LogManager.getLogger(DataManager.class.getName());
 	
-	private List<Trade> tradeData;
+	protected List<Trade> tradeData;
 	
-	private Map<String, HashMap<String, HashMap<Integer, HashMap<Integer, FieldSeries<?>>>>> cache = new HashMap<String, HashMap<String, HashMap<Integer, HashMap<Integer, FieldSeries<?>>>>>();
+	protected Map<String, HashMap<String, HashMap<Integer, HashMap<Integer, FieldSeries<?>>>>> cache = new HashMap<String, HashMap<String, HashMap<Integer, HashMap<Integer, FieldSeries<?>>>>>();
 	
 
 	public DataManager(String dataFile) {
@@ -61,7 +61,7 @@ public class DataManager {
 		return getSeries(symbol, indicator, period, options).serialize(startTime, endTime);
 	}
 	
-	private OHLCVSeries getOHLCVSeries(int period) {
+	protected OHLCVSeries getOHLCVSeries(int period) {
 		OHLCVSeries ohlcv = new OHLCVSeries(period);
 		
 		try {
@@ -75,7 +75,7 @@ public class DataManager {
 		return ohlcv;
 	}
 	
-	private void loadData(String file) {
+	protected void loadData(String file) {
 		tradeData = new ArrayList<Trade>();
 		
 		try (BufferedReader br = new BufferedReader(new FileReader(file))) {

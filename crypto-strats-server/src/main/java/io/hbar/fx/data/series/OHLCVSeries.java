@@ -5,12 +5,14 @@ import io.hbar.fx.data.series.types.OHLCV;
 
 import java.util.Map;
 
+import org.vertx.java.core.json.JsonObject;
+
 public class OHLCVSeries extends FieldSeries<OHLCV> {
 
 	private int period;
 
 	public OHLCVSeries(int period) {
-		super(OHLCV.class);
+		super(OHLCV.class, new JsonObject());
 		this.period = period;
 	}
 

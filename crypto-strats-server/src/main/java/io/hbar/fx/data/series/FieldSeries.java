@@ -4,6 +4,8 @@ import io.hbar.protobuf.serializer.ProtoBufSerializer;
 
 import java.util.SortedSet;
 
+import org.vertx.java.core.json.JsonObject;
+
 import com.google.common.collect.Table;
 import com.google.common.collect.TreeBasedTable;
 import com.google.common.primitives.Doubles;
@@ -13,10 +15,12 @@ public class FieldSeries<T extends Enum<T>> {
 	public Table<Integer, T, Double> table = TreeBasedTable.create();
 	protected String typeString;
 	protected T[] fields;
+	protected JsonObject options;
 
-	public FieldSeries(Class<T> type) {
+	public FieldSeries(Class<T> type, JsonObject options) {
 		this.typeString = type.getSimpleName();
 		this.fields = type.getEnumConstants();
+		this.options = options;
 	}
 
 	public void addRow(int timestamp, double... values) throws Exception {
@@ -59,6 +63,10 @@ public class FieldSeries<T extends Enum<T>> {
 	
 	public String getTypeString() {
 		return typeString;
+	}
+	
+	public JsonObject getOptions() {
+		return options;
 	}
 	
 	public String toString() {

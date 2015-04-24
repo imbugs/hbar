@@ -1,7 +1,7 @@
 function ValueAxis(width, height, padding) {
 	BaseAxis.call(this, width, height);
 
-	this.parentType = "price";
+	this.parentValueType = "price";
 
 	this.padding = padding;
 }

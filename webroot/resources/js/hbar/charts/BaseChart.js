@@ -1,7 +1,7 @@
 function BaseChart(name, dataSource, symbol, indicator) {
 	PIXI.Graphics.call(this);
 
-	this.type = "price";
+	this.valueType = "price";
 
 	this.name = name;
 	this.dataSource = dataSource;
@@ -31,8 +31,15 @@ BaseChart.prototype.draw = function() {
 	this.clear();
 	this.data = this.getData();
 
-	if(this.type != this.valueAxis.parentType)
+	if(this.valueType != this.valueAxis.parentValueType)
 		this.valueAxis.setMinMax(this.getLow(), this.getHigh());
+}
+
+BaseChart.prototype.refreshLastTick = function() 
+{ 
+	var request = this.getRequest();
+
+	return this.dataSource.refreshLastTick(request, this.redraw.bind(this));
 }
 
 
@@ -45,10 +52,10 @@ BaseChart.prototype.setTimeAxis = function(timeAxis) {
 }
 
 BaseChart.prototype.setValueAxis = function(valueAxis) {
-	if(this.type != valueAxis.parentType)
+	if(this.valueType != valueAxis.parentValueType)
 	{
 		this.valueAxis = new ValueAxis(valueAxis.y, valueAxis.h, valueAxis.padding);
-		this.valueAxis.parentType = valueAxis.parentType;
+		this.valueAxis.parentValueType = valueAxis.parentValueType;
 	} 
 	else
 	{

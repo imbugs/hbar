@@ -14,24 +14,40 @@ import org.vertx.java.core.sockjs.SockJSServer;
 import org.vertx.java.platform.Verticle;
 
 
-public class Main extends Verticle {
-	final static Logger logger = LogManager.getLogger(Main.class.getName());
+public class WebsocketDataServer extends Verticle {
+	final static Logger logger = LogManager.getLogger(WebsocketDataServer.class.getName());
 	
-	private JsonObject config;
-	private DataManager dataManager;
+	protected JsonObject config;
+	protected DataManager dataManager;
+	protected EventBus eb;
+	protected HttpServer server;
 	
 	@Override
 	public void start() {
-		init();
+		config = container.config();
+		
+		createDataManager();
+		
+		createServer();
+		registerHandlers();
+		startServer();
 	}
 	
-	private void startServer() {
-		HttpServer server = vertx.createHttpServer();
-
+	protected void createDataManager() {
+		dataManager = new DataManager(config.getString("dataFile"));
+	}
+	
+	protected void createServer() {
+		server = vertx.createHttpServer();
 		setupSockJSBridge(server);
-		
-		EventBus eb = vertx.eventBus();
-		
+		eb = vertx.eventBus();
+	}
+	
+	protected void registerHandlers() {
+		registerDataHandler();
+	}
+	
+	protected void registerDataHandler() {
 		Handler<JsonObjectMessage> handler = new Handler<JsonObjectMessage>() {
 			@Override
 			public void handle(JsonObjectMessage event) {
@@ -53,6 +69,9 @@ public class Main extends Verticle {
 		};
 		
 		eb.registerHandler("data", handler);
+	}
+	
+	private void startServer() {
 		server.listen(8080);
 	}
 	
@@ -65,12 +84,6 @@ public class Main extends Verticle {
 
 		SockJSServer bridge = vertx.createSockJSServer(server).bridge(config, permitted, permitted);
 		return bridge;
-	}
-
-	private void init() {
-		config = container.config();
-		startServer();
-		dataManager = new DataManager(config.getString("dataFile"));
 	}
 
 }

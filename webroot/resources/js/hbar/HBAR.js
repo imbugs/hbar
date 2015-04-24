@@ -52,3 +52,27 @@ HBAR.prototype.setPeriod = function(period)
 {
 	this.chartStackManager.setPeriod(period);
 }
+
+HBAR.prototype.simulate = function()
+{
+	this.play();
+}
+
+HBAR.prototype.play = function() {
+	this.intervalId = setTimeout(function() {
+		this.tick();
+		this.play();
+	}.bind(this), 100);
+}
+
+HBAR.prototype.stopSimulation = function()
+{
+	clearTimeout(this.intervalId);
+}
+
+HBAR.prototype.tick = function()
+{
+	this.protoSock.tick(function() {
+		this.chartStackManager.refreshLastTick();
+	}.bind(this));
+}

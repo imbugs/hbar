@@ -62,7 +62,7 @@ public class TaLib {
         
         if(code != RetCode.Success) return null;
         
-        FieldSeries<T> s = createSeries(maType, outBegIdx.value, ohlcv.getTimestamps(), outReal);
+        FieldSeries<T> s = createSeries(maType, options, outBegIdx.value, ohlcv.getTimestamps(), outReal);
         
         return s;
 	}
@@ -84,7 +84,7 @@ public class TaLib {
         
         if(code != RetCode.Success) return null;
         
-        FieldSeries<RSI> s = createSeries(RSI.class, outBegIdx.value, ohlcv.getTimestamps(), outReal);
+        FieldSeries<RSI> s = createSeries(RSI.class, options, outBegIdx.value, ohlcv.getTimestamps(), outReal);
         
         return s;
 	}
@@ -111,7 +111,7 @@ public class TaLib {
 		RetCode code = core.macd(0, inReal.length-1, inReal, slowPeriod, fastPeriod, signalPeriod, outBegIdx, outNbElement, outMACD, outSignal, outHistogram);
 		if( code != RetCode.Success ) return null;
 		
-		return createSeries(MACD.class, outBegIdx.value, ohlcv.getTimestamps(), outMACD, outSignal, outHistogram);
+		return createSeries(MACD.class, options, outBegIdx.value, ohlcv.getTimestamps(), outMACD, outSignal, outHistogram);
 	}
 	
 	public static FieldSeries<BBands> bbands(OHLCVSeries ohlcv, JsonObject options) {
@@ -135,7 +135,7 @@ public class TaLib {
 		RetCode code = core.bbands(0, inReal.length-1, inReal, inPeriod, optInNbDevUp, optInNbDevDn, inMAType, outBegIdx, outNbElement, upper, lower, middle);
 		if( code != RetCode.Success ) return null;
 		
-		return createSeries(BBands.class, outBegIdx.value, ohlcv.getTimestamps(), upper, lower, middle);
+		return createSeries(BBands.class, options, outBegIdx.value, ohlcv.getTimestamps(), upper, lower, middle);
 	}
 	
 	
@@ -154,7 +154,7 @@ public class TaLib {
 		RetCode code = core.sar(0, inHigh.length-1, inHigh, inLow, optInAcceleration, optInMaximum, outBegIdx, outNbElement, outReal);
 		if( code != RetCode.Success ) return null;
 		
-		return createSeries(SAR.class, outBegIdx.value, ohlcv.getTimestamps(), outReal);
+		return createSeries(SAR.class, options, outBegIdx.value, ohlcv.getTimestamps(), outReal);
 	}
 	
 	
@@ -175,12 +175,12 @@ public class TaLib {
         RetCode code = core.linearReg(0, inReal.length-1, inReal, inPeriod, outBegIdx, outNbElement, outReal);
 		if( code != RetCode.Success ) return null;
 		
-		return createSeries(LinearReg.class, outBegIdx.value, ohlcv.getTimestamps(), outReal);
+		return createSeries(LinearReg.class, options, outBegIdx.value, ohlcv.getTimestamps(), outReal);
 	}
 	
 	
-	private static <T extends Enum<T>> FieldSeries<T> createSeries(Class<T> fields, int begIndex, int[] timestamps, double[]... values) {
-		FieldSeries<T> series = new FieldSeries<T>(fields);
+	private static <T extends Enum<T>> FieldSeries<T> createSeries(Class<T> fields, JsonObject options, int begIndex, int[] timestamps, double[]... values) {
+		FieldSeries<T> series = new FieldSeries<T>(fields, options);
 		
 		for(int i = begIndex; i < timestamps.length; i++) {
         	try {

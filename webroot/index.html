@@ -63,7 +63,7 @@
 
 	<div id="hbar-ui">
 		<div class="btn-toolbar">
-			<div class="btn-group">
+			<div class="btn-group period-btn-group">
 				<a data-period="604800" class="btn btn-default btn-sm">1W</a>
 				<a data-period="259200" class="btn btn-default btn-sm">3D</a>
 				<a data-period="86400" class="btn btn-default btn-sm">1D</a>
@@ -78,6 +78,10 @@
 				<a data-period="300" class="btn btn-default btn-sm">5m</a>
 				<a data-period="180" class="btn btn-default btn-sm">3m</a>
 				<a data-period="60" class="btn btn-default btn-sm">1m</a>
+			</div>
+			<div class="btn-group simulation-btn-group">
+				<a id="play-btn" class="btn btn-default btn-sm">PLAY</a>
+				<a id="stop-btn" class="disabled btn btn-default btn-sm">STOP</a>
 			</div>
 		</div>
 	</div>
@@ -110,14 +114,14 @@
 			hbar.addChart("ohlc-chart", volumeChart);
 			// hbar.addChart("ohlc-chart", smaChart);
 			// hbar.addChart("ohlc-chart", emaChart);
-			hbar.addChart("ohlc-chart", linearRegChart);
-			hbar.addChart("ohlc-chart", bbandsChart);
-			hbar.addChart("ohlc-chart", sarChart);
+			// hbar.addChart("ohlc-chart", linearRegChart);
+			// hbar.addChart("ohlc-chart", bbandsChart);
+			// hbar.addChart("ohlc-chart", sarChart);
 
 
 			var rsiChart = new RSIChart("RSIChart", hbar.protoSock, "BTCUSD:Bitfinex", "RSI");
 
-			hbar.addChart("rsi-chart", rsiChart);
+			// hbar.addChart("rsi-chart", rsiChart);
 
 
 			var macdChart = new MACDChart("MACDChart", hbar.protoSock, "BTCUSD:Bitfinex", "MACD");
@@ -125,12 +129,30 @@
 			hbar.addChart("macd-chart", macdChart);
 
 
-
-			$("#hbar-ui .btn").click(function(event) {
-				$("#hbar-ui .btn").removeClass('disabled');
+			$("#hbar-ui .period-btn-group .btn").click(function(event) {
+				$("#hbar-ui .period-btn-group .btn").removeClass('disabled');
 				$(event.target).toggleClass('disabled');
 				hbar.setPeriod(parseInt($(event.target).attr('data-period')));
 			});
+
+			var intervalId;
+
+			$("#hbar-ui #play-btn").click(function(event) {
+				hbar.simulate();
+
+				$("#hbar-ui #stop-btn").removeClass('disabled');
+				$("#hbar-ui #play-btn").addClass('disabled');
+			});
+
+			$("#hbar-ui #stop-btn").click(function(event) {
+				hbar.stopSimulation();
+
+				$("#hbar-ui #stop-btn").addClass('disabled');
+				$("#hbar-ui #play-btn").removeClass('disabled');
+			});
+
+			
+			
 
 		});
 	</script>

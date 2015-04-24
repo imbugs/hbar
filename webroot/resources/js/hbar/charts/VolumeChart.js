@@ -1,7 +1,7 @@
 function VolumeChart(name, dataSource, symbol, indicator) {
 	HistogramChart.call(this, name, dataSource, symbol, indicator);
 
-	this.type = "volume";
+	this.valueType = "volume";
 
 	this.fields = ["volume"];
 

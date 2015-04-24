@@ -66,6 +66,14 @@ ChartStackManager.prototype.setPeriod = function(period)
 	}
 }
 
+ChartStackManager.prototype.refreshLastTick = function()
+{
+	for(var stack in this.stacks)
+	{
+		this.stacks[stack].refreshLastTick();
+	}
+}
+
 ChartStackManager.prototype.scroll = function(scrollX, scrollY)
 {
 	this.timeAxis.scroll(scrollX, scrollY);

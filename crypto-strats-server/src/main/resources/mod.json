@@ -1,5 +1,5 @@
 {
 
-  "main":"io.hbar.Main"
+  "main":"io.hbar.SimulationServer"
 
 }

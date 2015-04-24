@@ -34,7 +34,7 @@ function ChartStack(container, timeAxis)
 ChartStack.prototype.addChart = function(chart)
 {
 	if(!this.charts.length)
-		this.valueAxis.parentType = chart.type;
+		this.valueAxis.parentValueType = chart.valueType;
 	
 	chart.setValueAxis(this.valueAxis);
 	chart.setTimeAxis(this.timeAxis);
@@ -58,7 +58,16 @@ ChartStack.prototype.draw = function()
 	this.render();
 }
 
-ChartStack.prototype.render = function() {
+ChartStack.prototype.refreshLastTick = function()
+{
+	for(var i = 0; i < this.charts.length; i++)
+	{
+		this.charts[i].refreshLastTick();
+	}
+}
+
+ChartStack.prototype.render = function() 
+{
 	this.renderer.render(this.stage);
 }
 
@@ -84,7 +93,7 @@ ChartStack.prototype.resize = function()
 
 	for(var i = 0; i < this.charts.length; i++)
 	{
-		if(this.charts[0].type != this.charts[i].type)
+		if(this.charts[0].valueType != this.charts[i].valueType)
 		{
 			this.charts[i].valueAxis.resize(width, height);
 		}
@@ -125,7 +134,7 @@ ChartStack.prototype.getLow = function()
 	var low = Number.MAX_VALUE;
 	for(var i = 0; i < this.charts.length; i++)
 	{
-		if(this.charts[0].type != this.charts[i].type) continue;
+		if(this.charts[0].valueType != this.charts[i].valueType) continue;
 		low = Math.min(low, this.charts[i].getLow());
 	}
 
@@ -138,7 +147,7 @@ ChartStack.prototype.getHigh = function()
 
 	for(var i = 0; i < this.charts.length; i++)
 	{
-		if(this.charts[0].type != this.charts[i].type) continue;
+		if(this.charts[0].valueType != this.charts[i].valueType) continue;
 		high = Math.max(high, this.charts[i].getHigh());
 	}
 

@@ -37,7 +37,35 @@ ProtoSock.prototype.getData = function(request, cb)
 		seriesData.min = Math.min(seriesData.min, request.startTime);
 		seriesData.max = Math.max(seriesData.max, request.endTime);
 
-		this.eventBus.send('data', request, function(data)
+		this.sendDataRequest(request, seriesData, cb);
+	}
+
+	return seriesData.data;
+}
+
+ProtoSock.prototype.tick = function(cb)
+{
+	this.eventBus.send('tick', {}, function(data)
+	{
+		if(cb) cb();
+	}.bind(this));
+}
+
+ProtoSock.prototype.refreshLastTick = function(request, cb)
+{
+	var seriesData = this.getSeriesData(request.symbol, request.indicator, request.period, this.hashCode(request.options));
+
+	var timestamps = Object.keys(seriesData.data);
+
+	request.startTime = parseInt(timestamps[timestamps.length - 1]);
+	request.endTime = seriesData.max;
+
+	this.sendDataRequest(request, seriesData, cb);
+}
+
+ProtoSock.prototype.sendDataRequest = function(request, seriesData, cb)
+{
+	this.eventBus.send('data', request, function(data)
 		{
 			var data = this.builders[request.indicator].decode64(data.replace(/\n/gm, "")).series;
 			for(var i = 0; i < data.length; i++)
@@ -49,10 +77,6 @@ ProtoSock.prototype.getData = function(request, cb)
 
 			if(cb) cb();
 		}.bind(this));
-
-	}
-
-	return seriesData.data;
 }
 
 ProtoSock.prototype.getMin = function(request, fields)

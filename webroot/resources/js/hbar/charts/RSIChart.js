@@ -1,7 +1,7 @@
 function RSIChart(name, dataSource, symbol, indicator) {
 	LineChart.call(this, name, dataSource, symbol, indicator);
 
-	this.type = "RSI";
+	this.valueType = "RSI";
 
 	this.valueColor = 0xBB00FF;
 
