@@ -2,6 +2,7 @@ package io.hbar.fx.data.series;
 
 import io.hbar.protobuf.serializer.ProtoBufSerializer;
 
+import java.util.Map;
 import java.util.SortedSet;
 
 import org.vertx.java.core.json.JsonObject;
@@ -36,6 +37,10 @@ public class FieldSeries<T extends Enum<T>> {
 			table.put(timestamp, fields[i], values[i]);
 		}
 	}
+	
+	public Map<T, Double> getRow(int timestamp) {
+		return table.row(timestamp);
+	}
 
 	public byte[] serialize(int startTime, int endTime) {
 		return ProtoBufSerializer.serialize(this, startTime, endTime);
@@ -51,6 +56,16 @@ public class FieldSeries<T extends Enum<T>> {
 	
 	public SortedSet<Integer> getTimestampSet() {
 		return (SortedSet<Integer>) table.rowKeySet();
+	}
+	
+	public int getLastTimestamp() {
+		int[] timestamps = getTimestamps();
+		return timestamps[timestamps.length - 1];
+	}
+	
+	public int getPreviousTimestamp() {
+		int[] timestamps = getTimestamps();
+		return timestamps[timestamps.length - 2];
 	}
 	
 	public T[] getFields() {

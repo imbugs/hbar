@@ -200,11 +200,11 @@
 			<version>2.1</version>
 		</dependency>
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.clojars.edbond</groupId>
 			<artifactId>talib</artifactId>
 			<version>0.5.0</version>
-		</dependency>
+		</dependency> -->
 
 		<dependency>
 			<groupId>com.google.guava</groupId>

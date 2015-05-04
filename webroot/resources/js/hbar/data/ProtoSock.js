@@ -45,7 +45,7 @@ ProtoSock.prototype.getData = function(request, cb)
 
 ProtoSock.prototype.tick = function(cb)
 {
-	this.eventBus.send('tick', {}, function(data)
+	this.eventBus.send('tick', { steps : 25 }, function(data)
 	{
 		if(cb) cb();
 	}.bind(this));
@@ -57,7 +57,12 @@ ProtoSock.prototype.refreshLastTick = function(request, cb)
 
 	var timestamps = Object.keys(seriesData.data);
 
-	request.startTime = parseInt(timestamps[timestamps.length - 1]);
+	if(timestamps.length > 0) {
+		request.startTime = parseInt(timestamps[timestamps.length - 1]) - request.period;
+	} else {
+		request.startTime = seriesData.min;
+	}
+
 	request.endTime = seriesData.max;
 
 	this.sendDataRequest(request, seriesData, cb);
@@ -65,9 +70,10 @@ ProtoSock.prototype.refreshLastTick = function(request, cb)
 
 ProtoSock.prototype.sendDataRequest = function(request, seriesData, cb)
 {
-	this.eventBus.send('data', request, function(data)
+	this.eventBus.send('data', request, function(data64)
 		{
-			var data = this.builders[request.indicator].decode64(data.replace(/\n/gm, "")).series;
+			var data = this.builders[request.indicator].decode64(data64.replace(/\n/gm, "")).series;
+
 			for(var i = 0; i < data.length; i++)
 			{
 				seriesData.data[data[i].timestamp] = data[i];

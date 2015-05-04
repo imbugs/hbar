@@ -36,4 +36,12 @@ public class OHLCVSeries extends FieldSeries<OHLCV> {
 		}
 	}
 
+	public boolean isNewCandle(int timestamp) {
+		return table.size() > 0 && !table.containsRow(((int) (timestamp / period)) * period);
+	}
+
+	public int getPeriod() {
+		return period;
+	}
+
 }

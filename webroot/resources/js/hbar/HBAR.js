@@ -11,7 +11,12 @@ function HBAR(container, onReady)
 		"MACD" : dcodeIO.ProtoBuf.loadProtoFile("./protobuf/MACDSeries.proto").build("MACDSeries"),
 		"RSI" : dcodeIO.ProtoBuf.loadProtoFile("./protobuf/RSISeries.proto").build("RSISeries"),
 		"LinearReg" : dcodeIO.ProtoBuf.loadProtoFile("./protobuf/LinearRegSeries.proto").build("LinearRegSeries"),
-		"SAR" : dcodeIO.ProtoBuf.loadProtoFile("./protobuf/SARSeries.proto").build("SARSeries")
+		"SAR" : dcodeIO.ProtoBuf.loadProtoFile("./protobuf/SARSeries.proto").build("SARSeries"),
+		"HilbertDominantCyclePeriod" : dcodeIO.ProtoBuf.loadProtoFile("./protobuf/HilbertDominantCyclePeriodSeries.proto").build("HilbertDominantCyclePeriodSeries"),
+		"HilbertDominantCyclePhase" : dcodeIO.ProtoBuf.loadProtoFile("./protobuf/HilbertDominantCyclePhaseSeries.proto").build("HilbertDominantCyclePhaseSeries"),
+		"HilbertTrendline" : dcodeIO.ProtoBuf.loadProtoFile("./protobuf/HilbertTrendlineSeries.proto").build("HilbertTrendlineSeries"),
+		"HilbertTrendMode" : dcodeIO.ProtoBuf.loadProtoFile("./protobuf/HilbertTrendModeSeries.proto").build("HilbertTrendModeSeries"),
+		"SarStrategy" : dcodeIO.ProtoBuf.loadProtoFile("./protobuf/OrderSeries.proto").build("OrderSeries"),
 	}
 
 	this.protoSock = new ProtoSock('http://localhost:8080/api', this.builders, onReady);
@@ -62,7 +67,7 @@ HBAR.prototype.play = function() {
 	this.intervalId = setTimeout(function() {
 		this.tick();
 		this.play();
-	}.bind(this), 100);
+	}.bind(this), 250);
 }
 
 HBAR.prototype.stopSimulation = function()

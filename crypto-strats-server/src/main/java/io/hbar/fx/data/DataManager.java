@@ -20,21 +20,26 @@ import org.vertx.java.core.json.JsonObject;
 public class DataManager {
 	final static Logger logger = LogManager.getLogger(DataManager.class.getName());
 	
-	protected List<Trade> tradeData;
+	public List<Trade> tradeData;
 	
-	protected Map<String, HashMap<String, HashMap<Integer, HashMap<Integer, FieldSeries<?>>>>> cache = new HashMap<String, HashMap<String, HashMap<Integer, HashMap<Integer, FieldSeries<?>>>>>();
+	protected Map<String, Map<String, Map<Integer, Map<Integer, FieldSeries<?>>>>> cache = new HashMap<String, Map<String, Map<Integer, Map<Integer, FieldSeries<?>>>>>();
 	
 
 	public DataManager(String dataFile) {
 		loadData(dataFile);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public <T extends Enum<T>> FieldSeries<T> getSeries(String symbol, Class<T> indicator, int period, JsonObject options) {
+		return (FieldSeries<T>) getSeries(symbol, indicator.getSimpleName(), period, options);
+	}
+	
 	public FieldSeries<?> getSeries(String symbol, String indicator, int period, JsonObject options) {
 		if(!cache.containsKey(symbol)) 
-			cache.put(symbol, new HashMap<String, HashMap<Integer, HashMap<Integer, FieldSeries<?>>>>());
+			cache.put(symbol, new HashMap<String, Map<Integer, Map<Integer, FieldSeries<?>>>>());
 		
 		if(!cache.get(symbol).containsKey(indicator))
-			cache.get(symbol).put(indicator, new HashMap<Integer, HashMap<Integer, FieldSeries<?>>>());
+			cache.get(symbol).put(indicator, new HashMap<Integer, Map<Integer, FieldSeries<?>>>());
 		
 		if(!cache.get(symbol).get(indicator).containsKey(period)) {
 			cache.get(symbol).get(indicator).put(period, new HashMap<Integer, FieldSeries<?>>());
@@ -44,7 +49,7 @@ public class DataManager {
 		
 		if(!cache.get(symbol).get(indicator).get(period).containsKey(optionsHash)) {
 			if(indicator.equals("OHLCV")) {
-				cache.get(symbol).get(indicator).get(period).put(optionsHash, getOHLCVSeries(period));
+				cache.get(symbol).get(indicator).get(period).put(optionsHash, createOHLCVSeries(period));
 			} else {
 				try {
 					cache.get(symbol).get(indicator).get(period).put(optionsHash, (FieldSeries<?>) TaLib.class.getMethod(indicator.toLowerCase(), OHLCVSeries.class, JsonObject.class).invoke(null, (OHLCVSeries) getSeries(symbol, "OHLCV", period, new JsonObject()), options));
@@ -61,7 +66,7 @@ public class DataManager {
 		return getSeries(symbol, indicator, period, options).serialize(startTime, endTime);
 	}
 	
-	protected OHLCVSeries getOHLCVSeries(int period) {
+	public OHLCVSeries createOHLCVSeries(int period) {
 		OHLCVSeries ohlcv = new OHLCVSeries(period);
 		
 		try {

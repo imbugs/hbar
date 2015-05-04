@@ -16,11 +16,6 @@
 	<link rel="stylesheet" href="./resources/css/style.css">
 
 
-	<style>
-		
-	</style>
-	
-
 	<script src="./resources/js/lib/jquery-2.1.3.min.js"></script>
 	<script src="./resources/js/lib/jquery-ui.js"></script>
 	<script src="./resources/js/lib/extend/jquery-ui-reversible-resizable.js"></script>
@@ -44,6 +39,7 @@
 	<script src="./resources/js/hbar/charts/BaseChart.js"></script>
 	<script src="./resources/js/hbar/charts/CompositeChart.js"></script>
 	<script src="./resources/js/hbar/charts/PointChart.js"></script>
+	<script src="./resources/js/hbar/charts/OrderChart.js"></script>
 	<script src="./resources/js/hbar/charts/SARChart.js"></script>
 	<script src="./resources/js/hbar/charts/HistogramChart.js"></script>
 	<script src="./resources/js/hbar/charts/VolumeChart.js"></script>
@@ -110,13 +106,34 @@
 
 			var sarChart = new SARChart("SARChart", hbar.protoSock, "BTCUSD:Bitfinex", "SAR");
 
+			var hilbertCycleChart = new LineChart("HilbertCycleChart", hbar.protoSock, "BTCUSD:Bitfinex", "HilbertDominantCyclePeriod");
+			hilbertCycleChart.valueType = "hilbertCycle";
+
+			var hilbertPhaseChart = new LineChart("HilbertPhaseChart", hbar.protoSock, "BTCUSD:Bitfinex", "HilbertDominantCyclePhase");
+			hilbertPhaseChart.valueType = "hilbertPhase";
+			hilbertPhaseChart.valueColor = 0xFF6600;
+
+			var hilbertTrendline = new LineChart("HilbertTrendlineChart", hbar.protoSock, "BTCUSD:Bitfinex", "HilbertTrendline");
+			hilbertTrendline.valueType = "hilbertTrendline";
+			hilbertTrendline.valueColor = 0x00DBD7;
+
+
+			var strategyChart = new OrderChart("StrategyChart", hbar.protoSock, "BTCUSD:Bitfinex", "SarStrategy");
+
+
+
 			hbar.addChart("ohlc-chart", ohlcChart);
 			hbar.addChart("ohlc-chart", volumeChart);
+			hbar.addChart("ohlc-chart", strategyChart);
 			// hbar.addChart("ohlc-chart", smaChart);
 			// hbar.addChart("ohlc-chart", emaChart);
 			// hbar.addChart("ohlc-chart", linearRegChart);
-			// hbar.addChart("ohlc-chart", bbandsChart);
-			// hbar.addChart("ohlc-chart", sarChart);
+			hbar.addChart("ohlc-chart", bbandsChart);
+			hbar.addChart("ohlc-chart", sarChart);
+
+			// hbar.addChart("hilbert-chart", hilbertCycleChart);
+			// hbar.addChart("hilbert-chart", hilbertPhaseChart);
+			// hbar.addChart("hilbert-chart", hilbertTrendline);
 
 
 			var rsiChart = new RSIChart("RSIChart", hbar.protoSock, "BTCUSD:Bitfinex", "RSI");
@@ -126,7 +143,7 @@
 
 			var macdChart = new MACDChart("MACDChart", hbar.protoSock, "BTCUSD:Bitfinex", "MACD");
 
-			hbar.addChart("macd-chart", macdChart);
+			// hbar.addChart("macd-chart", macdChart);
 
 
 			$("#hbar-ui .period-btn-group .btn").click(function(event) {

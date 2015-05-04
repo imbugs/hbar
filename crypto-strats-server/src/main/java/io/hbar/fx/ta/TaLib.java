@@ -4,6 +4,10 @@ import io.hbar.fx.data.series.FieldSeries;
 import io.hbar.fx.data.series.OHLCVSeries;
 import io.hbar.fx.data.series.types.BBands;
 import io.hbar.fx.data.series.types.EMA;
+import io.hbar.fx.data.series.types.HilbertDominantCyclePeriod;
+import io.hbar.fx.data.series.types.HilbertDominantCyclePhase;
+import io.hbar.fx.data.series.types.HilbertTrendMode;
+import io.hbar.fx.data.series.types.HilbertTrendline;
 import io.hbar.fx.data.series.types.LinearReg;
 import io.hbar.fx.data.series.types.MACD;
 import io.hbar.fx.data.series.types.OHLCV;
@@ -39,6 +43,10 @@ public class TaLib {
 		return ma(EMA.class, ohlcv, options, field);
 	}
 	
+	
+//	private static <T extends Enum<T>> FieldSeries<T> ma2(FieldSeries<T> series, JsonObject options, T field) {
+//		return null;
+//	}
 	
 	private static <T extends Enum<T>> FieldSeries<T> ma(Class<T> maType, OHLCVSeries ohlcv, JsonObject options, OHLCV field) {
 		double inReal[] = ohlcv.getSeries(field);
@@ -176,6 +184,75 @@ public class TaLib {
 		if( code != RetCode.Success ) return null;
 		
 		return createSeries(LinearReg.class, options, outBegIdx.value, ohlcv.getTimestamps(), outReal);
+	}
+	
+	public static FieldSeries<HilbertDominantCyclePeriod> hilbertdominantcycleperiod(OHLCVSeries ohlcv, JsonObject options) {
+		return hilbertdominantcycleperiod(ohlcv, options, OHLCV.Close);
+	}
+	public static FieldSeries<HilbertDominantCyclePeriod> hilbertdominantcycleperiod(OHLCVSeries ohlcv, JsonObject options, OHLCV field) {
+		double inReal[] = ohlcv.getSeries(field);
+		
+		double outReal[] = new double[inReal.length];
+		
+		MInteger outBegIdx = new MInteger();
+        MInteger outNbElement = new MInteger();
+        
+        RetCode code = core.htDcPeriod(0, inReal.length-1, inReal, outBegIdx, outNbElement, outReal);
+		if( code != RetCode.Success ) return null;
+		
+		return createSeries(HilbertDominantCyclePeriod.class, options, outBegIdx.value, ohlcv.getTimestamps(), outReal);
+	}
+	
+	
+	public static FieldSeries<HilbertDominantCyclePhase> hilbertdominantcyclephase(OHLCVSeries ohlcv, JsonObject options) {
+		return hilbertdominantcyclephase(ohlcv, options, OHLCV.Close);
+	}
+	public static FieldSeries<HilbertDominantCyclePhase> hilbertdominantcyclephase(OHLCVSeries ohlcv, JsonObject options, OHLCV field) {
+		double inReal[] = ohlcv.getSeries(field);
+		
+		double outReal[] = new double[inReal.length];
+		
+		MInteger outBegIdx = new MInteger();
+        MInteger outNbElement = new MInteger();
+        
+        RetCode code = core.htDcPhase(0, inReal.length-1, inReal, outBegIdx, outNbElement, outReal);
+		if( code != RetCode.Success ) return null;
+		
+		return createSeries(HilbertDominantCyclePhase.class, options, outBegIdx.value, ohlcv.getTimestamps(), outReal);
+	}
+	
+	public static FieldSeries<HilbertTrendline> hilberttrendline(OHLCVSeries ohlcv, JsonObject options) {
+		return hilberttrendline(ohlcv, options, OHLCV.Close);
+	}
+	public static FieldSeries<HilbertTrendline> hilberttrendline(OHLCVSeries ohlcv, JsonObject options, OHLCV field) {
+		double inReal[] = ohlcv.getSeries(field);
+		
+		double outReal[] = new double[inReal.length];
+		
+		MInteger outBegIdx = new MInteger();
+        MInteger outNbElement = new MInteger();
+        
+        RetCode code = core.htTrendline(0, inReal.length-1, inReal, outBegIdx, outNbElement, outReal);
+		if( code != RetCode.Success ) return null;
+		
+		return createSeries(HilbertTrendline.class, options, outBegIdx.value, ohlcv.getTimestamps(), outReal);
+	}
+	
+	public static FieldSeries<HilbertTrendMode> hilberttrendmode(OHLCVSeries ohlcv, JsonObject options) {
+		return hilberttrendmode(ohlcv, options, OHLCV.Close);
+	}
+	public static FieldSeries<HilbertTrendMode> hilberttrendmode(OHLCVSeries ohlcv, JsonObject options, OHLCV field) {
+		double inReal[] = ohlcv.getSeries(field);
+		
+		double outReal[] = new double[inReal.length];
+		
+		MInteger outBegIdx = new MInteger();
+        MInteger outNbElement = new MInteger();
+        
+        RetCode code = core.htTrendMode(0, inReal.length-1, inReal, outBegIdx, outNbElement, outReal);
+		if( code != RetCode.Success ) return null;
+		
+		return createSeries(HilbertTrendMode.class, options, outBegIdx.value, ohlcv.getTimestamps(), outReal);
 	}
 	
 	
