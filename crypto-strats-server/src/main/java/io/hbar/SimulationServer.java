@@ -17,15 +17,23 @@ public class SimulationServer extends WebsocketDataServer {
 
 	@Override
 	protected void createDataManager() {
+		dataManager = new SimulationDataManager(config.getString("dataFile"), new TestStrategy(), getStartTime(), getEndTime());
+	}
+	
+	protected int getStartTime() {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		cal.add(Calendar.DAY_OF_YEAR, -48 -7);
+		
+		return (int) (cal.getTimeInMillis() / 1000);
+	}
+	
+	protected int getEndTime() {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(new Date());
 		cal.add(Calendar.DAY_OF_YEAR, -48);
-		int endTime = (int) (cal.getTimeInMillis() / 1000);
-
-		cal.add(Calendar.DAY_OF_YEAR, -7);
-		int startTime = (int) (cal.getTimeInMillis() / 1000);
 		
-		dataManager = new SimulationDataManager(config.getString("dataFile"), new TestStrategy(), startTime, endTime);
+		return (int) (cal.getTimeInMillis() / 1000);
 	}
 
 	@Override

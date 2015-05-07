@@ -1,5 +1,5 @@
 {
 
-  "main":"io.hbar.SimulationServer"
+  "main":"io.hbar.BackTester"
 
 }
