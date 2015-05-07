@@ -39,8 +39,11 @@ public class Strategy {
 	}
 	
 	protected void addTrade(Trade trade) {
+		int timestamp = trade.getTimestamp();
+		if(trade.getVolume() < 0) timestamp ++; // 1 second offset for sells so both show up on same tick
+		
 		try {
-			Map<Order, Double> row = series.getRow(trade.getTimestamp());
+			Map<Order, Double> row = series.getRow(timestamp);
 			if(!row.isEmpty()) {
 				double currentPrice = row.get(Order.Price);
 				double currentVolume = row.get(Order.Volume);
@@ -50,10 +53,10 @@ public class Strategy {
 				
 				logger.info("updating position (" + currentPrice + ", " + currentVolume + ") -> (" + newPrice + ", " + newVolume + ")");
 				
-				series.addRow(trade.getTimestamp(), newPrice, newVolume);
+				series.addRow(timestamp, newPrice, newVolume);
 			} else {
 				logger.info("adding new trade " + trade);
-				series.addRow(trade.getTimestamp(), trade.getPrice(), trade.getVolume());
+				series.addRow(timestamp, trade.getPrice(), trade.getVolume());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

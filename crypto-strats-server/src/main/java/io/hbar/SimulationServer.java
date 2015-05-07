@@ -23,22 +23,18 @@ public class SimulationServer extends WebsocketDataServer {
 	protected int getStartTime() {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(new Date());
-		cal.add(Calendar.DAY_OF_YEAR, -48 -7);
+		cal.add(Calendar.DAY_OF_YEAR, -60);
 		
 		return (int) (cal.getTimeInMillis() / 1000);
 	}
 	
 	protected int getEndTime() {
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(new Date());
-		cal.add(Calendar.DAY_OF_YEAR, -48);
-		
-		return (int) (cal.getTimeInMillis() / 1000);
+		return getStartTime() + (7 * 24 * 60 * 60); //1 week in seconds
 	}
 
 	@Override
 	protected void registerHandlers() {
-		super.registerDataHandler();
+		super.registerHandlers();
 
 		registerTickHandler();
 	}

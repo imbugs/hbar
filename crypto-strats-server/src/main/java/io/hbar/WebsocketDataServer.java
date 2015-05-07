@@ -44,6 +44,7 @@ public class WebsocketDataServer extends Verticle {
 
 	protected void registerHandlers() {
 		registerDataHandler();
+		registerMaxTimestampHandler();
 	}
 
 	protected void registerDataHandler() {
@@ -68,6 +69,21 @@ public class WebsocketDataServer extends Verticle {
 		};
 
 		eb.registerHandler("data", handler);
+	}
+	
+	protected void registerMaxTimestampHandler() {
+		Handler<JsonObjectMessage> handler = new Handler<JsonObjectMessage>() {
+			@Override
+			public void handle(JsonObjectMessage event) {
+				JsonObject request = event.body();
+				
+				logger.info("Incoming maxTime request: " + request.toString());
+				
+				event.reply(new JsonObject().putNumber("timestamp", dataManager.getMaxTime()));
+			}
+		};
+		
+		eb.registerHandler("maxTime", handler);
 	}
 
 	private void startServer() {

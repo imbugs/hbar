@@ -16,12 +16,22 @@ function TimeAxis(width, height) {
 TimeAxis.constructor = TimeAxis;
 TimeAxis.prototype = Object.create(BaseAxis.prototype);
 
-TimeAxis.prototype.setPeriod = function(period) {
+TimeAxis.prototype.setPeriod = function(period, maxTime) {
 	this.period = period;
+
+	if(!this.maxTime) {
+		if(maxTime) {
+			this.maxTime = maxTime = this.periodize(maxTime);
+		} else {
+			maxTime = this.periodize(new Date().getTime() / 1000);
+		}
+	} else maxTime = this.maxTime;
 	
 	this.bars = Math.floor(this.w / this.delta);
-	this.min = this.periodize(new Date().getTime() / 1000) - this.bars * this.period;
+	this.min = maxTime - this.bars * this.period;
 	this.max = this.min + this.period * this.bars;
+
+	console.log("period", this.min, this.max);
 }
 
 TimeAxis.prototype.getPosition = function(value) {

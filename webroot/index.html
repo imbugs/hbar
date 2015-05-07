@@ -39,7 +39,7 @@
 	<script src="./resources/js/hbar/charts/BaseChart.js"></script>
 	<script src="./resources/js/hbar/charts/CompositeChart.js"></script>
 	<script src="./resources/js/hbar/charts/PointChart.js"></script>
-	<script src="./resources/js/hbar/charts/OrderChart.js"></script>
+	<script src="./resources/js/hbar/charts/StrategyChart.js"></script>
 	<script src="./resources/js/hbar/charts/SARChart.js"></script>
 	<script src="./resources/js/hbar/charts/HistogramChart.js"></script>
 	<script src="./resources/js/hbar/charts/VolumeChart.js"></script>
@@ -118,7 +118,7 @@
 			hilbertTrendline.valueColor = 0x00DBD7;
 
 
-			var strategyChart = new OrderChart("StrategyChart", hbar.protoSock, "BTCUSD:Bitfinex", "SarStrategy");
+			var strategyChart = new StrategyChart("StrategyChart", hbar.protoSock, "BTCUSD:Bitfinex", "SarStrategy");
 
 
 

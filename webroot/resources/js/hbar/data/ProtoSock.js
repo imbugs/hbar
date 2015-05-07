@@ -85,6 +85,14 @@ ProtoSock.prototype.sendDataRequest = function(request, seriesData, cb)
 		}.bind(this));
 }
 
+ProtoSock.prototype.sendMaxTimeRequest = function(cb) {
+	this.eventBus.send('maxTime', {}, function(data)
+		{
+			console.log(data);
+			if(cb) cb(data.timestamp);
+		}.bind(this));
+}
+
 ProtoSock.prototype.getMin = function(request, fields)
 {
 	var seriesData = this.getSeriesData(request.symbol, request.indicator, request.period, this.hashCode(request.options)).data;

@@ -1,7 +1,6 @@
 function HBAR(container, onReady)
 {
-	this.chartStackManager = new ChartStackManager(container);
-
+	
 	this.builders = 
 	{
 		"OHLCV" : dcodeIO.ProtoBuf.loadProtoFile("./protobuf/OHLCVSeries.proto").build("OHLCVSeries"),
@@ -19,9 +18,10 @@ function HBAR(container, onReady)
 		"SarStrategy" : dcodeIO.ProtoBuf.loadProtoFile("./protobuf/OrderSeries.proto").build("OrderSeries"),
 	}
 
-	this.protoSock = new ProtoSock('http://localhost:8080/api', this.builders, onReady);
+	this.protoSock = new ProtoSock('http://localhost:8080/api', this.builders, function() {
+		this.chartStackManager = new ChartStackManager(container, this.protoSock);
 
-	container.addEventListener('mousewheel',
+		container.addEventListener('mousewheel',
 		function(event) {
 			event.preventDefault();
 
@@ -46,6 +46,10 @@ function HBAR(container, onReady)
 		function(event) {
 			this.chartStackManager.resize();
 		}.bind(this), false);
+
+		onReady();
+	}.bind(this));
+	
 }
 
 HBAR.prototype.addChart = function(stack, chart) 

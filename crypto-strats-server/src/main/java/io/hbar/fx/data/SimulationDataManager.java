@@ -143,5 +143,14 @@ public class SimulationDataManager extends DataManager {
 
 		return ohlcv;
 	}
+	
+	@Override
+	public int getMaxTime() {
+		if(lastTrade == null) {
+			return this.endTime;
+		} else {
+			return lastTrade.getTimestamp();
+		}
+	}
 
 }

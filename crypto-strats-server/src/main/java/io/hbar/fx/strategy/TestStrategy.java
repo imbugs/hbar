@@ -38,6 +38,7 @@ public class TestStrategy extends Strategy {
 		int currentTimestamp = ohlcvSeries1H.getLastTimestamp();
 		double currentPrice = ohlcvSeries1H.getValue(currentTimestamp, OHLCV.Close);
 		
+		/*** liquidate ***/
 		if (currentLeg != null && !currentLeg.liquidated && (longSarCross() 
 				|| (currentLeg.direction.equals(Leg.LONG) && currentPrice < currentLeg.getPrice() * 0.995)
 				|| (currentLeg.direction.equals(Leg.SHORT) && currentPrice > currentLeg.getPrice() * 1.005))) {
@@ -75,8 +76,6 @@ public class TestStrategy extends Strategy {
 				if(currentLeg.getVolume() == 0
 						|| (currentLeg.direction.equals(Leg.LONG) && currentPrice > currentLeg.previousTradePrice()) 
 						|| (currentLeg.direction.equals(Leg.SHORT) && currentPrice < currentLeg.previousTradePrice())) {
-					
-					if(currentLeg.direction.equals(Leg.SHORT)) currentTimestamp ++;
 					
 					Trade trade = new Trade(currentTimestamp, currentPrice, currentLeg.direction.equals(Leg.SHORT) ? -0.1 : 0.1);
 					currentLeg.addTrade(trade);

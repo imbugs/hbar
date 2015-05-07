@@ -1,13 +1,13 @@
-function OrderChart(name, dataSource, symbol, indicator) {
+function StrategyChart(name, dataSource, symbol, indicator) {
 	BaseChart.call(this, name, dataSource, symbol, indicator);
 
 	this.fields = ["price"];
 }
 
-OrderChart.constructor = OrderChart;
-OrderChart.prototype = Object.create(BaseChart.prototype);
+StrategyChart.constructor = StrategyChart;
+StrategyChart.prototype = Object.create(BaseChart.prototype);
 
-OrderChart.prototype.draw = function() {
+StrategyChart.prototype.draw = function() {
 	BaseChart.prototype.draw.call(this);
 
 	if(this.data.length == 0) return;
@@ -46,7 +46,7 @@ OrderChart.prototype.draw = function() {
 		console.log("Volume:", volume, "Price:", price);
 }
 
-OrderChart.prototype.getRadius = function(timestamp, field) {
+StrategyChart.prototype.getRadius = function(timestamp, field) {
 	return Math.max(3, (6 + Math.sqrt(Math.abs(this.data[timestamp].volume))) / 2)
 }
 
@@ -54,10 +54,10 @@ BaseChart.prototype.getLineColor = function(timestamp, field) {
 	return 0X666666;
 }
 
-OrderChart.prototype.getFillColor = function(timestamp, field) {
+StrategyChart.prototype.getFillColor = function(timestamp, field) {
 	return this.data[timestamp].volume > 0 ? 0X066800 : 0Xce0000;
 }
 
-OrderChart.prototype.getFillAlpha = function(timestamp, field) {
+StrategyChart.prototype.getFillAlpha = function(timestamp, field) {
 	return Math.min(0.75, Math.abs(this.data[timestamp].volume) / 20);
 }

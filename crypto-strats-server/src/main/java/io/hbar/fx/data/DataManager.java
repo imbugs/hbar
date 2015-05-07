@@ -80,6 +80,10 @@ public class DataManager {
 		return ohlcv;
 	}
 	
+	public int getMaxTime() {
+		return tradeData.get(tradeData.size() - 1).getTimestamp();
+	}
+	
 	protected void loadData(String file) {
 		tradeData = new ArrayList<Trade>();
 		

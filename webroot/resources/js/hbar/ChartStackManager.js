@@ -1,10 +1,16 @@
-function ChartStackManager(container) 
+function ChartStackManager(container, protoSock) 
 {
 	this.container = container;
+
+	this.protoSock = protoSock;
 
 	this.timeAxis = new TimeAxis(this.container.clientWidth, 20);
 
 	this.stacks = [];
+
+	this.protoSock.sendMaxTimeRequest(function(timestamp) {
+		this.setPeriod(this.timeAxis.period, timestamp);
+	}.bind(this));
 }
 
 ChartStackManager.prototype.addChart = function(stack, chart)
@@ -56,9 +62,9 @@ ChartStackManager.prototype.addChart = function(stack, chart)
 	this.stacks[stack].addChart(chart);
 }
 
-ChartStackManager.prototype.setPeriod = function(period)
+ChartStackManager.prototype.setPeriod = function(period, timestamp)
 {
-	this.timeAxis.setPeriod(period);
+	this.timeAxis.setPeriod(period, timestamp);
 	
 	for(var stack in this.stacks)
 	{
