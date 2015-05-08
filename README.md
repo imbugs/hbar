@@ -14,9 +14,6 @@ git clone https://github.com/hbar-digital/hbar.git
 ```sh
 cd crypto-strats
 vagrant up
-vagrant ssh
-cd /vagrant/script
-sudo ./bootstrap.sh
 ```
 `vagrant up` will startup an Ubuntu 14.04 virtual machine. If this is the first time using vagrant, it will take a while to download Ubuntu. Next we log into the vm with `vagrant ssh` and move to the script directory. `bootstrap.sh` simply installs all of our dependencies.
 
