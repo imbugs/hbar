@@ -1,5 +1,6 @@
 function HBAR(container, onReady)
 {
+	this.speed = 10;
 	
 	this.builders = 
 	{
@@ -15,7 +16,7 @@ function HBAR(container, onReady)
 		"HilbertDominantCyclePhase" : dcodeIO.ProtoBuf.loadProtoFile("./protobuf/HilbertDominantCyclePhaseSeries.proto").build("HilbertDominantCyclePhaseSeries"),
 		"HilbertTrendline" : dcodeIO.ProtoBuf.loadProtoFile("./protobuf/HilbertTrendlineSeries.proto").build("HilbertTrendlineSeries"),
 		"HilbertTrendMode" : dcodeIO.ProtoBuf.loadProtoFile("./protobuf/HilbertTrendModeSeries.proto").build("HilbertTrendModeSeries"),
-		"SarStrategy" : dcodeIO.ProtoBuf.loadProtoFile("./protobuf/OrderSeries.proto").build("OrderSeries"),
+		"SarStrategy" : dcodeIO.ProtoBuf.loadProtoFile("./protobuf/StrategyStatsSeries.proto").build("StrategyStatsSeries"),
 	}
 
 	this.protoSock = new ProtoSock('http://localhost:8080/api', this.builders, function() {
@@ -62,6 +63,11 @@ HBAR.prototype.setPeriod = function(period)
 	this.chartStackManager.setPeriod(period);
 }
 
+HBAR.prototype.setSpeed = function(speed)
+{
+	this.speed = speed;
+}
+
 HBAR.prototype.simulate = function()
 {
 	this.play();
@@ -81,7 +87,7 @@ HBAR.prototype.stopSimulation = function()
 
 HBAR.prototype.tick = function()
 {
-	this.protoSock.tick(25, function() {
+	this.protoSock.tick(this.speed, function() {
 		this.chartStackManager.refreshLastTick();
 	}.bind(this));
 }

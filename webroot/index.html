@@ -79,6 +79,12 @@
 				<a id="play-btn" class="btn btn-default btn-xs">PLAY</a>
 				<a id="stop-btn" class="disabled btn btn-default btn-xs">STOP</a>
 			</div>
+			<div class="btn-group speed-btn-group">
+				<a data-speed="10" class="disabled btn btn-default btn-xs">10X</a>
+				<a data-speed="25" class="btn btn-default btn-xs">25X</a>
+				<a data-speed="50" class="btn btn-default btn-xs">50X</a>
+				<a data-speed="100" class="btn btn-default btn-xs">100X</a>
+			</div>
 		</div>
 	</div>
 
@@ -168,6 +174,11 @@
 				$("#hbar-ui #play-btn").removeClass('disabled');
 			});
 
+			$("#hbar-ui .speed-btn-group .btn").click(function(event) {
+				$("#hbar-ui .speed-btn-group .btn").removeClass('disabled');
+				$(event.target).toggleClass('disabled');
+				hbar.setSpeed(parseInt($(event.target).attr('data-speed')));
+			});
 			
 			
 
