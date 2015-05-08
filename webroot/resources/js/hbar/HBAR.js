@@ -1,6 +1,8 @@
 function HBAR(container, onReady)
 {
 	this.speed = 10;
+
+	this.dragging = false;
 	
 	this.builders = 
 	{
@@ -26,7 +28,7 @@ function HBAR(container, onReady)
 		function(event) {
 			event.preventDefault();
 
-			this.chartStackManager.scroll(event.wheelDeltaX, event.wheelDeltaY)
+			this.chartStackManager.scroll(event.wheelDeltaX, event.wheelDeltaY);
 		    
 		    return false;
 		}.bind(this), false);
@@ -40,8 +42,28 @@ function HBAR(container, onReady)
 
 	container.addEventListener("mousemove",
 		function(event) {
-			this.chartStackManager.drawCrosshair(event.layerX, event.layerY);
+			if(this.dragging) {
+				if(this.lastDragX && this.lastDragY) {
+					this.chartStackManager.scroll(event.screenX - this.lastDragX, 2*(event.screenY - this.lastDragY));
+				}
+
+				this.lastDragX = event.screenX;
+				this.lastDragY = event.screenY;
+			}
 		}.bind(this), false);
+
+	container.addEventListener("mousedown",
+		function(event) {
+			this.dragging = true;
+			this.lastDragX = event.screenX;
+			this.lastDragY = event.screenY;
+		}.bind(this), false);
+
+	container.addEventListener("mouseup",
+		function(event) {
+			this.dragging = false;
+		}.bind(this), false);
+
 
 	window.addEventListener("resize",
 		function(event) {
