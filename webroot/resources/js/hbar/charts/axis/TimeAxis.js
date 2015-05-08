@@ -30,8 +30,6 @@ TimeAxis.prototype.setPeriod = function(period, maxTime) {
 	this.bars = Math.floor(this.w / this.delta);
 	this.min = maxTime - this.bars * this.period;
 	this.max = this.min + this.period * this.bars;
-
-	console.log("period", this.min, this.max);
 }
 
 TimeAxis.prototype.getPosition = function(value) {

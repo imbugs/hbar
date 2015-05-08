@@ -88,7 +88,6 @@ ProtoSock.prototype.sendDataRequest = function(request, seriesData, cb)
 ProtoSock.prototype.sendMaxTimeRequest = function(cb) {
 	this.eventBus.send('maxTime', {}, function(data)
 		{
-			console.log(data);
 			if(cb) cb(data.timestamp);
 		}.bind(this));
 }
