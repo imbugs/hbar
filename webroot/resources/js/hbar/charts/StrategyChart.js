@@ -42,8 +42,8 @@ StrategyChart.prototype.draw = function() {
 		}
 
 	}
-	if(Math.abs(volume) > 1e-5)
-		console.log("Volume:", volume, "Price:", price);
+	// if(Math.abs(volume) > 1e-5)
+		// console.log("Volume:", volume, "Price:", price);
 }
 
 StrategyChart.prototype.getRadius = function(timestamp, field) {
