@@ -43,9 +43,9 @@ ProtoSock.prototype.getData = function(request, cb)
 	return seriesData.data;
 }
 
-ProtoSock.prototype.tick = function(cb)
+ProtoSock.prototype.tick = function(steps, cb)
 {
-	this.eventBus.send('tick', { steps : 25 }, function(data)
+	this.eventBus.send('tick', { steps : steps }, function(data)
 	{
 		if(cb) cb();
 	}.bind(this));

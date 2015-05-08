@@ -41,6 +41,8 @@ public class SimulationDataManager extends DataManager {
 	}
 
 	public boolean tick(int iterations) {
+		long t = System.currentTimeMillis();
+		
 		for (int i = 0; i < iterations; i++) {
 			if (tradeIterator.hasNext()) {
 				lastTrade = tradeIterator.next();
@@ -82,6 +84,8 @@ public class SimulationDataManager extends DataManager {
 				return false;
 			}
 		}
+		
+		logger.info("tick time: " + (System.currentTimeMillis() - t));
 		
 		return true;
 	}

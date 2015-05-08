@@ -81,7 +81,7 @@ HBAR.prototype.stopSimulation = function()
 
 HBAR.prototype.tick = function()
 {
-	this.protoSock.tick(function() {
+	this.protoSock.tick(100, function() {
 		this.chartStackManager.refreshLastTick();
 	}.bind(this));
 }

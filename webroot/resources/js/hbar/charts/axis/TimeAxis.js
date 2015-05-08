@@ -25,7 +25,7 @@ TimeAxis.prototype.setPeriod = function(period, maxTime) {
 		} else {
 			maxTime = this.periodize(new Date().getTime() / 1000);
 		}
-	} else maxTime = this.maxTime;
+	} else maxTime = this.periodize(this.maxTime);
 	
 	this.bars = Math.floor(this.w / this.delta);
 	this.min = maxTime - this.bars * this.period;
@@ -63,12 +63,12 @@ TimeAxis.prototype.scroll = function(scrollX, scrollY) {
 		var barDelta = this.bars * scrollX * this.scrollSpeed;
 
 		if(scrollX > 0) {
-			barDelta = -Math.floor(Math.max(1, Math.min(this.bars * this.maxScrollSpeed, barDelta)));	
+			barDelta = Math.floor(Math.max(1, Math.min(this.bars * this.maxScrollSpeed, barDelta)));	
 		} else {
-			barDelta = -Math.floor(Math.min(-1, Math.max(-this.bars * this.maxScrollSpeed, barDelta)));
+			barDelta = Math.floor(Math.min(-1, Math.max(-this.bars * this.maxScrollSpeed, barDelta)));
 		}
 		
-		this.min += barDelta * this.period;
+		this.min -= barDelta * this.period;
 		this.max = this.min + this.period * this.bars;
 	} else {
 		this.barSize = Math.max(1, this.barSize * (1 + scrollY * this.zoomSpeed));
