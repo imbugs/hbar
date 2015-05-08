@@ -19,7 +19,7 @@ function HBAR(container, onReady)
 		"SarStrategy" : dcodeIO.ProtoBuf.loadProtoFile("./protobuf/StrategyStatsSeries.proto").build("StrategyStatsSeries"),
 	}
 
-	this.protoSock = new ProtoSock('http://localhost:8080/api', this.builders, function() {
+	this.protoSock = new ProtoSock('http://localhost:8888/api', this.builders, function() {
 		this.chartStackManager = new ChartStackManager(container, this.protoSock);
 
 		container.addEventListener('mousewheel',

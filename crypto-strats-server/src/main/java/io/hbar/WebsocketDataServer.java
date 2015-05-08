@@ -87,7 +87,7 @@ public class WebsocketDataServer extends Verticle {
 	}
 
 	private void startServer() {
-		server.listen(8080);
+		server.listen(8888);
 	}
 
 	private SockJSServer setupSockJSBridge(HttpServer server) {
