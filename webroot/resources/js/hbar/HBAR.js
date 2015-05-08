@@ -42,6 +42,8 @@ function HBAR(container, onReady)
 
 	container.addEventListener("mousemove",
 		function(event) {
+			this.chartStackManager.drawCrosshair(event.layerX, event.layerY);
+			
 			if(this.dragging) {
 				if(this.lastDragX && this.lastDragY) {
 					this.chartStackManager.scroll(event.screenX - this.lastDragX, 2*(event.screenY - this.lastDragY));
