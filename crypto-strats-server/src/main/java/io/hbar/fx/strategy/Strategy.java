@@ -9,19 +9,19 @@ import org.vertx.java.core.json.JsonObject;
 import io.hbar.fx.data.DataManager;
 import io.hbar.fx.data.Trade;
 import io.hbar.fx.data.series.FieldSeries;
-import io.hbar.fx.data.series.types.Order;
+import io.hbar.fx.data.series.types.StrategyStats;
 
-public class Strategy {
+public abstract class Strategy {
 	final static Logger logger = LogManager.getLogger(Strategy.class.getName());
 	
 	protected DataManager dataManager;
-	protected FieldSeries<Order> series;
+	protected FieldSeries<StrategyStats> series;
 	
 	
 	public void setDataManager(DataManager dataManager) {
 		this.dataManager = dataManager;
 		
-		series = new FieldSeries<Order>(Order.class, new JsonObject());
+		series = new FieldSeries<StrategyStats>(StrategyStats.class, new JsonObject());
 		
 		loadData();
 	}
@@ -34,7 +34,7 @@ public class Strategy {
 	
 	protected void loadData() {}
 	
-	public FieldSeries<Order> getSeries() {
+	public FieldSeries<StrategyStats> getSeries() {
 		return series;
 	}
 	
@@ -43,10 +43,10 @@ public class Strategy {
 		if(trade.getVolume() < 0) timestamp ++; // 1 second offset for sells so both show up on same tick
 		
 		try {
-			Map<Order, Double> row = series.getRow(timestamp);
+			Map<StrategyStats, Double> row = series.getRow(timestamp);
 			if(!row.isEmpty()) {
-				double currentPrice = row.get(Order.Price);
-				double currentVolume = row.get(Order.Volume);
+				double currentPrice = row.get(StrategyStats.Price);
+				double currentVolume = row.get(StrategyStats.Volume);
 				
 				double newVolume = currentVolume + trade.getVolume();
 				double newPrice = (currentPrice * currentVolume + trade.getPrice() * trade.getVolume()) / newVolume;

@@ -3,7 +3,7 @@ package io.hbar.fx.strategy;
 import io.hbar.fx.data.Trade;
 import io.hbar.fx.data.series.FieldSeries;
 import io.hbar.fx.data.series.types.OHLCV;
-import io.hbar.fx.data.series.types.Order;
+import io.hbar.fx.data.series.types.StrategyStats;
 import io.hbar.fx.data.series.types.SAR;
 
 import java.util.ArrayList;
@@ -138,7 +138,7 @@ public class SarStrategy extends Strategy {
 		double volume = 0;
 		
 		for(Integer row : series.table.rowKeySet()) {
-			volume += series.table.get(row, Order.Volume);
+			volume += series.table.get(row, StrategyStats.Volume);
 		}
 		return new Trade(0, 0, volume);
 	}
