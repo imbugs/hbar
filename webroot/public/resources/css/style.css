@@ -1,0 +1,52 @@
+body, html {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	background-color: #FFFFFF;
+}
+
+
+
+#hbar-ui {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	margin: 10px 10px;
+	opacity: 0.65;
+}
+
+#hbar-ui .btn-default.disabled {
+	color: #666666;
+	background-color: #e6e6e6;
+	border-color: #cfcfcf;
+}
+
+
+
+div.hbar-container {
+	width: 100%; 
+	height: 100%;
+}
+
+div.hbar-chart-container {
+	position: relative;
+	border-bottom: 1px solid black;
+	overflow: hidden;
+	width: 100%; 
+}
+
+canvas.hbar-chart {
+	image-rendering: optimizeSpeed;
+	image-rendering: -moz-crisp-edges;
+	image-rendering: -webkit-optimize-contrast;
+	image-rendering: -o-crisp-edges;
+	image-rendering: pixelated;
+	-ms-interpolation-mode: nearest-neighbor;
+}
+
+.ui-resizable-s {
+	height: 10px;
+}
+

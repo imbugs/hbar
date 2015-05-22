@@ -1,0 +1,59 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui, minimum-scale=1, maximum-scale=1, user-scalable=no">
+
+	<title>ℏbar</title>
+
+	<link rel="icon" type="image/png" href="favicon.ico">
+
+	<link rel="stylesheet" href="./resources/css/lib/jquery-ui.css">
+	<link rel="stylesheet" href="./resources/css/lib/bootstrap.css">
+	<link rel="stylesheet" href="./resources/css/lib/paper-bootstrap.css">
+	<link rel="stylesheet" href="./resources/css/style.css">
+</head>
+
+<body>
+	<div id="hbar" class="hbar-container"></div>
+
+	<div id="hbar-ui">
+		<div class="btn-toolbar">
+			<div class="btn-group period-btn-group">
+				<a data-period="604800" class="btn btn-default btn-xs">1W</a>
+				<a data-period="259200" class="btn btn-default btn-xs">3D</a>
+				<a data-period="86400" class="btn btn-default btn-xs">1D</a>
+				<a data-period="43200" class="btn btn-default btn-xs">12h</a>
+				<a data-period="21600" class="btn btn-default btn-xs">6h</a>
+				<a data-period="14400" class="btn btn-default btn-xs">4h</a>
+				<a data-period="7200" class="btn btn-default btn-xs">2h</a>
+				<a data-period="3600" class="disabled btn btn-default btn-xs">1h</a>
+				<a data-period="1800" class="btn btn-default btn-xs">30m</a>
+				<a data-period="900" class="btn btn-default btn-xs">15m</a>
+				<a data-period="600" class="btn btn-default btn-xs">10m</a>
+				<a data-period="300" class="btn btn-default btn-xs">5m</a>
+				<a data-period="180" class="btn btn-default btn-xs">3m</a>
+				<a data-period="60" class="btn btn-default btn-xs">1m</a>
+			</div>
+			<!-- 
+			<div class="btn-group simulation-btn-group">
+				<a id="play-btn" class="btn btn-default btn-xs">PLAY</a>
+				<a id="stop-btn" class="disabled btn btn-default btn-xs">STOP</a>
+			</div>
+			<div class="btn-group speed-btn-group">
+				<a data-speed="10" class="disabled btn btn-default btn-xs">10X</a>
+				<a data-speed="25" class="btn btn-default btn-xs">25X</a>
+				<a data-speed="50" class="btn btn-default btn-xs">50X</a>
+				<a data-speed="100" class="btn btn-default btn-xs">100X</a>
+			</div> 
+			-->
+		</div>
+	</div>
+
+	
+	<script src="./resources/js/bundle.js"></script>
+
+</body>
+</html>

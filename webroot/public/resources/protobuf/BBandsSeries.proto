@@ -1,0 +1,18 @@
+syntax = "proto2";
+option java_package = "io.hbar.protobuf.schema";
+option java_outer_classname = "BBandsSeriesSchema";
+
+message BBandsSeries {
+
+	message BBands {
+
+		required int32 timestamp = 1;
+		required double upper = 2;
+		required double middle = 3;
+		required double lower = 4;
+
+	}
+
+	repeated BBands series = 1;
+
+}

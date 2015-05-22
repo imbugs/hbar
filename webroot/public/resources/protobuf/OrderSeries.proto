@@ -1,0 +1,17 @@
+syntax = "proto2";
+option java_package = "io.hbar.protobuf.schema";
+option java_outer_classname = "OrderSeriesSchema";
+
+message OrderSeries {
+
+	message Order {
+
+		required int32 timestamp = 1;
+		required double price = 2;
+		required double volume = 3;
+
+	}
+
+	repeated Order series = 1;
+
+}

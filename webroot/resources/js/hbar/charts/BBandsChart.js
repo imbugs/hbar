@@ -1,3 +1,5 @@
+import LineChart from "./LineChart"
+
 function BBandsChart(name, dataSource, symbol, indicator) {
 	LineChart.call(this, name, dataSource, symbol, indicator);
 
@@ -14,3 +16,5 @@ function BBandsChart(name, dataSource, symbol, indicator) {
 
 BBandsChart.constructor = BBandsChart;
 BBandsChart.prototype = Object.create(LineChart.prototype);
+
+export default BBandsChart;

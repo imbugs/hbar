@@ -1,3 +1,8 @@
+import DataRequest from '../data/dao/DataRequest';
+import ValueAxis from './axis/ValueAxis';
+
+var PIXI = require('pixi.js');
+
 function BaseChart(name, dataSource, symbol, indicator) {
 	PIXI.Graphics.call(this);
 
@@ -70,3 +75,5 @@ BaseChart.prototype.getLow = function() {
 BaseChart.prototype.getHigh = function() {
 	return this.dataSource.getMax(this.getRequest(), this.fields);
 }
+
+export default BaseChart;

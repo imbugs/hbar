@@ -1,3 +1,5 @@
+import BaseAxis from './BaseAxis';
+
 function TimeAxis(width, height) {
 	BaseAxis.call(this, width, height);
 
@@ -85,3 +87,5 @@ TimeAxis.prototype.scroll = function(scrollX, scrollY) {
 TimeAxis.prototype.periodize = function(time) {
 	return Math.floor(time / this.period + 0.5) * this.period;
 }
+
+export default TimeAxis;

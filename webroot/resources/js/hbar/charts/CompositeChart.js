@@ -1,3 +1,5 @@
+import BaseChart from './BaseChart';
+
 function CompositeChart(name, dataSource, symbol, indicator) {
 	BaseChart.call(this, name, dataSource, symbol, indicator);
 
@@ -40,3 +42,5 @@ CompositeChart.prototype.setRedraw = function(redraw) {
 	for(var chart in this.charts)
 		this.charts[chart].setRedraw(redraw);
 }
+
+export default CompositeChart;

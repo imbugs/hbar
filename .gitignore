@@ -1,5 +1,8 @@
 crypto-strats-server/target/*
 crypto-strats-server/data/*
 crypto-strats-server/logs/*
+
+webroot/node_modules/*
+
 .vagrant
 .DS_Store

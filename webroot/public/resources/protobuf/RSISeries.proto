@@ -1,0 +1,16 @@
+syntax = "proto2";
+option java_package = "io.hbar.protobuf.schema";
+option java_outer_classname = "RSISeriesSchema";
+
+message RSISeries {
+
+	message RSI {
+
+		required int32 timestamp = 1;
+		required double value = 2;
+
+	}
+
+	repeated RSI series = 1;
+
+}

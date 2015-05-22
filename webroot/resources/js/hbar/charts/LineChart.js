@@ -1,3 +1,5 @@
+import BaseChart from './BaseChart';
+
 function LineChart(name, dataSource, symbol, indicator) {
 	BaseChart.call(this, name, dataSource, symbol, indicator);
 
@@ -31,3 +33,5 @@ LineChart.prototype.draw = function() {
 		}
 	}
 }
+
+export default LineChart;

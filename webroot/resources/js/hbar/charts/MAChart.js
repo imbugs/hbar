@@ -1,3 +1,5 @@
+import LineChart from './LineChart';
+
 function MAChart(name, dataSource, symbol, indicator) {
 	LineChart.call(this, name, dataSource, symbol, indicator);
 
@@ -6,3 +8,5 @@ function MAChart(name, dataSource, symbol, indicator) {
 
 MAChart.constructor = MAChart;
 MAChart.prototype = Object.create(LineChart.prototype);
+
+export default MAChart;

@@ -1,7 +1,13 @@
+var $ = require('jquery');
+require('jquery-ui');
+
+(function($)
+{
+
 $.ui.plugin.add("resizable", "alsoResizeReverse", {
 
   start: function() {
-    var that = $(this).resizable("instance"),
+    var that = $(this).data( "ui-resizable" ),
       o = that.options,
       _store = function(exp) {
         $(exp).each(function() {
@@ -30,7 +36,7 @@ $.ui.plugin.add("resizable", "alsoResizeReverse", {
   },
 
   resize: function(event, ui) {
-    var that = $(this).resizable("instance"),
+    var that = $(this).data( "ui-resizable" ),
       o = that.options,
       os = that.originalSize,
       op = that.originalPosition,
@@ -74,3 +80,5 @@ $.ui.plugin.add("resizable", "alsoResizeReverse", {
     $(this).removeData("resizable-alsoResizeReverse");
   }
 });
+
+})($);

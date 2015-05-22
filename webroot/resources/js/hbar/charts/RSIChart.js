@@ -1,3 +1,5 @@
+import LineChart from './LineChart';
+
 function RSIChart(name, dataSource, symbol, indicator) {
 	LineChart.call(this, name, dataSource, symbol, indicator);
 
@@ -35,6 +37,8 @@ RSIChart.prototype.getHigh = function() {
 }
 
 RSIChart.prototype.setValueAxis = function(valueAxis) {
-	BaseChart.prototype.setValueAxis.call(this, valueAxis);
+	LineChart.prototype.setValueAxis.call(this, valueAxis);
 	this.valueAxis.padding = 0;
 }
+
+export default RSIChart;

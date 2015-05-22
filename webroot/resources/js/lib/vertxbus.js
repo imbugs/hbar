@@ -14,6 +14,8 @@
  *   You may elect to redistribute this code under either of these licenses.
  */
 
+var SockJS = require('sockjs-client');
+
 var vertx = vertx || {};
 
 !function(factory) {
@@ -221,3 +223,5 @@ var vertx = vertx || {};
   return vertx.EventBus;
 
 });
+
+export default vertx;

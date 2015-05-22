@@ -1,3 +1,5 @@
+import BaseChart from './BaseChart';
+
 function OHLCChart(name, dataSource, symbol, indicator) {
 	BaseChart.call(this, name, dataSource, symbol, indicator);
 
@@ -39,3 +41,4 @@ OHLCChart.prototype.draw = function() {
 
 }
 
+export default OHLCChart;

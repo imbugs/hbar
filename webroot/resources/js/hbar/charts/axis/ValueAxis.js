@@ -1,3 +1,5 @@
+import BaseAxis from './BaseAxis';
+
 function ValueAxis(width, height, padding) {
 	BaseAxis.call(this, width, height);
 
@@ -20,3 +22,5 @@ ValueAxis.prototype.getDelta = function(value1, value2, preserveSign) {
 ValueAxis.prototype.getScale = function() {
 	return (this.h - 2 * this.padding) / (this.max - this.min);
 }
+
+export default ValueAxis;

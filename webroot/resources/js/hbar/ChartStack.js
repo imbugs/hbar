@@ -1,3 +1,6 @@
+import ValueAxis from './charts/axis/ValueAxis';
+
+var PIXI = require('pixi.js');
 
 function ChartStack(container, timeAxis) 
 {
@@ -84,8 +87,8 @@ ChartStack.prototype.scroll = function(scrollX, scrollY)
 
 ChartStack.prototype.resize = function()
 {
-	width = this.container.clientWidth;
-	height = this.container.clientHeight;
+	var width = this.container.clientWidth;
+	var height = this.container.clientHeight;
 
 	this.renderer.resize(width, height);
 
@@ -153,4 +156,6 @@ ChartStack.prototype.getHigh = function()
 
 	return high;
 }
+
+export default ChartStack;
 

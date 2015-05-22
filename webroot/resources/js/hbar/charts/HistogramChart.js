@@ -1,3 +1,5 @@
+import BaseChart from './BaseChart';
+
 function HistogramChart(name, dataSource, symbol, indicator) {
 	BaseChart.call(this, name, dataSource, symbol, indicator);
 
@@ -32,3 +34,5 @@ HistogramChart.prototype.draw = function() {
 		}
 	}
 }
+
+export default HistogramChart;

@@ -1,7 +1,9 @@
+import vertx from '../../lib/vertxbus';
+
 function ProtoSock(url, builders, onReady)
 {
 
-	this.ProtoBuf = dcodeIO.ProtoBuf;
+	this.ProtoBuf = require('protobufjs');
 	this.builders = builders;
 
 	this.cache = {};
@@ -161,3 +163,5 @@ ProtoSock.prototype.hashCode = function(obj)
 	var s = JSON.stringify(obj);
 	return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);              
 }
+
+export default ProtoSock;

@@ -1,0 +1,40 @@
+{
+  "name": "hbar",
+  "version": "0.0.0",
+  "description": "financial charting library",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hbar-digital/hbar"
+  },
+  "keywords": [
+    "js",
+    "javascript",
+    "financial",
+    "chart",
+    "library"
+  ],
+  "author": "Michael Lucarz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hbar-digital/hbar/issues"
+  },
+  "homepage": "https://github.com/hbar-digital/hbar",
+  "devDependencies": {
+    "vinyl-source-stream": "^1.1.0",
+    "gulp": "^3.8.11",
+    "browserify": "^10.2.1",
+    "babelify": "^6.1.1"
+  },
+  "dependencies": {
+    "jquery": "^2.1.4",
+    "jquery-ui": "^1.10.5",
+    "pixi.js": "^3.0.6",
+    "bytebuffer": "^3.5.4",
+    "protobufjs": "^4.0.0-b2",
+    "sockjs-client": "^1.0.0"
+  }
+}

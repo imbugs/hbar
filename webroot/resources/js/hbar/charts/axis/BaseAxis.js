@@ -1,3 +1,5 @@
+var PIXI = require('pixi.js');
+
 function BaseAxis(width, height) {
 	PIXI.Graphics.call(this);
 	
@@ -28,3 +30,5 @@ BaseAxis.prototype.setMinMax = function(min, max) {
 	this.min = min; 
 	this.max = max;
 }
+
+export default BaseAxis;

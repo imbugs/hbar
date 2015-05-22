@@ -1,3 +1,5 @@
+import BaseChart from './BaseChart';
+
 function PointChart(name, dataSource, symbol, indicator) {
 	BaseChart.call(this, name, dataSource, symbol, indicator);
 
@@ -42,3 +44,5 @@ PointChart.prototype.getFillColor = function(timestamp, field) {
 PointChart.prototype.getFillAlpha = function(timestamp, field) {
 	return 1;
 }
+
+export default PointChart;

@@ -1,3 +1,5 @@
+import PointChart from './PointChart';
+
 function SARChart(name, dataSource, symbol, indicator) {
 	PointChart.call(this, name, dataSource, symbol, indicator);
 
@@ -7,3 +9,5 @@ function SARChart(name, dataSource, symbol, indicator) {
 
 SARChart.constructor = SARChart;
 SARChart.prototype = Object.create(PointChart.prototype);
+
+export default SARChart;

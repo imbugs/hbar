@@ -1,3 +1,7 @@
+import CompositeChart from './CompositeChart';
+import LineChart from './LineChart';
+import HistogramChart from './HistogramChart';
+
 function MACDChart(name, dataSource, symbol, indicator) {
 	CompositeChart.call(this, name, dataSource, symbol, indicator);
 
@@ -28,3 +32,5 @@ function MACDChart(name, dataSource, symbol, indicator) {
 
 MACDChart.constructor = MACDChart;
 MACDChart.prototype = Object.create(CompositeChart.prototype);
+
+export default MACDChart;

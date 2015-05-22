@@ -6,3 +6,5 @@ function DataRequest(symbol, indicator, period, startTime, endTime, options) {
 	this.endTime 	= endTime;
 	this.options 	= options;
 }
+
+export default DataRequest;

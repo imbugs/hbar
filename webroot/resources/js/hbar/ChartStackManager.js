@@ -1,3 +1,11 @@
+import TimeAxis from './charts/axis/TimeAxis';
+import ChartStack from './ChartStack';
+
+var $ = require('jquery');
+require('jquery-ui');
+require('../lib/extend/jquery-ui-reversible-resizable');
+
+
 function ChartStackManager(container, protoSock) 
 {
 	this.container = container;
@@ -108,3 +116,5 @@ ChartStackManager.prototype.drawCrosshair = function(x, y)
 		this.stacks[stack].render();
 	}
 }
+
+export default ChartStackManager;

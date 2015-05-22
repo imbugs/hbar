@@ -1,3 +1,5 @@
+import HistogramChart from './HistogramChart';
+
 function VolumeChart(name, dataSource, symbol, indicator) {
 	HistogramChart.call(this, name, dataSource, symbol, indicator);
 
@@ -24,3 +26,5 @@ VolumeChart.prototype.getLow = function() {
 VolumeChart.prototype.getHigh = function() {
 	return 10 * HistogramChart.prototype.getHigh.call(this);
 }
+
+export default VolumeChart;
