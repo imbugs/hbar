@@ -3,6 +3,7 @@ crypto-strats-server/data/*
 crypto-strats-server/logs/*
 
 webroot/node_modules/*
+webroot/npm-debug.log
 
 .vagrant
 .DS_Store

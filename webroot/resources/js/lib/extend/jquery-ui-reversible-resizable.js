@@ -1,9 +1,3 @@
-var $ = require('jquery');
-require('jquery-ui');
-
-(function($)
-{
-
 $.ui.plugin.add("resizable", "alsoResizeReverse", {
 
   start: function() {
@@ -80,5 +74,3 @@ $.ui.plugin.add("resizable", "alsoResizeReverse", {
     $(this).removeData("resizable-alsoResizeReverse");
   }
 });
-
-})($);

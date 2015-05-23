@@ -1,5 +1,8 @@
-import HBAR from './hbar/HBAR';
+require('jquery');
+require('jquery-ui');
+require('./lib/extend/jquery-ui-reversible-resizable');
 
+import HBAR from './hbar/HBAR';
 import OHLCChart from './hbar/charts/OHLCChart';
 import VolumeChart from './hbar/charts/VolumeChart';
 import LineChart from './hbar/charts/LineChart';
@@ -9,8 +12,6 @@ import BBandsChart from './hbar/charts/BBandsChart';
 import SARChart from './hbar/charts/SARChart';
 import MACDChart from './hbar/charts/MACDChart';
 
-
-var $ = require('jquery');
 
 
 var hbar = new HBAR(document.getElementById("hbar"), function() 
