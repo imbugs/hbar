@@ -1,6 +1,7 @@
 require('jquery');
 require('jquery-ui');
 require('./lib/extend/jquery-ui-reversible-resizable');
+require('bootstrap');
 
 import HBAR from './hbar/HBAR';
 import OHLCChart from './hbar/charts/OHLCChart';

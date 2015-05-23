@@ -42,6 +42,7 @@ var _hbarChartsMACDChart2 = _interopRequireDefault(_hbarChartsMACDChart);
 require('jquery');
 require('jquery-ui');
 require('./lib/extend/jquery-ui-reversible-resizable');
+require('bootstrap');
 
 var hbar = new _hbarHBAR2['default'](document.getElementById('hbar'), function () {
 	var ohlcChart = new _hbarChartsOHLCChart2['default']('OHLCChart', hbar.protoSock, 'BTCUSD:Bitfinex', 'OHLCV');
@@ -125,9 +126,2125 @@ var hbar = new _hbarHBAR2['default'](document.getElementById('hbar'), function (
 	});
 });
 
-},{"./hbar/HBAR":204,"./hbar/charts/BBandsChart":205,"./hbar/charts/LineChart":209,"./hbar/charts/MACDChart":210,"./hbar/charts/MAChart":211,"./hbar/charts/OHLCChart":212,"./hbar/charts/RSIChart":214,"./hbar/charts/SARChart":215,"./hbar/charts/VolumeChart":216,"./lib/extend/jquery-ui-reversible-resizable":222,"jquery":14,"jquery-ui":13}],2:[function(require,module,exports){
+},{"./hbar/HBAR":205,"./hbar/charts/BBandsChart":206,"./hbar/charts/LineChart":210,"./hbar/charts/MACDChart":211,"./hbar/charts/MAChart":212,"./hbar/charts/OHLCChart":213,"./hbar/charts/RSIChart":215,"./hbar/charts/SARChart":216,"./hbar/charts/VolumeChart":217,"./lib/extend/jquery-ui-reversible-resizable":223,"bootstrap":2,"jquery":15,"jquery-ui":14}],2:[function(require,module,exports){
+(function (global){
 
-},{}],3:[function(require,module,exports){
+; jQuery = global.jQuery = require("/Users/mlucarz/Documents/projects/java/crypto-strats/webroot/node_modules/jquery/dist/jquery.js");
+; var __browserify_shim_require__=require;(function browserifyShim(module, define, require) {
+/* ========================================================================
+ * Bootstrap: affix.js v3.2.0
+ * http://getbootstrap.com/javascript/#affix
+ * ========================================================================
+ * Copyright 2011-2014 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  'use strict';
+
+  // AFFIX CLASS DEFINITION
+  // ======================
+
+  var Affix = function (element, options) {
+    this.options = $.extend({}, Affix.DEFAULTS, options)
+
+    this.$target = $(this.options.target)
+      .on('scroll.bs.affix.data-api', $.proxy(this.checkPosition, this))
+      .on('click.bs.affix.data-api',  $.proxy(this.checkPositionWithEventLoop, this))
+
+    this.$element     = $(element)
+    this.affixed      =
+    this.unpin        =
+    this.pinnedOffset = null
+
+    this.checkPosition()
+  }
+
+  Affix.VERSION  = '3.2.0'
+
+  Affix.RESET    = 'affix affix-top affix-bottom'
+
+  Affix.DEFAULTS = {
+    offset: 0,
+    target: window
+  }
+
+  Affix.prototype.getPinnedOffset = function () {
+    if (this.pinnedOffset) return this.pinnedOffset
+    this.$element.removeClass(Affix.RESET).addClass('affix')
+    var scrollTop = this.$target.scrollTop()
+    var position  = this.$element.offset()
+    return (this.pinnedOffset = position.top - scrollTop)
+  }
+
+  Affix.prototype.checkPositionWithEventLoop = function () {
+    setTimeout($.proxy(this.checkPosition, this), 1)
+  }
+
+  Affix.prototype.checkPosition = function () {
+    if (!this.$element.is(':visible')) return
+
+    var scrollHeight = $(document).height()
+    var scrollTop    = this.$target.scrollTop()
+    var position     = this.$element.offset()
+    var offset       = this.options.offset
+    var offsetTop    = offset.top
+    var offsetBottom = offset.bottom
+
+    if (typeof offset != 'object')         offsetBottom = offsetTop = offset
+    if (typeof offsetTop == 'function')    offsetTop    = offset.top(this.$element)
+    if (typeof offsetBottom == 'function') offsetBottom = offset.bottom(this.$element)
+
+    var affix = this.unpin   != null && (scrollTop + this.unpin <= position.top) ? false :
+                offsetBottom != null && (position.top + this.$element.height() >= scrollHeight - offsetBottom) ? 'bottom' :
+                offsetTop    != null && (scrollTop <= offsetTop) ? 'top' : false
+
+    if (this.affixed === affix) return
+    if (this.unpin != null) this.$element.css('top', '')
+
+    var affixType = 'affix' + (affix ? '-' + affix : '')
+    var e         = $.Event(affixType + '.bs.affix')
+
+    this.$element.trigger(e)
+
+    if (e.isDefaultPrevented()) return
+
+    this.affixed = affix
+    this.unpin = affix == 'bottom' ? this.getPinnedOffset() : null
+
+    this.$element
+      .removeClass(Affix.RESET)
+      .addClass(affixType)
+      .trigger($.Event(affixType.replace('affix', 'affixed')))
+
+    if (affix == 'bottom') {
+      this.$element.offset({
+        top: scrollHeight - this.$element.height() - offsetBottom
+      })
+    }
+  }
+
+
+  // AFFIX PLUGIN DEFINITION
+  // =======================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this   = $(this)
+      var data    = $this.data('bs.affix')
+      var options = typeof option == 'object' && option
+
+      if (!data) $this.data('bs.affix', (data = new Affix(this, options)))
+      if (typeof option == 'string') data[option]()
+    })
+  }
+
+  var old = $.fn.affix
+
+  $.fn.affix             = Plugin
+  $.fn.affix.Constructor = Affix
+
+
+  // AFFIX NO CONFLICT
+  // =================
+
+  $.fn.affix.noConflict = function () {
+    $.fn.affix = old
+    return this
+  }
+
+
+  // AFFIX DATA-API
+  // ==============
+
+  $(window).on('load', function () {
+    $('[data-spy="affix"]').each(function () {
+      var $spy = $(this)
+      var data = $spy.data()
+
+      data.offset = data.offset || {}
+
+      if (data.offsetBottom) data.offset.bottom = data.offsetBottom
+      if (data.offsetTop)    data.offset.top    = data.offsetTop
+
+      Plugin.call($spy, data)
+    })
+  })
+
+}(jQuery);
+
+/* ========================================================================
+ * Bootstrap: alert.js v3.2.0
+ * http://getbootstrap.com/javascript/#alerts
+ * ========================================================================
+ * Copyright 2011-2014 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  'use strict';
+
+  // ALERT CLASS DEFINITION
+  // ======================
+
+  var dismiss = '[data-dismiss="alert"]'
+  var Alert   = function (el) {
+    $(el).on('click', dismiss, this.close)
+  }
+
+  Alert.VERSION = '3.2.0'
+
+  Alert.prototype.close = function (e) {
+    var $this    = $(this)
+    var selector = $this.attr('data-target')
+
+    if (!selector) {
+      selector = $this.attr('href')
+      selector = selector && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
+    }
+
+    var $parent = $(selector)
+
+    if (e) e.preventDefault()
+
+    if (!$parent.length) {
+      $parent = $this.hasClass('alert') ? $this : $this.parent()
+    }
+
+    $parent.trigger(e = $.Event('close.bs.alert'))
+
+    if (e.isDefaultPrevented()) return
+
+    $parent.removeClass('in')
+
+    function removeElement() {
+      // detach from parent, fire event then clean up data
+      $parent.detach().trigger('closed.bs.alert').remove()
+    }
+
+    $.support.transition && $parent.hasClass('fade') ?
+      $parent
+        .one('bsTransitionEnd', removeElement)
+        .emulateTransitionEnd(150) :
+      removeElement()
+  }
+
+
+  // ALERT PLUGIN DEFINITION
+  // =======================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this = $(this)
+      var data  = $this.data('bs.alert')
+
+      if (!data) $this.data('bs.alert', (data = new Alert(this)))
+      if (typeof option == 'string') data[option].call($this)
+    })
+  }
+
+  var old = $.fn.alert
+
+  $.fn.alert             = Plugin
+  $.fn.alert.Constructor = Alert
+
+
+  // ALERT NO CONFLICT
+  // =================
+
+  $.fn.alert.noConflict = function () {
+    $.fn.alert = old
+    return this
+  }
+
+
+  // ALERT DATA-API
+  // ==============
+
+  $(document).on('click.bs.alert.data-api', dismiss, Alert.prototype.close)
+
+}(jQuery);
+
+/* ========================================================================
+ * Bootstrap: button.js v3.2.0
+ * http://getbootstrap.com/javascript/#buttons
+ * ========================================================================
+ * Copyright 2011-2014 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  'use strict';
+
+  // BUTTON PUBLIC CLASS DEFINITION
+  // ==============================
+
+  var Button = function (element, options) {
+    this.$element  = $(element)
+    this.options   = $.extend({}, Button.DEFAULTS, options)
+    this.isLoading = false
+  }
+
+  Button.VERSION  = '3.2.0'
+
+  Button.DEFAULTS = {
+    loadingText: 'loading...'
+  }
+
+  Button.prototype.setState = function (state) {
+    var d    = 'disabled'
+    var $el  = this.$element
+    var val  = $el.is('input') ? 'val' : 'html'
+    var data = $el.data()
+
+    state = state + 'Text'
+
+    if (data.resetText == null) $el.data('resetText', $el[val]())
+
+    $el[val](data[state] == null ? this.options[state] : data[state])
+
+    // push to event loop to allow forms to submit
+    setTimeout($.proxy(function () {
+      if (state == 'loadingText') {
+        this.isLoading = true
+        $el.addClass(d).attr(d, d)
+      } else if (this.isLoading) {
+        this.isLoading = false
+        $el.removeClass(d).removeAttr(d)
+      }
+    }, this), 0)
+  }
+
+  Button.prototype.toggle = function () {
+    var changed = true
+    var $parent = this.$element.closest('[data-toggle="buttons"]')
+
+    if ($parent.length) {
+      var $input = this.$element.find('input')
+      if ($input.prop('type') == 'radio') {
+        if ($input.prop('checked') && this.$element.hasClass('active')) changed = false
+        else $parent.find('.active').removeClass('active')
+      }
+      if (changed) $input.prop('checked', !this.$element.hasClass('active')).trigger('change')
+    }
+
+    if (changed) this.$element.toggleClass('active')
+  }
+
+
+  // BUTTON PLUGIN DEFINITION
+  // ========================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this   = $(this)
+      var data    = $this.data('bs.button')
+      var options = typeof option == 'object' && option
+
+      if (!data) $this.data('bs.button', (data = new Button(this, options)))
+
+      if (option == 'toggle') data.toggle()
+      else if (option) data.setState(option)
+    })
+  }
+
+  var old = $.fn.button
+
+  $.fn.button             = Plugin
+  $.fn.button.Constructor = Button
+
+
+  // BUTTON NO CONFLICT
+  // ==================
+
+  $.fn.button.noConflict = function () {
+    $.fn.button = old
+    return this
+  }
+
+
+  // BUTTON DATA-API
+  // ===============
+
+  $(document).on('click.bs.button.data-api', '[data-toggle^="button"]', function (e) {
+    var $btn = $(e.target)
+    if (!$btn.hasClass('btn')) $btn = $btn.closest('.btn')
+    Plugin.call($btn, 'toggle')
+    e.preventDefault()
+  })
+
+}(jQuery);
+
+/* ========================================================================
+ * Bootstrap: carousel.js v3.2.0
+ * http://getbootstrap.com/javascript/#carousel
+ * ========================================================================
+ * Copyright 2011-2014 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  'use strict';
+
+  // CAROUSEL CLASS DEFINITION
+  // =========================
+
+  var Carousel = function (element, options) {
+    this.$element    = $(element).on('keydown.bs.carousel', $.proxy(this.keydown, this))
+    this.$indicators = this.$element.find('.carousel-indicators')
+    this.options     = options
+    this.paused      =
+    this.sliding     =
+    this.interval    =
+    this.$active     =
+    this.$items      = null
+
+    this.options.pause == 'hover' && this.$element
+      .on('mouseenter.bs.carousel', $.proxy(this.pause, this))
+      .on('mouseleave.bs.carousel', $.proxy(this.cycle, this))
+  }
+
+  Carousel.VERSION  = '3.2.0'
+
+  Carousel.DEFAULTS = {
+    interval: 5000,
+    pause: 'hover',
+    wrap: true
+  }
+
+  Carousel.prototype.keydown = function (e) {
+    switch (e.which) {
+      case 37: this.prev(); break
+      case 39: this.next(); break
+      default: return
+    }
+
+    e.preventDefault()
+  }
+
+  Carousel.prototype.cycle = function (e) {
+    e || (this.paused = false)
+
+    this.interval && clearInterval(this.interval)
+
+    this.options.interval
+      && !this.paused
+      && (this.interval = setInterval($.proxy(this.next, this), this.options.interval))
+
+    return this
+  }
+
+  Carousel.prototype.getItemIndex = function (item) {
+    this.$items = item.parent().children('.item')
+    return this.$items.index(item || this.$active)
+  }
+
+  Carousel.prototype.to = function (pos) {
+    var that        = this
+    var activeIndex = this.getItemIndex(this.$active = this.$element.find('.item.active'))
+
+    if (pos > (this.$items.length - 1) || pos < 0) return
+
+    if (this.sliding)       return this.$element.one('slid.bs.carousel', function () { that.to(pos) }) // yes, "slid"
+    if (activeIndex == pos) return this.pause().cycle()
+
+    return this.slide(pos > activeIndex ? 'next' : 'prev', $(this.$items[pos]))
+  }
+
+  Carousel.prototype.pause = function (e) {
+    e || (this.paused = true)
+
+    if (this.$element.find('.next, .prev').length && $.support.transition) {
+      this.$element.trigger($.support.transition.end)
+      this.cycle(true)
+    }
+
+    this.interval = clearInterval(this.interval)
+
+    return this
+  }
+
+  Carousel.prototype.next = function () {
+    if (this.sliding) return
+    return this.slide('next')
+  }
+
+  Carousel.prototype.prev = function () {
+    if (this.sliding) return
+    return this.slide('prev')
+  }
+
+  Carousel.prototype.slide = function (type, next) {
+    var $active   = this.$element.find('.item.active')
+    var $next     = next || $active[type]()
+    var isCycling = this.interval
+    var direction = type == 'next' ? 'left' : 'right'
+    var fallback  = type == 'next' ? 'first' : 'last'
+    var that      = this
+
+    if (!$next.length) {
+      if (!this.options.wrap) return
+      $next = this.$element.find('.item')[fallback]()
+    }
+
+    if ($next.hasClass('active')) return (this.sliding = false)
+
+    var relatedTarget = $next[0]
+    var slideEvent = $.Event('slide.bs.carousel', {
+      relatedTarget: relatedTarget,
+      direction: direction
+    })
+    this.$element.trigger(slideEvent)
+    if (slideEvent.isDefaultPrevented()) return
+
+    this.sliding = true
+
+    isCycling && this.pause()
+
+    if (this.$indicators.length) {
+      this.$indicators.find('.active').removeClass('active')
+      var $nextIndicator = $(this.$indicators.children()[this.getItemIndex($next)])
+      $nextIndicator && $nextIndicator.addClass('active')
+    }
+
+    var slidEvent = $.Event('slid.bs.carousel', { relatedTarget: relatedTarget, direction: direction }) // yes, "slid"
+    if ($.support.transition && this.$element.hasClass('slide')) {
+      $next.addClass(type)
+      $next[0].offsetWidth // force reflow
+      $active.addClass(direction)
+      $next.addClass(direction)
+      $active
+        .one('bsTransitionEnd', function () {
+          $next.removeClass([type, direction].join(' ')).addClass('active')
+          $active.removeClass(['active', direction].join(' '))
+          that.sliding = false
+          setTimeout(function () {
+            that.$element.trigger(slidEvent)
+          }, 0)
+        })
+        .emulateTransitionEnd($active.css('transition-duration').slice(0, -1) * 1000)
+    } else {
+      $active.removeClass('active')
+      $next.addClass('active')
+      this.sliding = false
+      this.$element.trigger(slidEvent)
+    }
+
+    isCycling && this.cycle()
+
+    return this
+  }
+
+
+  // CAROUSEL PLUGIN DEFINITION
+  // ==========================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this   = $(this)
+      var data    = $this.data('bs.carousel')
+      var options = $.extend({}, Carousel.DEFAULTS, $this.data(), typeof option == 'object' && option)
+      var action  = typeof option == 'string' ? option : options.slide
+
+      if (!data) $this.data('bs.carousel', (data = new Carousel(this, options)))
+      if (typeof option == 'number') data.to(option)
+      else if (action) data[action]()
+      else if (options.interval) data.pause().cycle()
+    })
+  }
+
+  var old = $.fn.carousel
+
+  $.fn.carousel             = Plugin
+  $.fn.carousel.Constructor = Carousel
+
+
+  // CAROUSEL NO CONFLICT
+  // ====================
+
+  $.fn.carousel.noConflict = function () {
+    $.fn.carousel = old
+    return this
+  }
+
+
+  // CAROUSEL DATA-API
+  // =================
+
+  $(document).on('click.bs.carousel.data-api', '[data-slide], [data-slide-to]', function (e) {
+    var href
+    var $this   = $(this)
+    var $target = $($this.attr('data-target') || (href = $this.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, '')) // strip for ie7
+    if (!$target.hasClass('carousel')) return
+    var options = $.extend({}, $target.data(), $this.data())
+    var slideIndex = $this.attr('data-slide-to')
+    if (slideIndex) options.interval = false
+
+    Plugin.call($target, options)
+
+    if (slideIndex) {
+      $target.data('bs.carousel').to(slideIndex)
+    }
+
+    e.preventDefault()
+  })
+
+  $(window).on('load', function () {
+    $('[data-ride="carousel"]').each(function () {
+      var $carousel = $(this)
+      Plugin.call($carousel, $carousel.data())
+    })
+  })
+
+}(jQuery);
+
+/* ========================================================================
+ * Bootstrap: collapse.js v3.2.0
+ * http://getbootstrap.com/javascript/#collapse
+ * ========================================================================
+ * Copyright 2011-2014 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  'use strict';
+
+  // COLLAPSE PUBLIC CLASS DEFINITION
+  // ================================
+
+  var Collapse = function (element, options) {
+    this.$element      = $(element)
+    this.options       = $.extend({}, Collapse.DEFAULTS, options)
+    this.transitioning = null
+
+    if (this.options.parent) this.$parent = $(this.options.parent)
+    if (this.options.toggle) this.toggle()
+  }
+
+  Collapse.VERSION  = '3.2.0'
+
+  Collapse.DEFAULTS = {
+    toggle: true
+  }
+
+  Collapse.prototype.dimension = function () {
+    var hasWidth = this.$element.hasClass('width')
+    return hasWidth ? 'width' : 'height'
+  }
+
+  Collapse.prototype.show = function () {
+    if (this.transitioning || this.$element.hasClass('in')) return
+
+    var startEvent = $.Event('show.bs.collapse')
+    this.$element.trigger(startEvent)
+    if (startEvent.isDefaultPrevented()) return
+
+    var actives = this.$parent && this.$parent.find('> .panel > .in')
+
+    if (actives && actives.length) {
+      var hasData = actives.data('bs.collapse')
+      if (hasData && hasData.transitioning) return
+      Plugin.call(actives, 'hide')
+      hasData || actives.data('bs.collapse', null)
+    }
+
+    var dimension = this.dimension()
+
+    this.$element
+      .removeClass('collapse')
+      .addClass('collapsing')[dimension](0)
+
+    this.transitioning = 1
+
+    var complete = function () {
+      this.$element
+        .removeClass('collapsing')
+        .addClass('collapse in')[dimension]('')
+      this.transitioning = 0
+      this.$element
+        .trigger('shown.bs.collapse')
+    }
+
+    if (!$.support.transition) return complete.call(this)
+
+    var scrollSize = $.camelCase(['scroll', dimension].join('-'))
+
+    this.$element
+      .one('bsTransitionEnd', $.proxy(complete, this))
+      .emulateTransitionEnd(350)[dimension](this.$element[0][scrollSize])
+  }
+
+  Collapse.prototype.hide = function () {
+    if (this.transitioning || !this.$element.hasClass('in')) return
+
+    var startEvent = $.Event('hide.bs.collapse')
+    this.$element.trigger(startEvent)
+    if (startEvent.isDefaultPrevented()) return
+
+    var dimension = this.dimension()
+
+    this.$element[dimension](this.$element[dimension]())[0].offsetHeight
+
+    this.$element
+      .addClass('collapsing')
+      .removeClass('collapse')
+      .removeClass('in')
+
+    this.transitioning = 1
+
+    var complete = function () {
+      this.transitioning = 0
+      this.$element
+        .trigger('hidden.bs.collapse')
+        .removeClass('collapsing')
+        .addClass('collapse')
+    }
+
+    if (!$.support.transition) return complete.call(this)
+
+    this.$element
+      [dimension](0)
+      .one('bsTransitionEnd', $.proxy(complete, this))
+      .emulateTransitionEnd(350)
+  }
+
+  Collapse.prototype.toggle = function () {
+    this[this.$element.hasClass('in') ? 'hide' : 'show']()
+  }
+
+
+  // COLLAPSE PLUGIN DEFINITION
+  // ==========================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this   = $(this)
+      var data    = $this.data('bs.collapse')
+      var options = $.extend({}, Collapse.DEFAULTS, $this.data(), typeof option == 'object' && option)
+
+      if (!data && options.toggle && option == 'show') option = !option
+      if (!data) $this.data('bs.collapse', (data = new Collapse(this, options)))
+      if (typeof option == 'string') data[option]()
+    })
+  }
+
+  var old = $.fn.collapse
+
+  $.fn.collapse             = Plugin
+  $.fn.collapse.Constructor = Collapse
+
+
+  // COLLAPSE NO CONFLICT
+  // ====================
+
+  $.fn.collapse.noConflict = function () {
+    $.fn.collapse = old
+    return this
+  }
+
+
+  // COLLAPSE DATA-API
+  // =================
+
+  $(document).on('click.bs.collapse.data-api', '[data-toggle="collapse"]', function (e) {
+    var href
+    var $this   = $(this)
+    var target  = $this.attr('data-target')
+        || e.preventDefault()
+        || (href = $this.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, '') // strip for ie7
+    var $target = $(target)
+    var data    = $target.data('bs.collapse')
+    var option  = data ? 'toggle' : $this.data()
+    var parent  = $this.attr('data-parent')
+    var $parent = parent && $(parent)
+
+    if (!data || !data.transitioning) {
+      if ($parent) $parent.find('[data-toggle="collapse"][data-parent="' + parent + '"]').not($this).addClass('collapsed')
+      $this[$target.hasClass('in') ? 'addClass' : 'removeClass']('collapsed')
+    }
+
+    Plugin.call($target, option)
+  })
+
+}(jQuery);
+
+/* ========================================================================
+ * Bootstrap: dropdown.js v3.2.0
+ * http://getbootstrap.com/javascript/#dropdowns
+ * ========================================================================
+ * Copyright 2011-2014 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  'use strict';
+
+  // DROPDOWN CLASS DEFINITION
+  // =========================
+
+  var backdrop = '.dropdown-backdrop'
+  var toggle   = '[data-toggle="dropdown"]'
+  var Dropdown = function (element) {
+    $(element).on('click.bs.dropdown', this.toggle)
+  }
+
+  Dropdown.VERSION = '3.2.0'
+
+  Dropdown.prototype.toggle = function (e) {
+    var $this = $(this)
+
+    if ($this.is('.disabled, :disabled')) return
+
+    var $parent  = getParent($this)
+    var isActive = $parent.hasClass('open')
+
+    clearMenus()
+
+    if (!isActive) {
+      if ('ontouchstart' in document.documentElement && !$parent.closest('.navbar-nav').length) {
+        // if mobile we use a backdrop because click events don't delegate
+        $('<div class="dropdown-backdrop"/>').insertAfter($(this)).on('click', clearMenus)
+      }
+
+      var relatedTarget = { relatedTarget: this }
+      $parent.trigger(e = $.Event('show.bs.dropdown', relatedTarget))
+
+      if (e.isDefaultPrevented()) return
+
+      $this.trigger('focus')
+
+      $parent
+        .toggleClass('open')
+        .trigger('shown.bs.dropdown', relatedTarget)
+    }
+
+    return false
+  }
+
+  Dropdown.prototype.keydown = function (e) {
+    if (!/(38|40|27)/.test(e.keyCode)) return
+
+    var $this = $(this)
+
+    e.preventDefault()
+    e.stopPropagation()
+
+    if ($this.is('.disabled, :disabled')) return
+
+    var $parent  = getParent($this)
+    var isActive = $parent.hasClass('open')
+
+    if (!isActive || (isActive && e.keyCode == 27)) {
+      if (e.which == 27) $parent.find(toggle).trigger('focus')
+      return $this.trigger('click')
+    }
+
+    var desc = ' li:not(.divider):visible a'
+    var $items = $parent.find('[role="menu"]' + desc + ', [role="listbox"]' + desc)
+
+    if (!$items.length) return
+
+    var index = $items.index($items.filter(':focus'))
+
+    if (e.keyCode == 38 && index > 0)                 index--                        // up
+    if (e.keyCode == 40 && index < $items.length - 1) index++                        // down
+    if (!~index)                                      index = 0
+
+    $items.eq(index).trigger('focus')
+  }
+
+  function clearMenus(e) {
+    if (e && e.which === 3) return
+    $(backdrop).remove()
+    $(toggle).each(function () {
+      var $parent = getParent($(this))
+      var relatedTarget = { relatedTarget: this }
+      if (!$parent.hasClass('open')) return
+      $parent.trigger(e = $.Event('hide.bs.dropdown', relatedTarget))
+      if (e.isDefaultPrevented()) return
+      $parent.removeClass('open').trigger('hidden.bs.dropdown', relatedTarget)
+    })
+  }
+
+  function getParent($this) {
+    var selector = $this.attr('data-target')
+
+    if (!selector) {
+      selector = $this.attr('href')
+      selector = selector && /#[A-Za-z]/.test(selector) && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
+    }
+
+    var $parent = selector && $(selector)
+
+    return $parent && $parent.length ? $parent : $this.parent()
+  }
+
+
+  // DROPDOWN PLUGIN DEFINITION
+  // ==========================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this = $(this)
+      var data  = $this.data('bs.dropdown')
+
+      if (!data) $this.data('bs.dropdown', (data = new Dropdown(this)))
+      if (typeof option == 'string') data[option].call($this)
+    })
+  }
+
+  var old = $.fn.dropdown
+
+  $.fn.dropdown             = Plugin
+  $.fn.dropdown.Constructor = Dropdown
+
+
+  // DROPDOWN NO CONFLICT
+  // ====================
+
+  $.fn.dropdown.noConflict = function () {
+    $.fn.dropdown = old
+    return this
+  }
+
+
+  // APPLY TO STANDARD DROPDOWN ELEMENTS
+  // ===================================
+
+  $(document)
+    .on('click.bs.dropdown.data-api', clearMenus)
+    .on('click.bs.dropdown.data-api', '.dropdown form', function (e) { e.stopPropagation() })
+    .on('click.bs.dropdown.data-api', toggle, Dropdown.prototype.toggle)
+    .on('keydown.bs.dropdown.data-api', toggle + ', [role="menu"], [role="listbox"]', Dropdown.prototype.keydown)
+
+}(jQuery);
+
+/* ========================================================================
+ * Bootstrap: tab.js v3.2.0
+ * http://getbootstrap.com/javascript/#tabs
+ * ========================================================================
+ * Copyright 2011-2014 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  'use strict';
+
+  // TAB CLASS DEFINITION
+  // ====================
+
+  var Tab = function (element) {
+    this.element = $(element)
+  }
+
+  Tab.VERSION = '3.2.0'
+
+  Tab.prototype.show = function () {
+    var $this    = this.element
+    var $ul      = $this.closest('ul:not(.dropdown-menu)')
+    var selector = $this.data('target')
+
+    if (!selector) {
+      selector = $this.attr('href')
+      selector = selector && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
+    }
+
+    if ($this.parent('li').hasClass('active')) return
+
+    var previous = $ul.find('.active:last a')[0]
+    var e        = $.Event('show.bs.tab', {
+      relatedTarget: previous
+    })
+
+    $this.trigger(e)
+
+    if (e.isDefaultPrevented()) return
+
+    var $target = $(selector)
+
+    this.activate($this.closest('li'), $ul)
+    this.activate($target, $target.parent(), function () {
+      $this.trigger({
+        type: 'shown.bs.tab',
+        relatedTarget: previous
+      })
+    })
+  }
+
+  Tab.prototype.activate = function (element, container, callback) {
+    var $active    = container.find('> .active')
+    var transition = callback
+      && $.support.transition
+      && $active.hasClass('fade')
+
+    function next() {
+      $active
+        .removeClass('active')
+        .find('> .dropdown-menu > .active')
+        .removeClass('active')
+
+      element.addClass('active')
+
+      if (transition) {
+        element[0].offsetWidth // reflow for transition
+        element.addClass('in')
+      } else {
+        element.removeClass('fade')
+      }
+
+      if (element.parent('.dropdown-menu')) {
+        element.closest('li.dropdown').addClass('active')
+      }
+
+      callback && callback()
+    }
+
+    transition ?
+      $active
+        .one('bsTransitionEnd', next)
+        .emulateTransitionEnd(150) :
+      next()
+
+    $active.removeClass('in')
+  }
+
+
+  // TAB PLUGIN DEFINITION
+  // =====================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this = $(this)
+      var data  = $this.data('bs.tab')
+
+      if (!data) $this.data('bs.tab', (data = new Tab(this)))
+      if (typeof option == 'string') data[option]()
+    })
+  }
+
+  var old = $.fn.tab
+
+  $.fn.tab             = Plugin
+  $.fn.tab.Constructor = Tab
+
+
+  // TAB NO CONFLICT
+  // ===============
+
+  $.fn.tab.noConflict = function () {
+    $.fn.tab = old
+    return this
+  }
+
+
+  // TAB DATA-API
+  // ============
+
+  $(document).on('click.bs.tab.data-api', '[data-toggle="tab"], [data-toggle="pill"]', function (e) {
+    e.preventDefault()
+    Plugin.call($(this), 'show')
+  })
+
+}(jQuery);
+
+/* ========================================================================
+ * Bootstrap: transition.js v3.2.0
+ * http://getbootstrap.com/javascript/#transitions
+ * ========================================================================
+ * Copyright 2011-2014 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  'use strict';
+
+  // CSS TRANSITION SUPPORT (Shoutout: http://www.modernizr.com/)
+  // ============================================================
+
+  function transitionEnd() {
+    var el = document.createElement('bootstrap')
+
+    var transEndEventNames = {
+      WebkitTransition : 'webkitTransitionEnd',
+      MozTransition    : 'transitionend',
+      OTransition      : 'oTransitionEnd otransitionend',
+      transition       : 'transitionend'
+    }
+
+    for (var name in transEndEventNames) {
+      if (el.style[name] !== undefined) {
+        return { end: transEndEventNames[name] }
+      }
+    }
+
+    return false // explicit for ie8 (  ._.)
+  }
+
+  // http://blog.alexmaccaw.com/css-transitions
+  $.fn.emulateTransitionEnd = function (duration) {
+    var called = false
+    var $el = this
+    $(this).one('bsTransitionEnd', function () { called = true })
+    var callback = function () { if (!called) $($el).trigger($.support.transition.end) }
+    setTimeout(callback, duration)
+    return this
+  }
+
+  $(function () {
+    $.support.transition = transitionEnd()
+
+    if (!$.support.transition) return
+
+    $.event.special.bsTransitionEnd = {
+      bindType: $.support.transition.end,
+      delegateType: $.support.transition.end,
+      handle: function (e) {
+        if ($(e.target).is(this)) return e.handleObj.handler.apply(this, arguments)
+      }
+    }
+  })
+
+}(jQuery);
+
+/* ========================================================================
+ * Bootstrap: scrollspy.js v3.2.0
+ * http://getbootstrap.com/javascript/#scrollspy
+ * ========================================================================
+ * Copyright 2011-2014 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  'use strict';
+
+  // SCROLLSPY CLASS DEFINITION
+  // ==========================
+
+  function ScrollSpy(element, options) {
+    var process  = $.proxy(this.process, this)
+
+    this.$body          = $('body')
+    this.$scrollElement = $(element).is('body') ? $(window) : $(element)
+    this.options        = $.extend({}, ScrollSpy.DEFAULTS, options)
+    this.selector       = (this.options.target || '') + ' .nav li > a'
+    this.offsets        = []
+    this.targets        = []
+    this.activeTarget   = null
+    this.scrollHeight   = 0
+
+    this.$scrollElement.on('scroll.bs.scrollspy', process)
+    this.refresh()
+    this.process()
+  }
+
+  ScrollSpy.VERSION  = '3.2.0'
+
+  ScrollSpy.DEFAULTS = {
+    offset: 10
+  }
+
+  ScrollSpy.prototype.getScrollHeight = function () {
+    return this.$scrollElement[0].scrollHeight || Math.max(this.$body[0].scrollHeight, document.documentElement.scrollHeight)
+  }
+
+  ScrollSpy.prototype.refresh = function () {
+    var offsetMethod = 'offset'
+    var offsetBase   = 0
+
+    if (!$.isWindow(this.$scrollElement[0])) {
+      offsetMethod = 'position'
+      offsetBase   = this.$scrollElement.scrollTop()
+    }
+
+    this.offsets = []
+    this.targets = []
+    this.scrollHeight = this.getScrollHeight()
+
+    var self     = this
+
+    this.$body
+      .find(this.selector)
+      .map(function () {
+        var $el   = $(this)
+        var href  = $el.data('target') || $el.attr('href')
+        var $href = /^#./.test(href) && $(href)
+
+        return ($href
+          && $href.length
+          && $href.is(':visible')
+          && [[$href[offsetMethod]().top + offsetBase, href]]) || null
+      })
+      .sort(function (a, b) { return a[0] - b[0] })
+      .each(function () {
+        self.offsets.push(this[0])
+        self.targets.push(this[1])
+      })
+  }
+
+  ScrollSpy.prototype.process = function () {
+    var scrollTop    = this.$scrollElement.scrollTop() + this.options.offset
+    var scrollHeight = this.getScrollHeight()
+    var maxScroll    = this.options.offset + scrollHeight - this.$scrollElement.height()
+    var offsets      = this.offsets
+    var targets      = this.targets
+    var activeTarget = this.activeTarget
+    var i
+
+    if (this.scrollHeight != scrollHeight) {
+      this.refresh()
+    }
+
+    if (scrollTop >= maxScroll) {
+      return activeTarget != (i = targets[targets.length - 1]) && this.activate(i)
+    }
+
+    if (activeTarget && scrollTop <= offsets[0]) {
+      return activeTarget != (i = targets[0]) && this.activate(i)
+    }
+
+    for (i = offsets.length; i--;) {
+      activeTarget != targets[i]
+        && scrollTop >= offsets[i]
+        && (!offsets[i + 1] || scrollTop <= offsets[i + 1])
+        && this.activate(targets[i])
+    }
+  }
+
+  ScrollSpy.prototype.activate = function (target) {
+    this.activeTarget = target
+
+    $(this.selector)
+      .parentsUntil(this.options.target, '.active')
+      .removeClass('active')
+
+    var selector = this.selector +
+        '[data-target="' + target + '"],' +
+        this.selector + '[href="' + target + '"]'
+
+    var active = $(selector)
+      .parents('li')
+      .addClass('active')
+
+    if (active.parent('.dropdown-menu').length) {
+      active = active
+        .closest('li.dropdown')
+        .addClass('active')
+    }
+
+    active.trigger('activate.bs.scrollspy')
+  }
+
+
+  // SCROLLSPY PLUGIN DEFINITION
+  // ===========================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this   = $(this)
+      var data    = $this.data('bs.scrollspy')
+      var options = typeof option == 'object' && option
+
+      if (!data) $this.data('bs.scrollspy', (data = new ScrollSpy(this, options)))
+      if (typeof option == 'string') data[option]()
+    })
+  }
+
+  var old = $.fn.scrollspy
+
+  $.fn.scrollspy             = Plugin
+  $.fn.scrollspy.Constructor = ScrollSpy
+
+
+  // SCROLLSPY NO CONFLICT
+  // =====================
+
+  $.fn.scrollspy.noConflict = function () {
+    $.fn.scrollspy = old
+    return this
+  }
+
+
+  // SCROLLSPY DATA-API
+  // ==================
+
+  $(window).on('load.bs.scrollspy.data-api', function () {
+    $('[data-spy="scroll"]').each(function () {
+      var $spy = $(this)
+      Plugin.call($spy, $spy.data())
+    })
+  })
+
+}(jQuery);
+
+/* ========================================================================
+ * Bootstrap: modal.js v3.2.0
+ * http://getbootstrap.com/javascript/#modals
+ * ========================================================================
+ * Copyright 2011-2014 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  'use strict';
+
+  // MODAL CLASS DEFINITION
+  // ======================
+
+  var Modal = function (element, options) {
+    this.options        = options
+    this.$body          = $(document.body)
+    this.$element       = $(element)
+    this.$backdrop      =
+    this.isShown        = null
+    this.scrollbarWidth = 0
+
+    if (this.options.remote) {
+      this.$element
+        .find('.modal-content')
+        .load(this.options.remote, $.proxy(function () {
+          this.$element.trigger('loaded.bs.modal')
+        }, this))
+    }
+  }
+
+  Modal.VERSION  = '3.2.0'
+
+  Modal.DEFAULTS = {
+    backdrop: true,
+    keyboard: true,
+    show: true
+  }
+
+  Modal.prototype.toggle = function (_relatedTarget) {
+    return this.isShown ? this.hide() : this.show(_relatedTarget)
+  }
+
+  Modal.prototype.show = function (_relatedTarget) {
+    var that = this
+    var e    = $.Event('show.bs.modal', { relatedTarget: _relatedTarget })
+
+    this.$element.trigger(e)
+
+    if (this.isShown || e.isDefaultPrevented()) return
+
+    this.isShown = true
+
+    this.checkScrollbar()
+    this.$body.addClass('modal-open')
+
+    this.setScrollbar()
+    this.escape()
+
+    this.$element.on('click.dismiss.bs.modal', '[data-dismiss="modal"]', $.proxy(this.hide, this))
+
+    this.backdrop(function () {
+      var transition = $.support.transition && that.$element.hasClass('fade')
+
+      if (!that.$element.parent().length) {
+        that.$element.appendTo(that.$body) // don't move modals dom position
+      }
+
+      that.$element
+        .show()
+        .scrollTop(0)
+
+      if (transition) {
+        that.$element[0].offsetWidth // force reflow
+      }
+
+      that.$element
+        .addClass('in')
+        .attr('aria-hidden', false)
+
+      that.enforceFocus()
+
+      var e = $.Event('shown.bs.modal', { relatedTarget: _relatedTarget })
+
+      transition ?
+        that.$element.find('.modal-dialog') // wait for modal to slide in
+          .one('bsTransitionEnd', function () {
+            that.$element.trigger('focus').trigger(e)
+          })
+          .emulateTransitionEnd(300) :
+        that.$element.trigger('focus').trigger(e)
+    })
+  }
+
+  Modal.prototype.hide = function (e) {
+    if (e) e.preventDefault()
+
+    e = $.Event('hide.bs.modal')
+
+    this.$element.trigger(e)
+
+    if (!this.isShown || e.isDefaultPrevented()) return
+
+    this.isShown = false
+
+    this.$body.removeClass('modal-open')
+
+    this.resetScrollbar()
+    this.escape()
+
+    $(document).off('focusin.bs.modal')
+
+    this.$element
+      .removeClass('in')
+      .attr('aria-hidden', true)
+      .off('click.dismiss.bs.modal')
+
+    $.support.transition && this.$element.hasClass('fade') ?
+      this.$element
+        .one('bsTransitionEnd', $.proxy(this.hideModal, this))
+        .emulateTransitionEnd(300) :
+      this.hideModal()
+  }
+
+  Modal.prototype.enforceFocus = function () {
+    $(document)
+      .off('focusin.bs.modal') // guard against infinite focus loop
+      .on('focusin.bs.modal', $.proxy(function (e) {
+        if (this.$element[0] !== e.target && !this.$element.has(e.target).length) {
+          this.$element.trigger('focus')
+        }
+      }, this))
+  }
+
+  Modal.prototype.escape = function () {
+    if (this.isShown && this.options.keyboard) {
+      this.$element.on('keyup.dismiss.bs.modal', $.proxy(function (e) {
+        e.which == 27 && this.hide()
+      }, this))
+    } else if (!this.isShown) {
+      this.$element.off('keyup.dismiss.bs.modal')
+    }
+  }
+
+  Modal.prototype.hideModal = function () {
+    var that = this
+    this.$element.hide()
+    this.backdrop(function () {
+      that.$element.trigger('hidden.bs.modal')
+    })
+  }
+
+  Modal.prototype.removeBackdrop = function () {
+    this.$backdrop && this.$backdrop.remove()
+    this.$backdrop = null
+  }
+
+  Modal.prototype.backdrop = function (callback) {
+    var that = this
+    var animate = this.$element.hasClass('fade') ? 'fade' : ''
+
+    if (this.isShown && this.options.backdrop) {
+      var doAnimate = $.support.transition && animate
+
+      this.$backdrop = $('<div class="modal-backdrop ' + animate + '" />')
+        .appendTo(this.$body)
+
+      this.$element.on('click.dismiss.bs.modal', $.proxy(function (e) {
+        if (e.target !== e.currentTarget) return
+        this.options.backdrop == 'static'
+          ? this.$element[0].focus.call(this.$element[0])
+          : this.hide.call(this)
+      }, this))
+
+      if (doAnimate) this.$backdrop[0].offsetWidth // force reflow
+
+      this.$backdrop.addClass('in')
+
+      if (!callback) return
+
+      doAnimate ?
+        this.$backdrop
+          .one('bsTransitionEnd', callback)
+          .emulateTransitionEnd(150) :
+        callback()
+
+    } else if (!this.isShown && this.$backdrop) {
+      this.$backdrop.removeClass('in')
+
+      var callbackRemove = function () {
+        that.removeBackdrop()
+        callback && callback()
+      }
+      $.support.transition && this.$element.hasClass('fade') ?
+        this.$backdrop
+          .one('bsTransitionEnd', callbackRemove)
+          .emulateTransitionEnd(150) :
+        callbackRemove()
+
+    } else if (callback) {
+      callback()
+    }
+  }
+
+  Modal.prototype.checkScrollbar = function () {
+    if (document.body.clientWidth >= window.innerWidth) return
+    this.scrollbarWidth = this.scrollbarWidth || this.measureScrollbar()
+  }
+
+  Modal.prototype.setScrollbar = function () {
+    var bodyPad = parseInt((this.$body.css('padding-right') || 0), 10)
+    if (this.scrollbarWidth) this.$body.css('padding-right', bodyPad + this.scrollbarWidth)
+  }
+
+  Modal.prototype.resetScrollbar = function () {
+    this.$body.css('padding-right', '')
+  }
+
+  Modal.prototype.measureScrollbar = function () { // thx walsh
+    var scrollDiv = document.createElement('div')
+    scrollDiv.className = 'modal-scrollbar-measure'
+    this.$body.append(scrollDiv)
+    var scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth
+    this.$body[0].removeChild(scrollDiv)
+    return scrollbarWidth
+  }
+
+
+  // MODAL PLUGIN DEFINITION
+  // =======================
+
+  function Plugin(option, _relatedTarget) {
+    return this.each(function () {
+      var $this   = $(this)
+      var data    = $this.data('bs.modal')
+      var options = $.extend({}, Modal.DEFAULTS, $this.data(), typeof option == 'object' && option)
+
+      if (!data) $this.data('bs.modal', (data = new Modal(this, options)))
+      if (typeof option == 'string') data[option](_relatedTarget)
+      else if (options.show) data.show(_relatedTarget)
+    })
+  }
+
+  var old = $.fn.modal
+
+  $.fn.modal             = Plugin
+  $.fn.modal.Constructor = Modal
+
+
+  // MODAL NO CONFLICT
+  // =================
+
+  $.fn.modal.noConflict = function () {
+    $.fn.modal = old
+    return this
+  }
+
+
+  // MODAL DATA-API
+  // ==============
+
+  $(document).on('click.bs.modal.data-api', '[data-toggle="modal"]', function (e) {
+    var $this   = $(this)
+    var href    = $this.attr('href')
+    var $target = $($this.attr('data-target') || (href && href.replace(/.*(?=#[^\s]+$)/, ''))) // strip for ie7
+    var option  = $target.data('bs.modal') ? 'toggle' : $.extend({ remote: !/#/.test(href) && href }, $target.data(), $this.data())
+
+    if ($this.is('a')) e.preventDefault()
+
+    $target.one('show.bs.modal', function (showEvent) {
+      if (showEvent.isDefaultPrevented()) return // only register focus restorer if modal will actually get shown
+      $target.one('hidden.bs.modal', function () {
+        $this.is(':visible') && $this.trigger('focus')
+      })
+    })
+    Plugin.call($target, option, this)
+  })
+
+}(jQuery);
+
+/* ========================================================================
+ * Bootstrap: tooltip.js v3.2.0
+ * http://getbootstrap.com/javascript/#tooltip
+ * Inspired by the original jQuery.tipsy by Jason Frame
+ * ========================================================================
+ * Copyright 2011-2014 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  'use strict';
+
+  // TOOLTIP PUBLIC CLASS DEFINITION
+  // ===============================
+
+  var Tooltip = function (element, options) {
+    this.type       =
+    this.options    =
+    this.enabled    =
+    this.timeout    =
+    this.hoverState =
+    this.$element   = null
+
+    this.init('tooltip', element, options)
+  }
+
+  Tooltip.VERSION  = '3.2.0'
+
+  Tooltip.DEFAULTS = {
+    animation: true,
+    placement: 'top',
+    selector: false,
+    template: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
+    trigger: 'hover focus',
+    title: '',
+    delay: 0,
+    html: false,
+    container: false,
+    viewport: {
+      selector: 'body',
+      padding: 0
+    }
+  }
+
+  Tooltip.prototype.init = function (type, element, options) {
+    this.enabled   = true
+    this.type      = type
+    this.$element  = $(element)
+    this.options   = this.getOptions(options)
+    this.$viewport = this.options.viewport && $(this.options.viewport.selector || this.options.viewport)
+
+    var triggers = this.options.trigger.split(' ')
+
+    for (var i = triggers.length; i--;) {
+      var trigger = triggers[i]
+
+      if (trigger == 'click') {
+        this.$element.on('click.' + this.type, this.options.selector, $.proxy(this.toggle, this))
+      } else if (trigger != 'manual') {
+        var eventIn  = trigger == 'hover' ? 'mouseenter' : 'focusin'
+        var eventOut = trigger == 'hover' ? 'mouseleave' : 'focusout'
+
+        this.$element.on(eventIn  + '.' + this.type, this.options.selector, $.proxy(this.enter, this))
+        this.$element.on(eventOut + '.' + this.type, this.options.selector, $.proxy(this.leave, this))
+      }
+    }
+
+    this.options.selector ?
+      (this._options = $.extend({}, this.options, { trigger: 'manual', selector: '' })) :
+      this.fixTitle()
+  }
+
+  Tooltip.prototype.getDefaults = function () {
+    return Tooltip.DEFAULTS
+  }
+
+  Tooltip.prototype.getOptions = function (options) {
+    options = $.extend({}, this.getDefaults(), this.$element.data(), options)
+
+    if (options.delay && typeof options.delay == 'number') {
+      options.delay = {
+        show: options.delay,
+        hide: options.delay
+      }
+    }
+
+    return options
+  }
+
+  Tooltip.prototype.getDelegateOptions = function () {
+    var options  = {}
+    var defaults = this.getDefaults()
+
+    this._options && $.each(this._options, function (key, value) {
+      if (defaults[key] != value) options[key] = value
+    })
+
+    return options
+  }
+
+  Tooltip.prototype.enter = function (obj) {
+    var self = obj instanceof this.constructor ?
+      obj : $(obj.currentTarget).data('bs.' + this.type)
+
+    if (!self) {
+      self = new this.constructor(obj.currentTarget, this.getDelegateOptions())
+      $(obj.currentTarget).data('bs.' + this.type, self)
+    }
+
+    clearTimeout(self.timeout)
+
+    self.hoverState = 'in'
+
+    if (!self.options.delay || !self.options.delay.show) return self.show()
+
+    self.timeout = setTimeout(function () {
+      if (self.hoverState == 'in') self.show()
+    }, self.options.delay.show)
+  }
+
+  Tooltip.prototype.leave = function (obj) {
+    var self = obj instanceof this.constructor ?
+      obj : $(obj.currentTarget).data('bs.' + this.type)
+
+    if (!self) {
+      self = new this.constructor(obj.currentTarget, this.getDelegateOptions())
+      $(obj.currentTarget).data('bs.' + this.type, self)
+    }
+
+    clearTimeout(self.timeout)
+
+    self.hoverState = 'out'
+
+    if (!self.options.delay || !self.options.delay.hide) return self.hide()
+
+    self.timeout = setTimeout(function () {
+      if (self.hoverState == 'out') self.hide()
+    }, self.options.delay.hide)
+  }
+
+  Tooltip.prototype.show = function () {
+    var e = $.Event('show.bs.' + this.type)
+
+    if (this.hasContent() && this.enabled) {
+      this.$element.trigger(e)
+
+      var inDom = $.contains(document.documentElement, this.$element[0])
+      if (e.isDefaultPrevented() || !inDom) return
+      var that = this
+
+      var $tip = this.tip()
+
+      var tipId = this.getUID(this.type)
+
+      this.setContent()
+      $tip.attr('id', tipId)
+      this.$element.attr('aria-describedby', tipId)
+
+      if (this.options.animation) $tip.addClass('fade')
+
+      var placement = typeof this.options.placement == 'function' ?
+        this.options.placement.call(this, $tip[0], this.$element[0]) :
+        this.options.placement
+
+      var autoToken = /\s?auto?\s?/i
+      var autoPlace = autoToken.test(placement)
+      if (autoPlace) placement = placement.replace(autoToken, '') || 'top'
+
+      $tip
+        .detach()
+        .css({ top: 0, left: 0, display: 'block' })
+        .addClass(placement)
+        .data('bs.' + this.type, this)
+
+      this.options.container ? $tip.appendTo(this.options.container) : $tip.insertAfter(this.$element)
+
+      var pos          = this.getPosition()
+      var actualWidth  = $tip[0].offsetWidth
+      var actualHeight = $tip[0].offsetHeight
+
+      if (autoPlace) {
+        var orgPlacement = placement
+        var $parent      = this.$element.parent()
+        var parentDim    = this.getPosition($parent)
+
+        placement = placement == 'bottom' && pos.top   + pos.height       + actualHeight - parentDim.scroll > parentDim.height ? 'top'    :
+                    placement == 'top'    && pos.top   - parentDim.scroll - actualHeight < 0                                   ? 'bottom' :
+                    placement == 'right'  && pos.right + actualWidth      > parentDim.width                                    ? 'left'   :
+                    placement == 'left'   && pos.left  - actualWidth      < parentDim.left                                     ? 'right'  :
+                    placement
+
+        $tip
+          .removeClass(orgPlacement)
+          .addClass(placement)
+      }
+
+      var calculatedOffset = this.getCalculatedOffset(placement, pos, actualWidth, actualHeight)
+
+      this.applyPlacement(calculatedOffset, placement)
+
+      var complete = function () {
+        that.$element.trigger('shown.bs.' + that.type)
+        that.hoverState = null
+      }
+
+      $.support.transition && this.$tip.hasClass('fade') ?
+        $tip
+          .one('bsTransitionEnd', complete)
+          .emulateTransitionEnd(150) :
+        complete()
+    }
+  }
+
+  Tooltip.prototype.applyPlacement = function (offset, placement) {
+    var $tip   = this.tip()
+    var width  = $tip[0].offsetWidth
+    var height = $tip[0].offsetHeight
+
+    // manually read margins because getBoundingClientRect includes difference
+    var marginTop = parseInt($tip.css('margin-top'), 10)
+    var marginLeft = parseInt($tip.css('margin-left'), 10)
+
+    // we must check for NaN for ie 8/9
+    if (isNaN(marginTop))  marginTop  = 0
+    if (isNaN(marginLeft)) marginLeft = 0
+
+    offset.top  = offset.top  + marginTop
+    offset.left = offset.left + marginLeft
+
+    // $.fn.offset doesn't round pixel values
+    // so we use setOffset directly with our own function B-0
+    $.offset.setOffset($tip[0], $.extend({
+      using: function (props) {
+        $tip.css({
+          top: Math.round(props.top),
+          left: Math.round(props.left)
+        })
+      }
+    }, offset), 0)
+
+    $tip.addClass('in')
+
+    // check to see if placing tip in new offset caused the tip to resize itself
+    var actualWidth  = $tip[0].offsetWidth
+    var actualHeight = $tip[0].offsetHeight
+
+    if (placement == 'top' && actualHeight != height) {
+      offset.top = offset.top + height - actualHeight
+    }
+
+    var delta = this.getViewportAdjustedDelta(placement, offset, actualWidth, actualHeight)
+
+    if (delta.left) offset.left += delta.left
+    else offset.top += delta.top
+
+    var arrowDelta          = delta.left ? delta.left * 2 - width + actualWidth : delta.top * 2 - height + actualHeight
+    var arrowPosition       = delta.left ? 'left'        : 'top'
+    var arrowOffsetPosition = delta.left ? 'offsetWidth' : 'offsetHeight'
+
+    $tip.offset(offset)
+    this.replaceArrow(arrowDelta, $tip[0][arrowOffsetPosition], arrowPosition)
+  }
+
+  Tooltip.prototype.replaceArrow = function (delta, dimension, position) {
+    this.arrow().css(position, delta ? (50 * (1 - delta / dimension) + '%') : '')
+  }
+
+  Tooltip.prototype.setContent = function () {
+    var $tip  = this.tip()
+    var title = this.getTitle()
+
+    $tip.find('.tooltip-inner')[this.options.html ? 'html' : 'text'](title)
+    $tip.removeClass('fade in top bottom left right')
+  }
+
+  Tooltip.prototype.hide = function () {
+    var that = this
+    var $tip = this.tip()
+    var e    = $.Event('hide.bs.' + this.type)
+
+    this.$element.removeAttr('aria-describedby')
+
+    function complete() {
+      if (that.hoverState != 'in') $tip.detach()
+      that.$element.trigger('hidden.bs.' + that.type)
+    }
+
+    this.$element.trigger(e)
+
+    if (e.isDefaultPrevented()) return
+
+    $tip.removeClass('in')
+
+    $.support.transition && this.$tip.hasClass('fade') ?
+      $tip
+        .one('bsTransitionEnd', complete)
+        .emulateTransitionEnd(150) :
+      complete()
+
+    this.hoverState = null
+
+    return this
+  }
+
+  Tooltip.prototype.fixTitle = function () {
+    var $e = this.$element
+    if ($e.attr('title') || typeof ($e.attr('data-original-title')) != 'string') {
+      $e.attr('data-original-title', $e.attr('title') || '').attr('title', '')
+    }
+  }
+
+  Tooltip.prototype.hasContent = function () {
+    return this.getTitle()
+  }
+
+  Tooltip.prototype.getPosition = function ($element) {
+    $element   = $element || this.$element
+    var el     = $element[0]
+    var isBody = el.tagName == 'BODY'
+    return $.extend({}, (typeof el.getBoundingClientRect == 'function') ? el.getBoundingClientRect() : null, {
+      scroll: isBody ? document.documentElement.scrollTop || document.body.scrollTop : $element.scrollTop(),
+      width:  isBody ? $(window).width()  : $element.outerWidth(),
+      height: isBody ? $(window).height() : $element.outerHeight()
+    }, isBody ? { top: 0, left: 0 } : $element.offset())
+  }
+
+  Tooltip.prototype.getCalculatedOffset = function (placement, pos, actualWidth, actualHeight) {
+    return placement == 'bottom' ? { top: pos.top + pos.height,   left: pos.left + pos.width / 2 - actualWidth / 2  } :
+           placement == 'top'    ? { top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth / 2  } :
+           placement == 'left'   ? { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth } :
+        /* placement == 'right' */ { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width   }
+
+  }
+
+  Tooltip.prototype.getViewportAdjustedDelta = function (placement, pos, actualWidth, actualHeight) {
+    var delta = { top: 0, left: 0 }
+    if (!this.$viewport) return delta
+
+    var viewportPadding = this.options.viewport && this.options.viewport.padding || 0
+    var viewportDimensions = this.getPosition(this.$viewport)
+
+    if (/right|left/.test(placement)) {
+      var topEdgeOffset    = pos.top - viewportPadding - viewportDimensions.scroll
+      var bottomEdgeOffset = pos.top + viewportPadding - viewportDimensions.scroll + actualHeight
+      if (topEdgeOffset < viewportDimensions.top) { // top overflow
+        delta.top = viewportDimensions.top - topEdgeOffset
+      } else if (bottomEdgeOffset > viewportDimensions.top + viewportDimensions.height) { // bottom overflow
+        delta.top = viewportDimensions.top + viewportDimensions.height - bottomEdgeOffset
+      }
+    } else {
+      var leftEdgeOffset  = pos.left - viewportPadding
+      var rightEdgeOffset = pos.left + viewportPadding + actualWidth
+      if (leftEdgeOffset < viewportDimensions.left) { // left overflow
+        delta.left = viewportDimensions.left - leftEdgeOffset
+      } else if (rightEdgeOffset > viewportDimensions.width) { // right overflow
+        delta.left = viewportDimensions.left + viewportDimensions.width - rightEdgeOffset
+      }
+    }
+
+    return delta
+  }
+
+  Tooltip.prototype.getTitle = function () {
+    var title
+    var $e = this.$element
+    var o  = this.options
+
+    title = $e.attr('data-original-title')
+      || (typeof o.title == 'function' ? o.title.call($e[0]) :  o.title)
+
+    return title
+  }
+
+  Tooltip.prototype.getUID = function (prefix) {
+    do prefix += ~~(Math.random() * 1000000)
+    while (document.getElementById(prefix))
+    return prefix
+  }
+
+  Tooltip.prototype.tip = function () {
+    return (this.$tip = this.$tip || $(this.options.template))
+  }
+
+  Tooltip.prototype.arrow = function () {
+    return (this.$arrow = this.$arrow || this.tip().find('.tooltip-arrow'))
+  }
+
+  Tooltip.prototype.validate = function () {
+    if (!this.$element[0].parentNode) {
+      this.hide()
+      this.$element = null
+      this.options  = null
+    }
+  }
+
+  Tooltip.prototype.enable = function () {
+    this.enabled = true
+  }
+
+  Tooltip.prototype.disable = function () {
+    this.enabled = false
+  }
+
+  Tooltip.prototype.toggleEnabled = function () {
+    this.enabled = !this.enabled
+  }
+
+  Tooltip.prototype.toggle = function (e) {
+    var self = this
+    if (e) {
+      self = $(e.currentTarget).data('bs.' + this.type)
+      if (!self) {
+        self = new this.constructor(e.currentTarget, this.getDelegateOptions())
+        $(e.currentTarget).data('bs.' + this.type, self)
+      }
+    }
+
+    self.tip().hasClass('in') ? self.leave(self) : self.enter(self)
+  }
+
+  Tooltip.prototype.destroy = function () {
+    clearTimeout(this.timeout)
+    this.hide().$element.off('.' + this.type).removeData('bs.' + this.type)
+  }
+
+
+  // TOOLTIP PLUGIN DEFINITION
+  // =========================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this   = $(this)
+      var data    = $this.data('bs.tooltip')
+      var options = typeof option == 'object' && option
+
+      if (!data && option == 'destroy') return
+      if (!data) $this.data('bs.tooltip', (data = new Tooltip(this, options)))
+      if (typeof option == 'string') data[option]()
+    })
+  }
+
+  var old = $.fn.tooltip
+
+  $.fn.tooltip             = Plugin
+  $.fn.tooltip.Constructor = Tooltip
+
+
+  // TOOLTIP NO CONFLICT
+  // ===================
+
+  $.fn.tooltip.noConflict = function () {
+    $.fn.tooltip = old
+    return this
+  }
+
+}(jQuery);
+
+/* ========================================================================
+ * Bootstrap: popover.js v3.2.0
+ * http://getbootstrap.com/javascript/#popovers
+ * ========================================================================
+ * Copyright 2011-2014 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  'use strict';
+
+  // POPOVER PUBLIC CLASS DEFINITION
+  // ===============================
+
+  var Popover = function (element, options) {
+    this.init('popover', element, options)
+  }
+
+  if (!$.fn.tooltip) throw new Error('Popover requires tooltip.js')
+
+  Popover.VERSION  = '3.2.0'
+
+  Popover.DEFAULTS = $.extend({}, $.fn.tooltip.Constructor.DEFAULTS, {
+    placement: 'right',
+    trigger: 'click',
+    content: '',
+    template: '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
+  })
+
+
+  // NOTE: POPOVER EXTENDS tooltip.js
+  // ================================
+
+  Popover.prototype = $.extend({}, $.fn.tooltip.Constructor.prototype)
+
+  Popover.prototype.constructor = Popover
+
+  Popover.prototype.getDefaults = function () {
+    return Popover.DEFAULTS
+  }
+
+  Popover.prototype.setContent = function () {
+    var $tip    = this.tip()
+    var title   = this.getTitle()
+    var content = this.getContent()
+
+    $tip.find('.popover-title')[this.options.html ? 'html' : 'text'](title)
+    $tip.find('.popover-content').empty()[ // we use append for html objects to maintain js events
+      this.options.html ? (typeof content == 'string' ? 'html' : 'append') : 'text'
+    ](content)
+
+    $tip.removeClass('fade top bottom left right in')
+
+    // IE8 doesn't accept hiding via the `:empty` pseudo selector, we have to do
+    // this manually by checking the contents.
+    if (!$tip.find('.popover-title').html()) $tip.find('.popover-title').hide()
+  }
+
+  Popover.prototype.hasContent = function () {
+    return this.getTitle() || this.getContent()
+  }
+
+  Popover.prototype.getContent = function () {
+    var $e = this.$element
+    var o  = this.options
+
+    return $e.attr('data-content')
+      || (typeof o.content == 'function' ?
+            o.content.call($e[0]) :
+            o.content)
+  }
+
+  Popover.prototype.arrow = function () {
+    return (this.$arrow = this.$arrow || this.tip().find('.arrow'))
+  }
+
+  Popover.prototype.tip = function () {
+    if (!this.$tip) this.$tip = $(this.options.template)
+    return this.$tip
+  }
+
+
+  // POPOVER PLUGIN DEFINITION
+  // =========================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this   = $(this)
+      var data    = $this.data('bs.popover')
+      var options = typeof option == 'object' && option
+
+      if (!data && option == 'destroy') return
+      if (!data) $this.data('bs.popover', (data = new Popover(this, options)))
+      if (typeof option == 'string') data[option]()
+    })
+  }
+
+  var old = $.fn.popover
+
+  $.fn.popover             = Plugin
+  $.fn.popover.Constructor = Popover
+
+
+  // POPOVER NO CONFLICT
+  // ===================
+
+  $.fn.popover.noConflict = function () {
+    $.fn.popover = old
+    return this
+  }
+
+}(jQuery);
+
+
+}).call(global, module, undefined, undefined);
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"/Users/mlucarz/Documents/projects/java/crypto-strats/webroot/node_modules/jquery/dist/jquery.js":15}],3:[function(require,module,exports){
+
+},{}],4:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -355,7 +2472,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require('_process'))
-},{"_process":4}],4:[function(require,module,exports){
+},{"_process":5}],5:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -447,7 +2564,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 (function (global){
 /*! https://mths.be/punycode v1.3.2 by @mathias */
 ;(function(root) {
@@ -981,7 +3098,7 @@ process.umask = function() { return 0; };
 }(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -1067,7 +3184,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -1154,13 +3271,13 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":6,"./encode":7}],9:[function(require,module,exports){
+},{"./decode":7,"./encode":8}],10:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -1869,7 +3986,7 @@ function isNullOrUndefined(arg) {
   return  arg == null;
 }
 
-},{"punycode":5,"querystring":8}],10:[function(require,module,exports){
+},{"punycode":6,"querystring":9}],11:[function(require,module,exports){
 /*
  Copyright 2013-2014 Daniel Wirtz <dcode@dcode.io>
 
@@ -5146,7 +7263,7 @@ function isNullOrUndefined(arg) {
 
 })(this);
 
-},{"long":12}],11:[function(require,module,exports){
+},{"long":13}],12:[function(require,module,exports){
 /*
  Copyright 2013 Daniel Wirtz <dcode@dcode.io>
  Copyright 2009 The Closure Library Authors. All Rights Reserved.
@@ -6090,7 +8207,7 @@ function isNullOrUndefined(arg) {
 
 })(this);
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 /*
  Copyright 2013 Daniel Wirtz <dcode@dcode.io>
  Copyright 2009 The Closure Library Authors. All Rights Reserved.
@@ -6110,7 +8227,7 @@ function isNullOrUndefined(arg) {
 
 module.exports = require("./dist/Long.js");
 
-},{"./dist/Long.js":11}],13:[function(require,module,exports){
+},{"./dist/Long.js":12}],14:[function(require,module,exports){
 var jQuery = require('jquery');
 
 /*! jQuery UI - v1.10.3 - 2013-05-03
@@ -21117,7 +23234,7 @@ $.widget( "ui.tooltip", {
 
 }( jQuery ) );
 
-},{"jquery":14}],14:[function(require,module,exports){
+},{"jquery":15}],15:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /*!
@@ -30336,7 +32453,7 @@ return jQuery;
 }).call(global, undefined, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 (function (process){
 /*!
  * async
@@ -31463,7 +33580,7 @@ return jQuery;
 }());
 
 }).call(this,require('_process'))
-},{"_process":4}],16:[function(require,module,exports){
+},{"_process":5}],17:[function(require,module,exports){
 'use strict';
 
 module.exports = earcut;
@@ -32127,7 +34244,7 @@ function Node(i) {
     this.steiner = false;
 }
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 'use strict';
 
 //
@@ -32389,7 +34506,7 @@ EventEmitter.prefixed = prefix;
 //
 module.exports = EventEmitter;
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 'use strict';
 
 function ToObject(val) {
@@ -32417,9 +34534,9 @@ module.exports = Object.assign || function (target, source) {
 	return to;
 };
 
-},{}],19:[function(require,module,exports){
-arguments[4][15][0].apply(exports,arguments)
-},{"_process":4,"dup":15}],20:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
+arguments[4][16][0].apply(exports,arguments)
+},{"_process":5,"dup":16}],21:[function(require,module,exports){
 var async       = require('async'),
     urlParser   = require('url'),
     Resource    = require('./Resource'),
@@ -32874,7 +34991,7 @@ Loader.LOAD_TYPE = Resource.LOAD_TYPE;
 Loader.XHR_READY_STATE = Resource.XHR_READY_STATE;
 Loader.XHR_RESPONSE_TYPE = Resource.XHR_RESPONSE_TYPE;
 
-},{"./Resource":21,"async":19,"eventemitter3":17,"url":9}],21:[function(require,module,exports){
+},{"./Resource":22,"async":20,"eventemitter3":18,"url":10}],22:[function(require,module,exports){
 var EventEmitter = require('eventemitter3'),
     _url = require('url'),
     // tests is CORS is supported in XHR, if not we need to use XDR
@@ -33646,7 +35763,7 @@ function setExtMap(map, extname, val) {
     map[extname] = val;
 }
 
-},{"eventemitter3":17,"url":9}],22:[function(require,module,exports){
+},{"eventemitter3":18,"url":10}],23:[function(require,module,exports){
 module.exports = {
 
     // private property
@@ -33712,7 +35829,7 @@ module.exports = {
     }
 };
 
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 module.exports = require('./Loader');
 
 module.exports.Resource = require('./Resource');
@@ -33726,7 +35843,7 @@ module.exports.middleware = {
     }
 };
 
-},{"./Loader":20,"./Resource":21,"./middlewares/caching/memory":24,"./middlewares/parsing/blob":25}],24:[function(require,module,exports){
+},{"./Loader":21,"./Resource":22,"./middlewares/caching/memory":25,"./middlewares/parsing/blob":26}],25:[function(require,module,exports){
 // a simple in-memory cache for resources
 var cache = {};
 
@@ -33748,7 +35865,7 @@ module.exports = function () {
     };
 };
 
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 var Resource = require('../../Resource'),
     b64 = require('../../b64');
 
@@ -33808,7 +35925,7 @@ module.exports = function () {
     };
 };
 
-},{"../../Resource":21,"../../b64":22}],26:[function(require,module,exports){
+},{"../../Resource":22,"../../b64":23}],27:[function(require,module,exports){
 module.exports={
   "name": "pixi.js",
   "version": "3.0.6",
@@ -33890,7 +36007,7 @@ module.exports={
   "_resolved": "https://registry.npmjs.org/pixi.js/-/pixi.js-3.0.6.tgz"
 }
 
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 /**
  * Constant values used in pixi
  *
@@ -34087,7 +36204,7 @@ var CONST = {
 
 module.exports = CONST;
 
-},{"../../package.json":26}],28:[function(require,module,exports){
+},{"../../package.json":27}],29:[function(require,module,exports){
 var math = require('../math'),
     DisplayObject = require('./DisplayObject'),
     RenderTexture = require('../textures/RenderTexture'),
@@ -34658,7 +36775,7 @@ Container.prototype.destroy = function (destroyChildren)
     this.children = null;
 };
 
-},{"../math":37,"../textures/RenderTexture":75,"./DisplayObject":29}],29:[function(require,module,exports){
+},{"../math":38,"../textures/RenderTexture":76,"./DisplayObject":30}],30:[function(require,module,exports){
 var math = require('../math'),
     RenderTexture = require('../textures/RenderTexture'),
     EventEmitter = require('eventemitter3'),
@@ -35125,7 +37242,7 @@ DisplayObject.prototype.destroy = function ()
     this.filterArea = null;
 };
 
-},{"../const":27,"../math":37,"../textures/RenderTexture":75,"eventemitter3":17}],30:[function(require,module,exports){
+},{"../const":28,"../math":38,"../textures/RenderTexture":76,"eventemitter3":18}],31:[function(require,module,exports){
 var Container = require('../display/Container'),
     Texture = require('../textures/Texture'),
     CanvasBuffer = require('../renderers/canvas/utils/CanvasBuffer'),
@@ -36307,7 +38424,7 @@ Graphics.prototype.destroy = function () {
     this._localBounds = null;
 };
 
-},{"../const":27,"../display/Container":28,"../math":37,"../renderers/canvas/utils/CanvasBuffer":49,"../renderers/canvas/utils/CanvasGraphics":50,"../textures/Texture":76,"./GraphicsData":31}],31:[function(require,module,exports){
+},{"../const":28,"../display/Container":29,"../math":38,"../renderers/canvas/utils/CanvasBuffer":50,"../renderers/canvas/utils/CanvasGraphics":51,"../textures/Texture":77,"./GraphicsData":32}],32:[function(require,module,exports){
 /**
  * A GraphicsData object.
  *
@@ -36397,7 +38514,7 @@ GraphicsData.prototype.destroy = function () {
     this.shape = null;
 };
 
-},{}],32:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 var utils = require('../../utils'),
     math = require('../../math'),
     CONST = require('../../const'),
@@ -37297,7 +39414,7 @@ GraphicsRenderer.prototype.buildPoly = function (graphicsData, webGLData)
     return true;
 };
 
-},{"../../const":27,"../../math":37,"../../renderers/webgl/WebGLRenderer":53,"../../renderers/webgl/utils/ObjectRenderer":67,"../../utils":81,"./WebGLGraphicsData":33,"earcut":16}],33:[function(require,module,exports){
+},{"../../const":28,"../../math":38,"../../renderers/webgl/WebGLRenderer":54,"../../renderers/webgl/utils/ObjectRenderer":68,"../../utils":82,"./WebGLGraphicsData":34,"earcut":17}],34:[function(require,module,exports){
 /**
  * An object containing WebGL specific properties to be used by the WebGL renderer
  *
@@ -37414,7 +39531,7 @@ WebGLGraphicsData.prototype.destroy = function () {
     this.glIndices = null;
 };
 
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 /**
  * @file        Main export of the PIXI core library
  * @author      Mat Groves <mat@goodboydigital.com>
@@ -37505,7 +39622,7 @@ var core = module.exports = Object.assign(require('./const'), require('./math'),
     }
 });
 
-},{"./const":27,"./display/Container":28,"./display/DisplayObject":29,"./graphics/Graphics":30,"./graphics/GraphicsData":31,"./graphics/webgl/GraphicsRenderer":32,"./math":37,"./particles/ParticleContainer":43,"./particles/webgl/ParticleRenderer":45,"./renderers/canvas/CanvasRenderer":48,"./renderers/canvas/utils/CanvasBuffer":49,"./renderers/canvas/utils/CanvasGraphics":50,"./renderers/webgl/WebGLRenderer":53,"./renderers/webgl/filters/AbstractFilter":54,"./renderers/webgl/managers/ShaderManager":60,"./renderers/webgl/shaders/Shader":65,"./renderers/webgl/utils/ObjectRenderer":67,"./renderers/webgl/utils/RenderTarget":69,"./sprites/Sprite":71,"./sprites/webgl/SpriteRenderer":72,"./text/Text":73,"./textures/BaseTexture":74,"./textures/RenderTexture":75,"./textures/Texture":76,"./textures/TextureUvs":77,"./textures/VideoBaseTexture":78,"./ticker":80,"./utils":81}],35:[function(require,module,exports){
+},{"./const":28,"./display/Container":29,"./display/DisplayObject":30,"./graphics/Graphics":31,"./graphics/GraphicsData":32,"./graphics/webgl/GraphicsRenderer":33,"./math":38,"./particles/ParticleContainer":44,"./particles/webgl/ParticleRenderer":46,"./renderers/canvas/CanvasRenderer":49,"./renderers/canvas/utils/CanvasBuffer":50,"./renderers/canvas/utils/CanvasGraphics":51,"./renderers/webgl/WebGLRenderer":54,"./renderers/webgl/filters/AbstractFilter":55,"./renderers/webgl/managers/ShaderManager":61,"./renderers/webgl/shaders/Shader":66,"./renderers/webgl/utils/ObjectRenderer":68,"./renderers/webgl/utils/RenderTarget":70,"./sprites/Sprite":72,"./sprites/webgl/SpriteRenderer":73,"./text/Text":74,"./textures/BaseTexture":75,"./textures/RenderTexture":76,"./textures/Texture":77,"./textures/TextureUvs":78,"./textures/VideoBaseTexture":79,"./ticker":81,"./utils":82}],36:[function(require,module,exports){
 var Point = require('./Point');
 
 /**
@@ -37865,7 +39982,7 @@ Matrix.IDENTITY = new Matrix();
  */
 Matrix.TEMP_MATRIX = new Matrix();
 
-},{"./Point":36}],36:[function(require,module,exports){
+},{"./Point":37}],37:[function(require,module,exports){
 /**
  * The Point object represents a location in a two-dimensional coordinate system, where x represents
  * the horizontal axis and y represents the vertical axis.
@@ -37935,7 +40052,7 @@ Point.prototype.set = function (x, y)
     this.y = y || ( (y !== 0) ? this.x : 0 ) ;
 };
 
-},{}],37:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 module.exports = {
     Point:      require('./Point'),
     Matrix:     require('./Matrix'),
@@ -37947,7 +40064,7 @@ module.exports = {
     RoundedRectangle: require('./shapes/RoundedRectangle')
 };
 
-},{"./Matrix":35,"./Point":36,"./shapes/Circle":38,"./shapes/Ellipse":39,"./shapes/Polygon":40,"./shapes/Rectangle":41,"./shapes/RoundedRectangle":42}],38:[function(require,module,exports){
+},{"./Matrix":36,"./Point":37,"./shapes/Circle":39,"./shapes/Ellipse":40,"./shapes/Polygon":41,"./shapes/Rectangle":42,"./shapes/RoundedRectangle":43}],39:[function(require,module,exports){
 var Rectangle = require('./Rectangle'),
     CONST = require('../../const');
 
@@ -38035,7 +40152,7 @@ Circle.prototype.getBounds = function ()
     return new Rectangle(this.x - this.radius, this.y - this.radius, this.radius * 2, this.radius * 2);
 };
 
-},{"../../const":27,"./Rectangle":41}],39:[function(require,module,exports){
+},{"../../const":28,"./Rectangle":42}],40:[function(require,module,exports){
 var Rectangle = require('./Rectangle'),
     CONST = require('../../const');
 
@@ -38130,7 +40247,7 @@ Ellipse.prototype.getBounds = function ()
     return new Rectangle(this.x - this.width, this.y - this.height, this.width, this.height);
 };
 
-},{"../../const":27,"./Rectangle":41}],40:[function(require,module,exports){
+},{"../../const":28,"./Rectangle":42}],41:[function(require,module,exports){
 var Point = require('../Point'),
     CONST = require('../../const');
 
@@ -38233,7 +40350,7 @@ Polygon.prototype.contains = function (x, y)
     return inside;
 };
 
-},{"../../const":27,"../Point":36}],41:[function(require,module,exports){
+},{"../../const":28,"../Point":37}],42:[function(require,module,exports){
 var CONST = require('../../const');
 
 /**
@@ -38327,7 +40444,7 @@ Rectangle.prototype.contains = function (x, y)
     return false;
 };
 
-},{"../../const":27}],42:[function(require,module,exports){
+},{"../../const":28}],43:[function(require,module,exports){
 var CONST = require('../../const');
 
 /**
@@ -38419,7 +40536,7 @@ RoundedRectangle.prototype.contains = function (x, y)
     return false;
 };
 
-},{"../../const":27}],43:[function(require,module,exports){
+},{"../../const":28}],44:[function(require,module,exports){
 var Container = require('../display/Container'),
     CONST = require('../const');
 
@@ -38750,7 +40867,7 @@ ParticleContainer.prototype.destroy = function () {
     this._buffers = null;
 };
 
-},{"../const":27,"../display/Container":28}],44:[function(require,module,exports){
+},{"../const":28,"../display/Container":29}],45:[function(require,module,exports){
 
 /**
  * @author Mat Groves
@@ -38963,7 +41080,7 @@ ParticleBuffer.prototype.destroy = function ()
     this.gl.deleteBuffer(this.staticBuffer);
 };
 
-},{}],45:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 var ObjectRenderer = require('../../renderers/webgl/utils/ObjectRenderer'),
     WebGLRenderer = require('../../renderers/webgl/WebGLRenderer'),
     ParticleShader = require('./ParticleShader'),
@@ -39458,7 +41575,7 @@ ParticleRenderer.prototype.destroy = function ()
     this.tempMatrix = null;
 };
 
-},{"../../math":37,"../../renderers/webgl/WebGLRenderer":53,"../../renderers/webgl/utils/ObjectRenderer":67,"./ParticleBuffer":44,"./ParticleShader":46}],46:[function(require,module,exports){
+},{"../../math":38,"../../renderers/webgl/WebGLRenderer":54,"../../renderers/webgl/utils/ObjectRenderer":68,"./ParticleBuffer":45,"./ParticleShader":47}],47:[function(require,module,exports){
 var TextureShader = require('../../renderers/webgl/shaders/TextureShader');
 
 /**
@@ -39534,7 +41651,7 @@ ParticleShader.prototype.constructor = ParticleShader;
 
 module.exports = ParticleShader;
 
-},{"../../renderers/webgl/shaders/TextureShader":66}],47:[function(require,module,exports){
+},{"../../renderers/webgl/shaders/TextureShader":67}],48:[function(require,module,exports){
 var utils = require('../utils'),
     math = require('../math'),
     CONST = require('../const'),
@@ -39776,7 +41893,7 @@ SystemRenderer.prototype.destroy = function (removeView) {
     this._backgroundColorString = null;
 };
 
-},{"../const":27,"../math":37,"../utils":81,"eventemitter3":17}],48:[function(require,module,exports){
+},{"../const":28,"../math":38,"../utils":82,"eventemitter3":18}],49:[function(require,module,exports){
 var SystemRenderer = require('../SystemRenderer'),
     CanvasMaskManager = require('./utils/CanvasMaskManager'),
     utils = require('../../utils'),
@@ -40046,7 +42163,7 @@ CanvasRenderer.prototype._mapBlendModes = function ()
     }
 };
 
-},{"../../const":27,"../../math":37,"../../utils":81,"../SystemRenderer":47,"./utils/CanvasMaskManager":51}],49:[function(require,module,exports){
+},{"../../const":28,"../../math":38,"../../utils":82,"../SystemRenderer":48,"./utils/CanvasMaskManager":52}],50:[function(require,module,exports){
 /**
  * Creates a Canvas element of the given size.
  *
@@ -40146,7 +42263,7 @@ CanvasBuffer.prototype.destroy = function ()
     this.canvas = null;
 };
 
-},{}],50:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 var CONST = require('../../../const');
 
 /**
@@ -40499,7 +42616,7 @@ CanvasGraphics.updateGraphicsTint = function (graphics)
 };
 
 
-},{"../../../const":27}],51:[function(require,module,exports){
+},{"../../../const":28}],52:[function(require,module,exports){
 var CanvasGraphics = require('./CanvasGraphics');
 
 /**
@@ -40561,7 +42678,7 @@ CanvasMaskManager.prototype.popMask = function (renderer)
 
 CanvasMaskManager.prototype.destroy = function () {};
 
-},{"./CanvasGraphics":50}],52:[function(require,module,exports){
+},{"./CanvasGraphics":51}],53:[function(require,module,exports){
 var utils = require('../../../utils');
 
 /**
@@ -40795,7 +42912,7 @@ CanvasTinter.canUseMultiply = utils.canUseNewCanvasBlendModes();
  */
 CanvasTinter.tintMethod = CanvasTinter.canUseMultiply ? CanvasTinter.tintWithMultiply :  CanvasTinter.tintWithPerPixel;
 
-},{"../../../utils":81}],53:[function(require,module,exports){
+},{"../../../utils":82}],54:[function(require,module,exports){
 var SystemRenderer = require('../SystemRenderer'),
     ShaderManager = require('./managers/ShaderManager'),
     MaskManager = require('./managers/MaskManager'),
@@ -41327,7 +43444,7 @@ WebGLRenderer.prototype._mapBlendModes = function ()
     }
 };
 
-},{"../../const":27,"../../utils":81,"../SystemRenderer":47,"./filters/FXAAFilter":55,"./managers/BlendModeManager":57,"./managers/FilterManager":58,"./managers/MaskManager":59,"./managers/ShaderManager":60,"./managers/StencilManager":61,"./utils/ObjectRenderer":67,"./utils/RenderTarget":69}],54:[function(require,module,exports){
+},{"../../const":28,"../../utils":82,"../SystemRenderer":48,"./filters/FXAAFilter":56,"./managers/BlendModeManager":58,"./managers/FilterManager":59,"./managers/MaskManager":60,"./managers/ShaderManager":61,"./managers/StencilManager":62,"./utils/ObjectRenderer":68,"./utils/RenderTarget":70}],55:[function(require,module,exports){
 var DefaultShader = require('../shaders/TextureShader');
 
 /**
@@ -41445,7 +43562,7 @@ AbstractFilter.prototype.apply = function (frameBuffer)
 };
 */
 
-},{"../shaders/TextureShader":66}],55:[function(require,module,exports){
+},{"../shaders/TextureShader":67}],56:[function(require,module,exports){
 var AbstractFilter = require('./AbstractFilter');
 // @see https://github.com/substack/brfs/issues/25
 
@@ -41493,7 +43610,7 @@ FXAAFilter.prototype.applyFilter = function (renderer, input, output)
     filterManager.applyFilter(shader, input, output);
 };
 
-},{"./AbstractFilter":54}],56:[function(require,module,exports){
+},{"./AbstractFilter":55}],57:[function(require,module,exports){
 var AbstractFilter = require('./AbstractFilter'),
     math =  require('../../../math');
 
@@ -41590,7 +43707,7 @@ Object.defineProperties(SpriteMaskFilter.prototype, {
     }
 });
 
-},{"../../../math":37,"./AbstractFilter":54}],57:[function(require,module,exports){
+},{"../../../math":38,"./AbstractFilter":55}],58:[function(require,module,exports){
 var WebGLManager = require('./WebGLManager');
 
 /**
@@ -41633,7 +43750,7 @@ BlendModeManager.prototype.setBlendMode = function (blendMode)
     return true;
 };
 
-},{"./WebGLManager":62}],58:[function(require,module,exports){
+},{"./WebGLManager":63}],59:[function(require,module,exports){
 var WebGLManager = require('./WebGLManager'),
     RenderTarget = require('../utils/RenderTarget'),
     CONST = require('../../../const'),
@@ -42069,7 +44186,7 @@ FilterManager.prototype.destroy = function ()
     this.texturePool = null;
 };
 
-},{"../../../const":27,"../../../math":37,"../utils/Quad":68,"../utils/RenderTarget":69,"./WebGLManager":62}],59:[function(require,module,exports){
+},{"../../../const":28,"../../../math":38,"../utils/Quad":69,"../utils/RenderTarget":70,"./WebGLManager":63}],60:[function(require,module,exports){
 var WebGLManager = require('./WebGLManager'),
     AlphaMaskFilter = require('../filters/SpriteMaskFilter');
 
@@ -42183,7 +44300,7 @@ MaskManager.prototype.popStencilMask = function (target, maskData)
 };
 
 
-},{"../filters/SpriteMaskFilter":56,"./WebGLManager":62}],60:[function(require,module,exports){
+},{"../filters/SpriteMaskFilter":57,"./WebGLManager":63}],61:[function(require,module,exports){
 var WebGLManager = require('./WebGLManager'),
     TextureShader = require('../shaders/TextureShader'),
     ComplexPrimitiveShader = require('../shaders/ComplexPrimitiveShader'),
@@ -42350,7 +44467,7 @@ ShaderManager.prototype.destroy = function ()
     this.tempAttribState = null;
 };
 
-},{"../../../utils":81,"../shaders/ComplexPrimitiveShader":63,"../shaders/PrimitiveShader":64,"../shaders/TextureShader":66,"./WebGLManager":62}],61:[function(require,module,exports){
+},{"../../../utils":82,"../shaders/ComplexPrimitiveShader":64,"../shaders/PrimitiveShader":65,"../shaders/TextureShader":67,"./WebGLManager":63}],62:[function(require,module,exports){
 var WebGLManager = require('./WebGLManager'),
     utils = require('../../../utils');
 
@@ -42694,7 +44811,7 @@ WebGLMaskManager.prototype.popMask = function (maskData)
 };
 
 
-},{"../../../utils":81,"./WebGLManager":62}],62:[function(require,module,exports){
+},{"../../../utils":82,"./WebGLManager":63}],63:[function(require,module,exports){
 /**
  * @class
  * @memberof PIXI
@@ -42735,7 +44852,7 @@ WebGLManager.prototype.destroy = function ()
     this.renderer = null;
 };
 
-},{}],63:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 var Shader = require('./Shader');
 
 /**
@@ -42795,7 +44912,7 @@ ComplexPrimitiveShader.prototype = Object.create(Shader.prototype);
 ComplexPrimitiveShader.prototype.constructor = ComplexPrimitiveShader;
 module.exports = ComplexPrimitiveShader;
 
-},{"./Shader":65}],64:[function(require,module,exports){
+},{"./Shader":66}],65:[function(require,module,exports){
 var Shader = require('./Shader');
 
 /**
@@ -42856,7 +44973,7 @@ PrimitiveShader.prototype = Object.create(Shader.prototype);
 PrimitiveShader.prototype.constructor = PrimitiveShader;
 module.exports = PrimitiveShader;
 
-},{"./Shader":65}],65:[function(require,module,exports){
+},{"./Shader":66}],66:[function(require,module,exports){
 /*global console */
 var utils = require('../../../utils');
 
@@ -43408,7 +45525,7 @@ Shader.prototype._glCompile = function (type, src)
     return shader;
 };
 
-},{"../../../utils":81}],66:[function(require,module,exports){
+},{"../../../utils":82}],67:[function(require,module,exports){
 var Shader = require('./Shader');
 
 /**
@@ -43505,7 +45622,7 @@ TextureShader.defaultFragmentSrc = [
     '}'
 ].join('\n');
 
-},{"./Shader":65}],67:[function(require,module,exports){
+},{"./Shader":66}],68:[function(require,module,exports){
 var WebGLManager = require('../managers/WebGLManager');
 
 /**
@@ -43562,7 +45679,7 @@ ObjectRenderer.prototype.render = function (object) // jshint unused:false
     // render the object
 };
 
-},{"../managers/WebGLManager":62}],68:[function(require,module,exports){
+},{"../managers/WebGLManager":63}],69:[function(require,module,exports){
 /**
  * Helper class to create a quad
  * @class
@@ -43708,7 +45825,7 @@ module.exports = Quad;
 
 
 
-},{}],69:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 var math = require('../../../math'),
     utils = require('../../../utils'),
     CONST = require('../../../const'),
@@ -44014,7 +46131,7 @@ RenderTarget.prototype.destroy = function()
     this.texture = null;
 };
 
-},{"../../../const":27,"../../../math":37,"../../../utils":81,"./StencilMaskStack":70}],70:[function(require,module,exports){
+},{"../../../const":28,"../../../math":38,"../../../utils":82,"./StencilMaskStack":71}],71:[function(require,module,exports){
 /**
  * Generic Mask Stack data structure
  * @class
@@ -44048,7 +46165,7 @@ function StencilMaskStack()
 StencilMaskStack.prototype.constructor = StencilMaskStack;
 module.exports = StencilMaskStack;
 
-},{}],71:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 var math = require('../math'),
     Texture = require('../textures/Texture'),
     Container = require('../display/Container'),
@@ -44612,7 +46729,7 @@ Sprite.fromImage = function (imageId, crossorigin, scaleMode)
     return new Sprite(Texture.fromImage(imageId, crossorigin, scaleMode));
 };
 
-},{"../const":27,"../display/Container":28,"../math":37,"../renderers/canvas/utils/CanvasTinter":52,"../textures/Texture":76,"../utils":81}],72:[function(require,module,exports){
+},{"../const":28,"../display/Container":29,"../math":38,"../renderers/canvas/utils/CanvasTinter":53,"../textures/Texture":77,"../utils":82}],73:[function(require,module,exports){
 var ObjectRenderer = require('../../renderers/webgl/utils/ObjectRenderer'),
     WebGLRenderer = require('../../renderers/webgl/WebGLRenderer'),
     CONST = require('../../const');
@@ -45129,7 +47246,7 @@ SpriteRenderer.prototype.destroy = function ()
     this.shader = null;
 };
 
-},{"../../const":27,"../../renderers/webgl/WebGLRenderer":53,"../../renderers/webgl/utils/ObjectRenderer":67}],73:[function(require,module,exports){
+},{"../../const":28,"../../renderers/webgl/WebGLRenderer":54,"../../renderers/webgl/utils/ObjectRenderer":68}],74:[function(require,module,exports){
 var Sprite = require('../sprites/Sprite'),
     Texture = require('../textures/Texture'),
     math = require('../math'),
@@ -45742,7 +47859,7 @@ Text.prototype.destroy = function (destroyBaseTexture)
     this._texture.destroy(destroyBaseTexture === undefined ? true : destroyBaseTexture);
 };
 
-},{"../const":27,"../math":37,"../sprites/Sprite":71,"../textures/Texture":76,"../utils":81}],74:[function(require,module,exports){
+},{"../const":28,"../math":38,"../sprites/Sprite":72,"../textures/Texture":77,"../utils":82}],75:[function(require,module,exports){
 var utils = require('../utils'),
     CONST = require('../const'),
     EventEmitter = require('eventemitter3');
@@ -46175,7 +48292,7 @@ BaseTexture.fromCanvas = function (canvas, scaleMode)
     return baseTexture;
 };
 
-},{"../const":27,"../utils":81,"eventemitter3":17}],75:[function(require,module,exports){
+},{"../const":28,"../utils":82,"eventemitter3":18}],76:[function(require,module,exports){
 var BaseTexture = require('./BaseTexture'),
     Texture = require('./Texture'),
     RenderTarget = require('../renderers/webgl/utils/RenderTarget'),
@@ -46666,7 +48783,7 @@ RenderTexture.prototype.getPixel = function (x, y)
     }
 };
 
-},{"../const":27,"../math":37,"../renderers/canvas/utils/CanvasBuffer":49,"../renderers/webgl/managers/FilterManager":58,"../renderers/webgl/utils/RenderTarget":69,"./BaseTexture":74,"./Texture":76}],76:[function(require,module,exports){
+},{"../const":28,"../math":38,"../renderers/canvas/utils/CanvasBuffer":50,"../renderers/webgl/managers/FilterManager":59,"../renderers/webgl/utils/RenderTarget":70,"./BaseTexture":75,"./Texture":77}],77:[function(require,module,exports){
 var BaseTexture = require('./BaseTexture'),
     VideoBaseTexture = require('./VideoBaseTexture'),
     TextureUvs = require('./TextureUvs'),
@@ -47072,7 +49189,7 @@ Texture.removeTextureFromCache = function (id)
 
 Texture.EMPTY = new Texture(new BaseTexture());
 
-},{"../math":37,"../utils":81,"./BaseTexture":74,"./TextureUvs":77,"./VideoBaseTexture":78,"eventemitter3":17}],77:[function(require,module,exports){
+},{"../math":38,"../utils":82,"./BaseTexture":75,"./TextureUvs":78,"./VideoBaseTexture":79,"eventemitter3":18}],78:[function(require,module,exports){
 
 /**
  * A standard object to store the Uvs of a texture
@@ -47140,7 +49257,7 @@ TextureUvs.prototype.set = function (frame, baseFrame, rotate)
     }
 };
 
-},{}],78:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 var BaseTexture = require('./BaseTexture'),
     utils = require('../utils');
 
@@ -47373,7 +49490,7 @@ function createSource(path, type)
     return source;
 }
 
-},{"../utils":81,"./BaseTexture":74}],79:[function(require,module,exports){
+},{"../utils":82,"./BaseTexture":75}],80:[function(require,module,exports){
 var CONST = require('../const'),
     EventEmitter = require('eventemitter3'),
     // Internal event used by composed emitter
@@ -47724,7 +49841,7 @@ Ticker.prototype.update = function update(currentTime)
 
 module.exports = Ticker;
 
-},{"../const":27,"eventemitter3":17}],80:[function(require,module,exports){
+},{"../const":28,"eventemitter3":18}],81:[function(require,module,exports){
 /**
  * @file        Main export of the PIXI extras library
  * @author      Mat Groves <mat@goodboydigital.com>
@@ -47786,7 +49903,7 @@ module.exports = {
     Ticker: Ticker
 };
 
-},{"./Ticker":79}],81:[function(require,module,exports){
+},{"./Ticker":80}],82:[function(require,module,exports){
 var CONST = require('../const');
 
 /**
@@ -48016,7 +50133,7 @@ var utils = module.exports = {
     BaseTextureCache: {}
 };
 
-},{"../const":27,"./pluginTarget":82,"async":15}],82:[function(require,module,exports){
+},{"../const":28,"./pluginTarget":83,"async":16}],83:[function(require,module,exports){
 /**
  * Mixins functionality to make an object have "plugins".
  *
@@ -48086,7 +50203,7 @@ module.exports = {
     }
 };
 
-},{}],83:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
 /*global console */
 var core = require('./core'),
     mesh = require('./mesh'),
@@ -48322,7 +50439,7 @@ core.Texture.prototype.setFrame = function(frame) {
     console.warn('setFrame is now deprecated, please use the frame property, e.g : myTexture.frame = frame;');
 };
 
-},{"./core":34,"./core/utils":81,"./extras":90,"./mesh":132}],84:[function(require,module,exports){
+},{"./core":35,"./core/utils":82,"./extras":91,"./mesh":133}],85:[function(require,module,exports){
 var core = require('../core');
 
 /**
@@ -48701,7 +50818,7 @@ BitmapText.prototype.validate = function()
 
 BitmapText.fonts = {};
 
-},{"../core":34}],85:[function(require,module,exports){
+},{"../core":35}],86:[function(require,module,exports){
 var core = require('../core');
 
 /**
@@ -48977,7 +51094,7 @@ MovieClip.fromImages = function (images)
     return new MovieClip(textures);
 };
 
-},{"../core":34}],86:[function(require,module,exports){
+},{"../core":35}],87:[function(require,module,exports){
 var core = require('../core'),
     // a sprite use dfor rendering textures..
     tempPoint = new core.Point();
@@ -49414,7 +51531,7 @@ TilingSprite.fromImage = function (imageId, width, height, crossorigin, scaleMod
     return new TilingSprite(core.Texture.fromImage(imageId, crossorigin, scaleMode),width,height);
 };
 
-},{"../core":34}],87:[function(require,module,exports){
+},{"../core":35}],88:[function(require,module,exports){
 var core = require('../core'),
     DisplayObject = core.DisplayObject,
     _tempMatrix = new core.Matrix();
@@ -49684,7 +51801,7 @@ DisplayObject.prototype._cacheAsBitmapDestroy = function ()
     this._originalDestroy();
 };
 
-},{"../core":34}],88:[function(require,module,exports){
+},{"../core":35}],89:[function(require,module,exports){
 var core = require('../core');
 
 /**
@@ -49712,7 +51829,7 @@ core.Container.prototype.getChildByName = function (name)
     return null;
 };
 
-},{"../core":34}],89:[function(require,module,exports){
+},{"../core":35}],90:[function(require,module,exports){
 var core = require('../core');
 
 /**
@@ -49741,7 +51858,7 @@ core.DisplayObject.prototype.getGlobalPosition = function (point)
     return point;
 };
 
-},{"../core":34}],90:[function(require,module,exports){
+},{"../core":35}],91:[function(require,module,exports){
 /**
  * @file        Main export of the PIXI extras library
  * @author      Mat Groves <mat@goodboydigital.com>
@@ -49762,7 +51879,7 @@ module.exports = {
     BitmapText:     require('./BitmapText')
 };
 
-},{"./BitmapText":84,"./MovieClip":85,"./TilingSprite":86,"./cacheAsBitmap":87,"./getChildByName":88,"./getGlobalPosition":89}],91:[function(require,module,exports){
+},{"./BitmapText":85,"./MovieClip":86,"./TilingSprite":87,"./cacheAsBitmap":88,"./getChildByName":89,"./getGlobalPosition":90}],92:[function(require,module,exports){
 var core = require('../../core');
 // @see https://github.com/substack/brfs/issues/25
 
@@ -49819,7 +51936,7 @@ Object.defineProperties(AsciiFilter.prototype, {
     }
 });
 
-},{"../../core":34}],92:[function(require,module,exports){
+},{"../../core":35}],93:[function(require,module,exports){
 var core = require('../../core'),
     BlurXFilter = require('../blur/BlurXFilter'),
     BlurYFilter = require('../blur/BlurYFilter');
@@ -49920,7 +52037,7 @@ Object.defineProperties(BloomFilter.prototype, {
     }
 });
 
-},{"../../core":34,"../blur/BlurXFilter":95,"../blur/BlurYFilter":96}],93:[function(require,module,exports){
+},{"../../core":35,"../blur/BlurXFilter":96,"../blur/BlurYFilter":97}],94:[function(require,module,exports){
 var core = require('../../core');
 
 
@@ -50065,7 +52182,7 @@ Object.defineProperties(BlurDirFilter.prototype, {
     }
 });
 
-},{"../../core":34}],94:[function(require,module,exports){
+},{"../../core":35}],95:[function(require,module,exports){
 var core = require('../../core'),
     BlurXFilter = require('./BlurXFilter'),
     BlurYFilter = require('./BlurYFilter');
@@ -50175,7 +52292,7 @@ Object.defineProperties(BlurFilter.prototype, {
     }
 });
 
-},{"../../core":34,"./BlurXFilter":95,"./BlurYFilter":96}],95:[function(require,module,exports){
+},{"../../core":35,"./BlurXFilter":96,"./BlurYFilter":97}],96:[function(require,module,exports){
 var core = require('../../core');
 // @see https://github.com/substack/brfs/issues/25
 
@@ -50269,7 +52386,7 @@ Object.defineProperties(BlurXFilter.prototype, {
     }
 });
 
-},{"../../core":34}],96:[function(require,module,exports){
+},{"../../core":35}],97:[function(require,module,exports){
 var core = require('../../core');
 // @see https://github.com/substack/brfs/issues/25
 
@@ -50355,7 +52472,7 @@ Object.defineProperties(BlurYFilter.prototype, {
     }
 });
 
-},{"../../core":34}],97:[function(require,module,exports){
+},{"../../core":35}],98:[function(require,module,exports){
 var core = require('../../core');
 // @see https://github.com/substack/brfs/issues/25
 
@@ -50385,7 +52502,7 @@ SmartBlurFilter.prototype = Object.create(core.AbstractFilter.prototype);
 SmartBlurFilter.prototype.constructor = SmartBlurFilter;
 module.exports = SmartBlurFilter;
 
-},{"../../core":34}],98:[function(require,module,exports){
+},{"../../core":35}],99:[function(require,module,exports){
 var core = require('../../core');
 // @see https://github.com/substack/brfs/issues/25
 
@@ -50925,7 +53042,7 @@ Object.defineProperties(ColorMatrixFilter.prototype, {
     }
 });
 
-},{"../../core":34}],99:[function(require,module,exports){
+},{"../../core":35}],100:[function(require,module,exports){
 var core = require('../../core');
 // @see https://github.com/substack/brfs/issues/25
 
@@ -50974,7 +53091,7 @@ Object.defineProperties(ColorStepFilter.prototype, {
     }
 });
 
-},{"../../core":34}],100:[function(require,module,exports){
+},{"../../core":35}],101:[function(require,module,exports){
 var core = require('../../core');
 // @see https://github.com/substack/brfs/issues/25
 
@@ -51065,7 +53182,7 @@ Object.defineProperties(ConvolutionFilter.prototype, {
     }
 });
 
-},{"../../core":34}],101:[function(require,module,exports){
+},{"../../core":35}],102:[function(require,module,exports){
 var core = require('../../core');
 // @see https://github.com/substack/brfs/issues/25
 
@@ -51091,7 +53208,7 @@ CrossHatchFilter.prototype = Object.create(core.AbstractFilter.prototype);
 CrossHatchFilter.prototype.constructor = CrossHatchFilter;
 module.exports = CrossHatchFilter;
 
-},{"../../core":34}],102:[function(require,module,exports){
+},{"../../core":35}],103:[function(require,module,exports){
 var core = require('../../core');
 // @see https://github.com/substack/brfs/issues/25
 
@@ -51172,7 +53289,7 @@ Object.defineProperties(DisplacementFilter.prototype, {
     }
 });
 
-},{"../../core":34}],103:[function(require,module,exports){
+},{"../../core":35}],104:[function(require,module,exports){
 var core = require('../../core');
 // @see https://github.com/substack/brfs/issues/25
 
@@ -51244,7 +53361,7 @@ Object.defineProperties(DotScreenFilter.prototype, {
     }
 });
 
-},{"../../core":34}],104:[function(require,module,exports){
+},{"../../core":35}],105:[function(require,module,exports){
 var core = require('../../core');
 
 // @see https://github.com/substack/brfs/issues/25
@@ -51335,7 +53452,7 @@ Object.defineProperties(BlurYTintFilter.prototype, {
     }
 });
 
-},{"../../core":34}],105:[function(require,module,exports){
+},{"../../core":35}],106:[function(require,module,exports){
 var core = require('../../core'),
     BlurXFilter = require('../blur/BlurXFilter'),
     BlurYTintFilter = require('./BlurYTintFilter');
@@ -51504,7 +53621,7 @@ Object.defineProperties(DropShadowFilter.prototype, {
     }
 });
 
-},{"../../core":34,"../blur/BlurXFilter":95,"./BlurYTintFilter":104}],106:[function(require,module,exports){
+},{"../../core":35,"../blur/BlurXFilter":96,"./BlurYTintFilter":105}],107:[function(require,module,exports){
 var core = require('../../core');
 // @see https://github.com/substack/brfs/issues/25
 
@@ -51553,7 +53670,7 @@ Object.defineProperties(GrayFilter.prototype, {
     }
 });
 
-},{"../../core":34}],107:[function(require,module,exports){
+},{"../../core":35}],108:[function(require,module,exports){
 /**
  * @file        Main export of the PIXI filters library
  * @author      Mat Groves <mat@goodboydigital.com>
@@ -51598,7 +53715,7 @@ module.exports = {
     TwistFilter:        require('./twist/TwistFilter')
 };
 
-},{"../core/renderers/webgl/filters/AbstractFilter":54,"../core/renderers/webgl/filters/FXAAFilter":55,"../core/renderers/webgl/filters/SpriteMaskFilter":56,"./ascii/AsciiFilter":91,"./bloom/BloomFilter":92,"./blur/BlurDirFilter":93,"./blur/BlurFilter":94,"./blur/BlurXFilter":95,"./blur/BlurYFilter":96,"./blur/SmartBlurFilter":97,"./color/ColorMatrixFilter":98,"./color/ColorStepFilter":99,"./convolution/ConvolutionFilter":100,"./crosshatch/CrossHatchFilter":101,"./displacement/DisplacementFilter":102,"./dot/DotScreenFilter":103,"./dropshadow/DropShadowFilter":105,"./gray/GrayFilter":106,"./invert/InvertFilter":108,"./noise/NoiseFilter":109,"./normal/NormalMapFilter":110,"./pixelate/PixelateFilter":111,"./rgb/RGBSplitFilter":112,"./sepia/SepiaFilter":113,"./shockwave/ShockwaveFilter":114,"./tiltshift/TiltShiftFilter":116,"./tiltshift/TiltShiftXFilter":117,"./tiltshift/TiltShiftYFilter":118,"./twist/TwistFilter":119}],108:[function(require,module,exports){
+},{"../core/renderers/webgl/filters/AbstractFilter":55,"../core/renderers/webgl/filters/FXAAFilter":56,"../core/renderers/webgl/filters/SpriteMaskFilter":57,"./ascii/AsciiFilter":92,"./bloom/BloomFilter":93,"./blur/BlurDirFilter":94,"./blur/BlurFilter":95,"./blur/BlurXFilter":96,"./blur/BlurYFilter":97,"./blur/SmartBlurFilter":98,"./color/ColorMatrixFilter":99,"./color/ColorStepFilter":100,"./convolution/ConvolutionFilter":101,"./crosshatch/CrossHatchFilter":102,"./displacement/DisplacementFilter":103,"./dot/DotScreenFilter":104,"./dropshadow/DropShadowFilter":106,"./gray/GrayFilter":107,"./invert/InvertFilter":109,"./noise/NoiseFilter":110,"./normal/NormalMapFilter":111,"./pixelate/PixelateFilter":112,"./rgb/RGBSplitFilter":113,"./sepia/SepiaFilter":114,"./shockwave/ShockwaveFilter":115,"./tiltshift/TiltShiftFilter":117,"./tiltshift/TiltShiftXFilter":118,"./tiltshift/TiltShiftYFilter":119,"./twist/TwistFilter":120}],109:[function(require,module,exports){
 var core = require('../../core');
 // @see https://github.com/substack/brfs/issues/25
 
@@ -51648,7 +53765,7 @@ Object.defineProperties(InvertFilter.prototype, {
     }
 });
 
-},{"../../core":34}],109:[function(require,module,exports){
+},{"../../core":35}],110:[function(require,module,exports){
 var core = require('../../core');
 // @see https://github.com/substack/brfs/issues/25
 
@@ -51703,7 +53820,7 @@ Object.defineProperties(NoiseFilter.prototype, {
     }
 });
 
-},{"../../core":34}],110:[function(require,module,exports){
+},{"../../core":35}],111:[function(require,module,exports){
 var core = require('../../core');
 // @see https://github.com/substack/brfs/issues/25
 
@@ -51816,7 +53933,7 @@ Object.defineProperties(NormalMapFilter.prototype, {
     }
 });
 
-},{"../../core":34}],111:[function(require,module,exports){
+},{"../../core":35}],112:[function(require,module,exports){
 var core = require('../../core');
 // @see https://github.com/substack/brfs/issues/25
 
@@ -51867,7 +53984,7 @@ Object.defineProperties(PixelateFilter.prototype, {
     }
 });
 
-},{"../../core":34}],112:[function(require,module,exports){
+},{"../../core":35}],113:[function(require,module,exports){
 var core = require('../../core');
 // @see https://github.com/substack/brfs/issues/25
 
@@ -51953,7 +54070,7 @@ Object.defineProperties(RGBSplitFilter.prototype, {
     }
 });
 
-},{"../../core":34}],113:[function(require,module,exports){
+},{"../../core":35}],114:[function(require,module,exports){
 var core = require('../../core');
 // @see https://github.com/substack/brfs/issues/25
 
@@ -52003,7 +54120,7 @@ Object.defineProperties(SepiaFilter.prototype, {
     }
 });
 
-},{"../../core":34}],114:[function(require,module,exports){
+},{"../../core":35}],115:[function(require,module,exports){
 var core = require('../../core');
 // @see https://github.com/substack/brfs/issues/25
 
@@ -52091,7 +54208,7 @@ Object.defineProperties(ShockwaveFilter.prototype, {
     }
 });
 
-},{"../../core":34}],115:[function(require,module,exports){
+},{"../../core":35}],116:[function(require,module,exports){
 var core = require('../../core');
 // @see https://github.com/substack/brfs/issues/25
 
@@ -52216,7 +54333,7 @@ Object.defineProperties(TiltShiftAxisFilter.prototype, {
     }
 });
 
-},{"../../core":34}],116:[function(require,module,exports){
+},{"../../core":35}],117:[function(require,module,exports){
 var core = require('../../core'),
     TiltShiftXFilter = require('./TiltShiftXFilter'),
     TiltShiftYFilter = require('./TiltShiftYFilter');
@@ -52326,7 +54443,7 @@ Object.defineProperties(TiltShiftFilter.prototype, {
     }
 });
 
-},{"../../core":34,"./TiltShiftXFilter":117,"./TiltShiftYFilter":118}],117:[function(require,module,exports){
+},{"../../core":35,"./TiltShiftXFilter":118,"./TiltShiftYFilter":119}],118:[function(require,module,exports){
 var TiltShiftAxisFilter = require('./TiltShiftAxisFilter');
 
 /**
@@ -52364,7 +54481,7 @@ TiltShiftXFilter.prototype.updateDelta = function ()
     this.uniforms.delta.value.y = dy / d;
 };
 
-},{"./TiltShiftAxisFilter":115}],118:[function(require,module,exports){
+},{"./TiltShiftAxisFilter":116}],119:[function(require,module,exports){
 var TiltShiftAxisFilter = require('./TiltShiftAxisFilter');
 
 /**
@@ -52402,7 +54519,7 @@ TiltShiftYFilter.prototype.updateDelta = function ()
     this.uniforms.delta.value.y = dx / d;
 };
 
-},{"./TiltShiftAxisFilter":115}],119:[function(require,module,exports){
+},{"./TiltShiftAxisFilter":116}],120:[function(require,module,exports){
 var core = require('../../core');
 // @see https://github.com/substack/brfs/issues/25
 
@@ -52487,7 +54604,7 @@ Object.defineProperties(TwistFilter.prototype, {
     }
 });
 
-},{"../../core":34}],120:[function(require,module,exports){
+},{"../../core":35}],121:[function(require,module,exports){
 (function (global){
 // run the polyfills
 require('./polyfill');
@@ -52518,7 +54635,7 @@ Object.assign(core, require('./deprecation'));
 global.PIXI = core;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./core":34,"./deprecation":83,"./extras":90,"./filters":107,"./interaction":123,"./loaders":126,"./mesh":132,"./polyfill":136}],121:[function(require,module,exports){
+},{"./core":35,"./deprecation":84,"./extras":91,"./filters":108,"./interaction":124,"./loaders":127,"./mesh":133,"./polyfill":137}],122:[function(require,module,exports){
 var core = require('../core');
 
 /**
@@ -52581,7 +54698,7 @@ InteractionData.prototype.getLocalPosition = function (displayObject, point, glo
     return point;
 };
 
-},{"../core":34}],122:[function(require,module,exports){
+},{"../core":35}],123:[function(require,module,exports){
 var core = require('../core'),
     InteractionData = require('./InteractionData');
 
@@ -53432,7 +55549,7 @@ InteractionManager.prototype.destroy = function () {
 core.WebGLRenderer.registerPlugin('interaction', InteractionManager);
 core.CanvasRenderer.registerPlugin('interaction', InteractionManager);
 
-},{"../core":34,"./InteractionData":121,"./interactiveTarget":124}],123:[function(require,module,exports){
+},{"../core":35,"./InteractionData":122,"./interactiveTarget":125}],124:[function(require,module,exports){
 /**
  * @file        Main export of the PIXI interactions library
  * @author      Mat Groves <mat@goodboydigital.com>
@@ -53449,7 +55566,7 @@ module.exports = {
     interactiveTarget:  require('./interactiveTarget')
 };
 
-},{"./InteractionData":121,"./InteractionManager":122,"./interactiveTarget":124}],124:[function(require,module,exports){
+},{"./InteractionData":122,"./InteractionManager":123,"./interactiveTarget":125}],125:[function(require,module,exports){
 /**
  * Default property values of interactive objects
  * used by {@link PIXI.interaction.InteractionManager}.
@@ -53498,7 +55615,7 @@ var interactiveTarget = {
 
 module.exports = interactiveTarget;
 
-},{}],125:[function(require,module,exports){
+},{}],126:[function(require,module,exports){
 var Resource = require('resource-loader').Resource,
     core = require('../core'),
     utils = require('../core/utils'),
@@ -53619,7 +55736,7 @@ module.exports = function ()
     };
 };
 
-},{"../core":34,"../core/utils":81,"../extras":90,"path":3,"resource-loader":23}],126:[function(require,module,exports){
+},{"../core":35,"../core/utils":82,"../extras":91,"path":4,"resource-loader":24}],127:[function(require,module,exports){
 /**
  * @file        Main export of the PIXI loaders library
  * @author      Mat Groves <mat@goodboydigital.com>
@@ -53640,7 +55757,7 @@ module.exports = {
     Resource:           require('resource-loader').Resource
 };
 
-},{"./bitmapFontParser":125,"./loader":127,"./spritesheetParser":128,"./textureParser":129,"resource-loader":23}],127:[function(require,module,exports){
+},{"./bitmapFontParser":126,"./loader":128,"./spritesheetParser":129,"./textureParser":130,"resource-loader":24}],128:[function(require,module,exports){
 var ResourceLoader = require('resource-loader'),
     textureParser = require('./textureParser'),
     spritesheetParser = require('./spritesheetParser'),
@@ -53702,7 +55819,7 @@ var Resource = ResourceLoader.Resource;
 
 Resource.setExtensionXhrType('fnt', Resource.XHR_RESPONSE_TYPE.DOCUMENT);
 
-},{"./bitmapFontParser":125,"./spritesheetParser":128,"./textureParser":129,"resource-loader":23}],128:[function(require,module,exports){
+},{"./bitmapFontParser":126,"./spritesheetParser":129,"./textureParser":130,"resource-loader":24}],129:[function(require,module,exports){
 var Resource = require('resource-loader').Resource,
     path = require('path'),
     core = require('../core');
@@ -53785,7 +55902,7 @@ module.exports = function ()
     };
 };
 
-},{"../core":34,"path":3,"resource-loader":23}],129:[function(require,module,exports){
+},{"../core":35,"path":4,"resource-loader":24}],130:[function(require,module,exports){
 var core = require('../core');
 
 module.exports = function ()
@@ -53804,7 +55921,7 @@ module.exports = function ()
     };
 };
 
-},{"../core":34}],130:[function(require,module,exports){
+},{"../core":35}],131:[function(require,module,exports){
 var core = require('../core');
 
 /**
@@ -54235,7 +56352,7 @@ Mesh.DRAW_MODES = {
     TRIANGLES: 1
 };
 
-},{"../core":34}],131:[function(require,module,exports){
+},{"../core":35}],132:[function(require,module,exports){
 var Mesh = require('./Mesh');
 var core = require('../core');
 
@@ -54448,7 +56565,7 @@ Rope.prototype.updateTransform = function ()
     this.containerUpdateTransform();
 };
 
-},{"../core":34,"./Mesh":130}],132:[function(require,module,exports){
+},{"../core":35,"./Mesh":131}],133:[function(require,module,exports){
 /**
  * @file        Main export of the PIXI extras library
  * @author      Mat Groves <mat@goodboydigital.com>
@@ -54466,7 +56583,7 @@ module.exports = {
     MeshShader:     require('./webgl/MeshShader')
 };
 
-},{"./Mesh":130,"./Rope":131,"./webgl/MeshRenderer":133,"./webgl/MeshShader":134}],133:[function(require,module,exports){
+},{"./Mesh":131,"./Rope":132,"./webgl/MeshRenderer":134,"./webgl/MeshShader":135}],134:[function(require,module,exports){
 var ObjectRenderer = require('../../core/renderers/webgl/utils/ObjectRenderer'),
     WebGLRenderer = require('../../core/renderers/webgl/WebGLRenderer'),
     Mesh = require('../Mesh');
@@ -54682,7 +56799,7 @@ MeshRenderer.prototype.destroy = function ()
 {
 };
 
-},{"../../core/renderers/webgl/WebGLRenderer":53,"../../core/renderers/webgl/utils/ObjectRenderer":67,"../Mesh":130}],134:[function(require,module,exports){
+},{"../../core/renderers/webgl/WebGLRenderer":54,"../../core/renderers/webgl/utils/ObjectRenderer":68,"../Mesh":131}],135:[function(require,module,exports){
 var core = require('../../core');
 
 /**
@@ -54743,7 +56860,7 @@ module.exports = StripShader;
 
 core.ShaderManager.registerPlugin('meshShader', StripShader);
 
-},{"../../core":34}],135:[function(require,module,exports){
+},{"../../core":35}],136:[function(require,module,exports){
 // References:
 // https://github.com/sindresorhus/object-assign
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
@@ -54753,11 +56870,11 @@ if (!Object.assign)
     Object.assign = require('object-assign');
 }
 
-},{"object-assign":18}],136:[function(require,module,exports){
+},{"object-assign":19}],137:[function(require,module,exports){
 require('./Object.assign');
 require('./requestAnimationFrame');
 
-},{"./Object.assign":135,"./requestAnimationFrame":137}],137:[function(require,module,exports){
+},{"./Object.assign":136,"./requestAnimationFrame":138}],138:[function(require,module,exports){
 (function (global){
 // References:
 // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
@@ -54827,7 +56944,7 @@ if (!global.cancelAnimationFrame) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],138:[function(require,module,exports){
+},{}],139:[function(require,module,exports){
 /*
  Copyright 2013 Daniel Wirtz <dcode@dcode.io>
 
@@ -59272,7 +61389,7 @@ if (!global.cancelAnimationFrame) {
 
 })(this);
 
-},{"bytebuffer":10,"fs":2,"path":3}],139:[function(require,module,exports){
+},{"bytebuffer":11,"fs":3,"path":4}],140:[function(require,module,exports){
 /*
  Copyright 2013 Daniel Wirtz <dcode@dcode.io>
 
@@ -59292,7 +61409,7 @@ var ProtoBuf = require("./dist/ProtoBuf.js");
 
 module.exports = ProtoBuf;
 
-},{"./dist/ProtoBuf.js":138}],140:[function(require,module,exports){
+},{"./dist/ProtoBuf.js":139}],141:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -59306,7 +61423,7 @@ if ('_sockjs_onload' in global) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./main":153,"./transport-list":155}],141:[function(require,module,exports){
+},{"./main":154,"./transport-list":156}],142:[function(require,module,exports){
 'use strict';
 
 var inherits = require('inherits')
@@ -59325,7 +61442,7 @@ inherits(CloseEvent, Event);
 
 module.exports = CloseEvent;
 
-},{"./event":143,"inherits":196}],142:[function(require,module,exports){
+},{"./event":144,"inherits":197}],143:[function(require,module,exports){
 'use strict';
 
 var inherits = require('inherits')
@@ -59378,7 +61495,7 @@ EventEmitter.prototype.removeListener = EventTarget.prototype.removeEventListene
 
 module.exports.EventEmitter = EventEmitter;
 
-},{"./eventtarget":144,"inherits":196}],143:[function(require,module,exports){
+},{"./eventtarget":145,"inherits":197}],144:[function(require,module,exports){
 'use strict';
 
 function Event(eventType) {
@@ -59402,7 +61519,7 @@ Event.BUBBLING_PHASE  = 3;
 
 module.exports = Event;
 
-},{}],144:[function(require,module,exports){
+},{}],145:[function(require,module,exports){
 'use strict';
 
 /* Simplified implementation of DOM2 EventTarget.
@@ -59464,7 +61581,7 @@ EventTarget.prototype.dispatchEvent = function(event) {
 
 module.exports = EventTarget;
 
-},{}],145:[function(require,module,exports){
+},{}],146:[function(require,module,exports){
 'use strict';
 
 var inherits = require('inherits')
@@ -59481,7 +61598,7 @@ inherits(TransportMessageEvent, Event);
 
 module.exports = TransportMessageEvent;
 
-},{"./event":143,"inherits":196}],146:[function(require,module,exports){
+},{"./event":144,"inherits":197}],147:[function(require,module,exports){
 'use strict';
 
 var JSON3 = require('json3')
@@ -59510,7 +61627,7 @@ FacadeJS.prototype._close = function() {
 
 module.exports = FacadeJS;
 
-},{"./utils/iframe":186,"json3":197}],147:[function(require,module,exports){
+},{"./utils/iframe":187,"json3":198}],148:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -59616,7 +61733,7 @@ module.exports = function(SockJS, availableTransports) {
 };
 
 }).call(this,require('_process'))
-},{"./facade":146,"./info-iframe-receiver":149,"./location":152,"./utils/event":185,"./utils/iframe":186,"./utils/url":191,"_process":4,"debug":193,"json3":197}],148:[function(require,module,exports){
+},{"./facade":147,"./info-iframe-receiver":150,"./location":153,"./utils/event":186,"./utils/iframe":187,"./utils/url":192,"_process":5,"debug":194,"json3":198}],149:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -59669,7 +61786,7 @@ InfoAjax.prototype.close = function() {
 module.exports = InfoAjax;
 
 }).call(this,require('_process'))
-},{"./utils/object":188,"_process":4,"debug":193,"events":142,"inherits":196,"json3":197}],149:[function(require,module,exports){
+},{"./utils/object":189,"_process":5,"debug":194,"events":143,"inherits":197,"json3":198}],150:[function(require,module,exports){
 'use strict';
 
 var inherits = require('inherits')
@@ -59704,7 +61821,7 @@ InfoReceiverIframe.prototype.close = function() {
 
 module.exports = InfoReceiverIframe;
 
-},{"./info-ajax":148,"./transport/sender/xhr-local":176,"events":142,"inherits":196,"json3":197}],150:[function(require,module,exports){
+},{"./info-ajax":149,"./transport/sender/xhr-local":177,"events":143,"inherits":197,"json3":198}],151:[function(require,module,exports){
 (function (process,global){
 'use strict';
 
@@ -59777,7 +61894,7 @@ InfoIframe.prototype.close = function() {
 module.exports = InfoIframe;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./info-iframe-receiver":149,"./transport/iframe":161,"./utils/event":185,"_process":4,"debug":193,"events":142,"inherits":196,"json3":197}],151:[function(require,module,exports){
+},{"./info-iframe-receiver":150,"./transport/iframe":162,"./utils/event":186,"_process":5,"debug":194,"events":143,"inherits":197,"json3":198}],152:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -59870,7 +61987,7 @@ InfoReceiver.timeout = 8000;
 module.exports = InfoReceiver;
 
 }).call(this,require('_process'))
-},{"./info-ajax":148,"./info-iframe":150,"./transport/sender/xdr":173,"./transport/sender/xhr-cors":174,"./transport/sender/xhr-fake":175,"./transport/sender/xhr-local":176,"./utils/url":191,"_process":4,"debug":193,"events":142,"inherits":196}],152:[function(require,module,exports){
+},{"./info-ajax":149,"./info-iframe":151,"./transport/sender/xdr":174,"./transport/sender/xhr-cors":175,"./transport/sender/xhr-fake":176,"./transport/sender/xhr-local":177,"./utils/url":192,"_process":5,"debug":194,"events":143,"inherits":197}],153:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -59884,7 +62001,7 @@ module.exports = global.location || {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],153:[function(require,module,exports){
+},{}],154:[function(require,module,exports){
 (function (process,global){
 'use strict';
 
@@ -60257,7 +62374,7 @@ module.exports = function(availableTransports) {
 };
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./event/close":141,"./event/event":143,"./event/eventtarget":144,"./event/trans-message":145,"./iframe-bootstrap":147,"./info-receiver":151,"./location":152,"./shims":154,"./utils/browser":183,"./utils/escape":184,"./utils/event":185,"./utils/log":187,"./utils/object":188,"./utils/random":189,"./utils/transport":190,"./utils/url":191,"./version":192,"_process":4,"debug":193,"inherits":196,"json3":197,"url-parse":198}],154:[function(require,module,exports){
+},{"./event/close":142,"./event/event":144,"./event/eventtarget":145,"./event/trans-message":146,"./iframe-bootstrap":148,"./info-receiver":152,"./location":153,"./shims":155,"./utils/browser":184,"./utils/escape":185,"./utils/event":186,"./utils/log":188,"./utils/object":189,"./utils/random":190,"./utils/transport":191,"./utils/url":192,"./version":193,"_process":5,"debug":194,"inherits":197,"json3":198,"url-parse":199}],155:[function(require,module,exports){
 /* eslint-disable */
 /* jscs: disable */
 'use strict';
@@ -60732,7 +62849,7 @@ defineProperties(StringPrototype, {
     }
 }, hasNegativeSubstrBug);
 
-},{}],155:[function(require,module,exports){
+},{}],156:[function(require,module,exports){
 'use strict';
 
 module.exports = [
@@ -60752,7 +62869,7 @@ module.exports = [
 , require('./transport/jsonp-polling')
 ];
 
-},{"./transport/eventsource":159,"./transport/htmlfile":160,"./transport/jsonp-polling":162,"./transport/lib/iframe-wrap":165,"./transport/websocket":177,"./transport/xdr-polling":178,"./transport/xdr-streaming":179,"./transport/xhr-polling":180,"./transport/xhr-streaming":181}],156:[function(require,module,exports){
+},{"./transport/eventsource":160,"./transport/htmlfile":161,"./transport/jsonp-polling":163,"./transport/lib/iframe-wrap":166,"./transport/websocket":178,"./transport/xdr-polling":179,"./transport/xdr-streaming":180,"./transport/xhr-polling":181,"./transport/xhr-streaming":182}],157:[function(require,module,exports){
 (function (process,global){
 'use strict';
 
@@ -60941,17 +63058,17 @@ AbstractXHRObject.supportsCORS = cors;
 module.exports = AbstractXHRObject;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../../utils/event":185,"../../utils/url":191,"_process":4,"debug":193,"events":142,"inherits":196}],157:[function(require,module,exports){
+},{"../../utils/event":186,"../../utils/url":192,"_process":5,"debug":194,"events":143,"inherits":197}],158:[function(require,module,exports){
 (function (global){
 module.exports = global.EventSource;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],158:[function(require,module,exports){
+},{}],159:[function(require,module,exports){
 (function (global){
 module.exports = global.WebSocket || global.MozWebSocket;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],159:[function(require,module,exports){
+},{}],160:[function(require,module,exports){
 'use strict';
 
 var inherits = require('inherits')
@@ -60980,7 +63097,7 @@ EventSourceTransport.roundTrips = 2;
 
 module.exports = EventSourceTransport;
 
-},{"./lib/ajax-based":163,"./receiver/eventsource":168,"./sender/xhr-cors":174,"eventsource":157,"inherits":196}],160:[function(require,module,exports){
+},{"./lib/ajax-based":164,"./receiver/eventsource":169,"./sender/xhr-cors":175,"eventsource":158,"inherits":197}],161:[function(require,module,exports){
 'use strict';
 
 var inherits = require('inherits')
@@ -61007,7 +63124,7 @@ HtmlFileTransport.roundTrips = 2;
 
 module.exports = HtmlFileTransport;
 
-},{"./lib/ajax-based":163,"./receiver/htmlfile":169,"./sender/xhr-local":176,"inherits":196}],161:[function(require,module,exports){
+},{"./lib/ajax-based":164,"./receiver/htmlfile":170,"./sender/xhr-local":177,"inherits":197}],162:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -61150,7 +63267,7 @@ IframeTransport.roundTrips = 2;
 module.exports = IframeTransport;
 
 }).call(this,require('_process'))
-},{"../utils/event":185,"../utils/iframe":186,"../utils/random":189,"../utils/url":191,"../version":192,"_process":4,"debug":193,"events":142,"inherits":196,"json3":197}],162:[function(require,module,exports){
+},{"../utils/event":186,"../utils/iframe":187,"../utils/random":190,"../utils/url":192,"../version":193,"_process":5,"debug":194,"events":143,"inherits":197,"json3":198}],163:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -61188,7 +63305,7 @@ JsonPTransport.needBody = true;
 module.exports = JsonPTransport;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./lib/sender-receiver":167,"./receiver/jsonp":170,"./sender/jsonp":172,"inherits":196}],163:[function(require,module,exports){
+},{"./lib/sender-receiver":168,"./receiver/jsonp":171,"./sender/jsonp":173,"inherits":197}],164:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -61241,7 +63358,7 @@ inherits(AjaxBasedTransport, SenderReceiver);
 module.exports = AjaxBasedTransport;
 
 }).call(this,require('_process'))
-},{"../../utils/url":191,"./sender-receiver":167,"_process":4,"debug":193,"inherits":196}],164:[function(require,module,exports){
+},{"../../utils/url":192,"./sender-receiver":168,"_process":5,"debug":194,"inherits":197}],165:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -61332,7 +63449,7 @@ BufferedSender.prototype.stop = function() {
 module.exports = BufferedSender;
 
 }).call(this,require('_process'))
-},{"_process":4,"debug":193,"events":142,"inherits":196}],165:[function(require,module,exports){
+},{"_process":5,"debug":194,"events":143,"inherits":197}],166:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -61369,7 +63486,7 @@ module.exports = function(transport) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../../utils/object":188,"../iframe":161,"inherits":196}],166:[function(require,module,exports){
+},{"../../utils/object":189,"../iframe":162,"inherits":197}],167:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -61430,7 +63547,7 @@ Polling.prototype.abort = function() {
 module.exports = Polling;
 
 }).call(this,require('_process'))
-},{"_process":4,"debug":193,"events":142,"inherits":196}],167:[function(require,module,exports){
+},{"_process":5,"debug":194,"events":143,"inherits":197}],168:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -61479,7 +63596,7 @@ SenderReceiver.prototype.close = function() {
 module.exports = SenderReceiver;
 
 }).call(this,require('_process'))
-},{"../../utils/url":191,"./buffered-sender":164,"./polling":166,"_process":4,"debug":193,"inherits":196}],168:[function(require,module,exports){
+},{"../../utils/url":192,"./buffered-sender":165,"./polling":167,"_process":5,"debug":194,"inherits":197}],169:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -61546,7 +63663,7 @@ EventSourceReceiver.prototype._close = function(reason) {
 module.exports = EventSourceReceiver;
 
 }).call(this,require('_process'))
-},{"_process":4,"debug":193,"events":142,"eventsource":157,"inherits":196}],169:[function(require,module,exports){
+},{"_process":5,"debug":194,"events":143,"eventsource":158,"inherits":197}],170:[function(require,module,exports){
 (function (process,global){
 'use strict';
 
@@ -61635,7 +63752,7 @@ HtmlfileReceiver.enabled = HtmlfileReceiver.htmlfileEnabled || iframeUtils.ifram
 module.exports = HtmlfileReceiver;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../../utils/iframe":186,"../../utils/random":189,"../../utils/url":191,"_process":4,"debug":193,"events":142,"inherits":196}],170:[function(require,module,exports){
+},{"../../utils/iframe":187,"../../utils/random":190,"../../utils/url":192,"_process":5,"debug":194,"events":143,"inherits":197}],171:[function(require,module,exports){
 (function (process,global){
 'use strict';
 
@@ -61818,7 +63935,7 @@ JsonpReceiver.prototype._createScript = function(url) {
 module.exports = JsonpReceiver;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../../utils/browser":183,"../../utils/iframe":186,"../../utils/random":189,"../../utils/url":191,"_process":4,"debug":193,"events":142,"inherits":196}],171:[function(require,module,exports){
+},{"../../utils/browser":184,"../../utils/iframe":187,"../../utils/random":190,"../../utils/url":192,"_process":5,"debug":194,"events":143,"inherits":197}],172:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -61892,7 +64009,7 @@ XhrReceiver.prototype.abort = function() {
 module.exports = XhrReceiver;
 
 }).call(this,require('_process'))
-},{"_process":4,"debug":193,"events":142,"inherits":196}],172:[function(require,module,exports){
+},{"_process":5,"debug":194,"events":143,"inherits":197}],173:[function(require,module,exports){
 (function (process,global){
 'use strict';
 
@@ -61995,7 +64112,7 @@ module.exports = function(url, payload, callback) {
 };
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../../utils/random":189,"../../utils/url":191,"_process":4,"debug":193}],173:[function(require,module,exports){
+},{"../../utils/random":190,"../../utils/url":192,"_process":5,"debug":194}],174:[function(require,module,exports){
 (function (process,global){
 'use strict';
 
@@ -62100,7 +64217,7 @@ XDRObject.enabled = !!(global.XDomainRequest && browser.hasDomain());
 module.exports = XDRObject;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../../utils/browser":183,"../../utils/event":185,"../../utils/url":191,"_process":4,"debug":193,"events":142,"inherits":196}],174:[function(require,module,exports){
+},{"../../utils/browser":184,"../../utils/event":186,"../../utils/url":192,"_process":5,"debug":194,"events":143,"inherits":197}],175:[function(require,module,exports){
 'use strict';
 
 var inherits = require('inherits')
@@ -62117,7 +64234,7 @@ XHRCorsObject.enabled = XhrDriver.enabled && XhrDriver.supportsCORS;
 
 module.exports = XHRCorsObject;
 
-},{"../driver/xhr":156,"inherits":196}],175:[function(require,module,exports){
+},{"../driver/xhr":157,"inherits":197}],176:[function(require,module,exports){
 'use strict';
 
 var EventEmitter = require('events').EventEmitter
@@ -62143,7 +64260,7 @@ XHRFake.timeout = 2000;
 
 module.exports = XHRFake;
 
-},{"events":142,"inherits":196}],176:[function(require,module,exports){
+},{"events":143,"inherits":197}],177:[function(require,module,exports){
 'use strict';
 
 var inherits = require('inherits')
@@ -62162,7 +64279,7 @@ XHRLocalObject.enabled = XhrDriver.enabled;
 
 module.exports = XHRLocalObject;
 
-},{"../driver/xhr":156,"inherits":196}],177:[function(require,module,exports){
+},{"../driver/xhr":157,"inherits":197}],178:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -62264,7 +64381,7 @@ WebSocketTransport.roundTrips = 2;
 module.exports = WebSocketTransport;
 
 }).call(this,require('_process'))
-},{"../utils/event":185,"../utils/url":191,"./driver/websocket":158,"_process":4,"debug":193,"events":142,"inherits":196}],178:[function(require,module,exports){
+},{"../utils/event":186,"../utils/url":192,"./driver/websocket":159,"_process":5,"debug":194,"events":143,"inherits":197}],179:[function(require,module,exports){
 'use strict';
 
 var inherits = require('inherits')
@@ -62289,7 +64406,7 @@ XdrPollingTransport.roundTrips = 2; // preflight, ajax
 
 module.exports = XdrPollingTransport;
 
-},{"./lib/ajax-based":163,"./receiver/xhr":171,"./sender/xdr":173,"./xdr-streaming":179,"inherits":196}],179:[function(require,module,exports){
+},{"./lib/ajax-based":164,"./receiver/xhr":172,"./sender/xdr":174,"./xdr-streaming":180,"inherits":197}],180:[function(require,module,exports){
 'use strict';
 
 var inherits = require('inherits')
@@ -62323,7 +64440,7 @@ XdrStreamingTransport.roundTrips = 2; // preflight, ajax
 
 module.exports = XdrStreamingTransport;
 
-},{"./lib/ajax-based":163,"./receiver/xhr":171,"./sender/xdr":173,"inherits":196}],180:[function(require,module,exports){
+},{"./lib/ajax-based":164,"./receiver/xhr":172,"./sender/xdr":174,"inherits":197}],181:[function(require,module,exports){
 'use strict';
 
 var inherits = require('inherits')
@@ -62358,7 +64475,7 @@ XhrPollingTransport.roundTrips = 2; // preflight, ajax
 
 module.exports = XhrPollingTransport;
 
-},{"./lib/ajax-based":163,"./receiver/xhr":171,"./sender/xhr-cors":174,"./sender/xhr-local":176,"inherits":196}],181:[function(require,module,exports){
+},{"./lib/ajax-based":164,"./receiver/xhr":172,"./sender/xhr-cors":175,"./sender/xhr-local":177,"inherits":197}],182:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -62403,7 +64520,7 @@ XhrStreamingTransport.needBody = !!global.document;
 module.exports = XhrStreamingTransport;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../utils/browser":183,"./lib/ajax-based":163,"./receiver/xhr":171,"./sender/xhr-cors":174,"./sender/xhr-local":176,"inherits":196}],182:[function(require,module,exports){
+},{"../utils/browser":184,"./lib/ajax-based":164,"./receiver/xhr":172,"./sender/xhr-cors":175,"./sender/xhr-local":177,"inherits":197}],183:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -62424,7 +64541,7 @@ if (global.crypto && global.crypto.getRandomValues) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],183:[function(require,module,exports){
+},{}],184:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -62455,7 +64572,7 @@ module.exports = {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],184:[function(require,module,exports){
+},{}],185:[function(require,module,exports){
 'use strict';
 
 var JSON3 = require('json3');
@@ -62506,7 +64623,7 @@ module.exports = {
   }
 };
 
-},{"json3":197}],185:[function(require,module,exports){
+},{"json3":198}],186:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -62575,7 +64692,7 @@ var unloadTriggered = function() {
 module.exports.attachEvent('unload', unloadTriggered);
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./random":189}],186:[function(require,module,exports){
+},{"./random":190}],187:[function(require,module,exports){
 (function (process,global){
 'use strict';
 
@@ -62760,7 +64877,7 @@ if (global.document) {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./browser":183,"./event":185,"_process":4,"debug":193,"json3":197}],187:[function(require,module,exports){
+},{"./browser":184,"./event":186,"_process":5,"debug":194,"json3":198}],188:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -62775,7 +64892,7 @@ var logObject = {};
 module.exports = logObject;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],188:[function(require,module,exports){
+},{}],189:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -62801,7 +64918,7 @@ module.exports = {
   }
 };
 
-},{}],189:[function(require,module,exports){
+},{}],190:[function(require,module,exports){
 'use strict';
 
 /* global crypto:true */
@@ -62832,7 +64949,7 @@ module.exports = {
   }
 };
 
-},{"crypto":182}],190:[function(require,module,exports){
+},{"crypto":183}],191:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -62886,7 +65003,7 @@ module.exports = function(availableTransports) {
 };
 
 }).call(this,require('_process'))
-},{"_process":4,"debug":193}],191:[function(require,module,exports){
+},{"_process":5,"debug":194}],192:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -62937,9 +65054,9 @@ module.exports = {
 };
 
 }).call(this,require('_process'))
-},{"_process":4,"debug":193,"url-parse":198}],192:[function(require,module,exports){
+},{"_process":5,"debug":194,"url-parse":199}],193:[function(require,module,exports){
 module.exports = '1.0.0';
-},{}],193:[function(require,module,exports){
+},{}],194:[function(require,module,exports){
 
 /**
  * This is the web browser implementation of `debug()`.
@@ -63109,7 +65226,7 @@ function localstorage(){
   } catch (e) {}
 }
 
-},{"./debug":194}],194:[function(require,module,exports){
+},{"./debug":195}],195:[function(require,module,exports){
 
 /**
  * This is the common logic for both the Node.js and web browser
@@ -63308,7 +65425,7 @@ function coerce(val) {
   return val;
 }
 
-},{"ms":195}],195:[function(require,module,exports){
+},{"ms":196}],196:[function(require,module,exports){
 /**
  * Helpers.
  */
@@ -63435,7 +65552,7 @@ function plural(ms, n, name) {
   return Math.ceil(ms / n) + ' ' + name + 's';
 }
 
-},{}],196:[function(require,module,exports){
+},{}],197:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -63460,7 +65577,7 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],197:[function(require,module,exports){
+},{}],198:[function(require,module,exports){
 (function (global){
 /*! JSON v3.3.2 | http://bestiejs.github.io/json3 | Copyright 2012-2014, Kit Cambridge | http://kit.mit-license.org */
 ;(function () {
@@ -64366,7 +66483,7 @@ if (typeof Object.create === 'function') {
 }).call(this);
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],198:[function(require,module,exports){
+},{}],199:[function(require,module,exports){
 'use strict';
 
 var required = require('requires-port')
@@ -64597,7 +66714,7 @@ URL.qs = qs;
 URL.location = lolcation;
 module.exports = URL;
 
-},{"./lolcation":199,"querystringify":200,"requires-port":201}],199:[function(require,module,exports){
+},{"./lolcation":200,"querystringify":201,"requires-port":202}],200:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -64646,7 +66763,7 @@ module.exports = function lolcation(loc) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./":198}],200:[function(require,module,exports){
+},{"./":199}],201:[function(require,module,exports){
 'use strict';
 
 var has = Object.prototype.hasOwnProperty;
@@ -64709,7 +66826,7 @@ function querystringify(obj, prefix) {
 exports.stringify = querystringify;
 exports.parse = querystring;
 
-},{}],201:[function(require,module,exports){
+},{}],202:[function(require,module,exports){
 'use strict';
 
 /**
@@ -64749,7 +66866,7 @@ module.exports = function required(port, protocol) {
   return port !== 0;
 };
 
-},{}],202:[function(require,module,exports){
+},{}],203:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -64901,7 +67018,7 @@ ChartStack.prototype.getHigh = function () {
 exports['default'] = ChartStack;
 module.exports = exports['default'];
 
-},{"./charts/axis/ValueAxis":219,"pixi.js":120}],203:[function(require,module,exports){
+},{"./charts/axis/ValueAxis":220,"pixi.js":121}],204:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -65013,7 +67130,7 @@ ChartStackManager.prototype.drawCrosshair = function (x, y) {
 exports['default'] = ChartStackManager;
 module.exports = exports['default'];
 
-},{"./ChartStack":202,"./charts/axis/TimeAxis":218}],204:[function(require,module,exports){
+},{"./ChartStack":203,"./charts/axis/TimeAxis":219}],205:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -65138,7 +67255,7 @@ HBAR.prototype.tick = function () {
 exports['default'] = HBAR;
 module.exports = exports['default'];
 
-},{"./ChartStackManager":203,"./data/ProtoSock":220,"protobufjs":139}],205:[function(require,module,exports){
+},{"./ChartStackManager":204,"./data/ProtoSock":221,"protobufjs":140}],206:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -65171,7 +67288,7 @@ BBandsChart.prototype = Object.create(_LineChart2["default"].prototype);
 exports["default"] = BBandsChart;
 module.exports = exports["default"];
 
-},{"./LineChart":209}],206:[function(require,module,exports){
+},{"./LineChart":210}],207:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -65260,7 +67377,7 @@ BaseChart.prototype.getHigh = function () {
 exports['default'] = BaseChart;
 module.exports = exports['default'];
 
-},{"../data/dao/DataRequest":221,"./axis/ValueAxis":219,"pixi.js":120}],207:[function(require,module,exports){
+},{"../data/dao/DataRequest":222,"./axis/ValueAxis":220,"pixi.js":121}],208:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -65315,7 +67432,7 @@ CompositeChart.prototype.setRedraw = function (redraw) {
 exports['default'] = CompositeChart;
 module.exports = exports['default'];
 
-},{"./BaseChart":206}],208:[function(require,module,exports){
+},{"./BaseChart":207}],209:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -65362,7 +67479,7 @@ HistogramChart.prototype.draw = function () {
 exports["default"] = HistogramChart;
 module.exports = exports["default"];
 
-},{"./BaseChart":206}],209:[function(require,module,exports){
+},{"./BaseChart":207}],210:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -65410,7 +67527,7 @@ LineChart.prototype.draw = function () {
 exports["default"] = LineChart;
 module.exports = exports["default"];
 
-},{"./BaseChart":206}],210:[function(require,module,exports){
+},{"./BaseChart":207}],211:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -65465,7 +67582,7 @@ MACDChart.prototype = Object.create(_CompositeChart2['default'].prototype);
 exports['default'] = MACDChart;
 module.exports = exports['default'];
 
-},{"./CompositeChart":207,"./HistogramChart":208,"./LineChart":209}],211:[function(require,module,exports){
+},{"./CompositeChart":208,"./HistogramChart":209,"./LineChart":210}],212:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -65490,7 +67607,7 @@ MAChart.prototype = Object.create(_LineChart2['default'].prototype);
 exports['default'] = MAChart;
 module.exports = exports['default'];
 
-},{"./LineChart":209}],212:[function(require,module,exports){
+},{"./LineChart":210}],213:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -65544,7 +67661,7 @@ OHLCChart.prototype.draw = function () {
 exports["default"] = OHLCChart;
 module.exports = exports["default"];
 
-},{"./BaseChart":206}],213:[function(require,module,exports){
+},{"./BaseChart":207}],214:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -65604,7 +67721,7 @@ PointChart.prototype.getFillAlpha = function (timestamp, field) {
 exports["default"] = PointChart;
 module.exports = exports["default"];
 
-},{"./BaseChart":206}],214:[function(require,module,exports){
+},{"./BaseChart":207}],215:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -65661,7 +67778,7 @@ RSIChart.prototype.setValueAxis = function (valueAxis) {
 exports["default"] = RSIChart;
 module.exports = exports["default"];
 
-},{"./LineChart":209}],215:[function(require,module,exports){
+},{"./LineChart":210}],216:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -65687,7 +67804,7 @@ SARChart.prototype = Object.create(_PointChart2['default'].prototype);
 exports['default'] = SARChart;
 module.exports = exports['default'];
 
-},{"./PointChart":213}],216:[function(require,module,exports){
+},{"./PointChart":214}],217:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -65729,7 +67846,7 @@ VolumeChart.prototype.getHigh = function () {
 exports["default"] = VolumeChart;
 module.exports = exports["default"];
 
-},{"./HistogramChart":208}],217:[function(require,module,exports){
+},{"./HistogramChart":209}],218:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -65771,7 +67888,7 @@ BaseAxis.prototype.setMinMax = function (min, max) {
 exports['default'] = BaseAxis;
 module.exports = exports['default'];
 
-},{"pixi.js":120}],218:[function(require,module,exports){
+},{"pixi.js":121}],219:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -65874,7 +67991,7 @@ TimeAxis.prototype.periodize = function (time) {
 exports['default'] = TimeAxis;
 module.exports = exports['default'];
 
-},{"./BaseAxis":217}],219:[function(require,module,exports){
+},{"./BaseAxis":218}],220:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -65913,7 +68030,7 @@ ValueAxis.prototype.getScale = function () {
 exports["default"] = ValueAxis;
 module.exports = exports["default"];
 
-},{"./BaseAxis":217}],220:[function(require,module,exports){
+},{"./BaseAxis":218}],221:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -66070,7 +68187,7 @@ ProtoSock.prototype.hashCode = function (obj) {
 exports['default'] = ProtoSock;
 module.exports = exports['default'];
 
-},{"../../lib/vertxbus":223,"protobufjs":139}],221:[function(require,module,exports){
+},{"../../lib/vertxbus":224,"protobufjs":140}],222:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -66088,7 +68205,7 @@ function DataRequest(symbol, indicator, period, startTime, endTime, options) {
 exports["default"] = DataRequest;
 module.exports = exports["default"];
 
-},{}],222:[function(require,module,exports){
+},{}],223:[function(require,module,exports){
 "use strict";
 
 $.ui.plugin.add("resizable", "alsoResizeReverse", {
@@ -66165,7 +68282,7 @@ $.ui.plugin.add("resizable", "alsoResizeReverse", {
   }
 });
 
-},{}],223:[function(require,module,exports){
+},{}],224:[function(require,module,exports){
 /*
  *   Copyright (c) 2011-2013 The original author or authors
  *   ------------------------------------------------------
@@ -66401,4 +68518,4 @@ var vertx = vertx || {};
 exports["default"] = vertx;
 module.exports = exports["default"];
 
-},{"sockjs-client":140}]},{},[1]);
+},{"sockjs-client":141}]},{},[1]);

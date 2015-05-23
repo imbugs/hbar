@@ -24,10 +24,16 @@
   },
   "homepage": "https://github.com/hbar-digital/hbar",
   "browser": {
-    "jquery": "./node_modules/jquery/dist/jquery.js"
+    "jquery": "./node_modules/jquery/dist/jquery.js",
+    "bootstrap": "./node_modules/bootstrap-sass/assets/javascripts/bootstrap.js"
   },
   "browserify-shim": {
-    "jquery": "$"
+    "jquery": "$",
+    "bootstrap": {
+      "depends": [
+        "jquery:jQuery"
+      ]
+    }
   },
   "browserify": {
     "transform": [
