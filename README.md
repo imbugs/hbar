@@ -13,9 +13,9 @@ git clone https://github.com/hbar-digital/hbar.git
 ### Setting Up the VM
 ```sh
 cd crypto-strats
-vagrant up
+env MYSQL_ROOT_PASS='new_password' vagrant up
 ```
-`vagrant up` will startup an Ubuntu 14.04 virtual machine. If this is the first time using vagrant, it will take a while to download Ubuntu. Next we log into the vm with `vagrant ssh` and move to the script directory. `bootstrap.sh` simply installs all of our dependencies.
+`vagrant up` will startup an Ubuntu 14.04 virtual machine. If this is the first time using vagrant, it will take a while to download Ubuntu. Next we log into the vm with `vagrant ssh` and move to the script directory. `bootstrap.sh` simply installs all of our dependencies. Default mysql root password and phpmyadmin password are 'vagrant'. You must set the MYSQL_ROOT_PASS environment variable to override this default. 
 
 ## Running the Server
 ### Running on the VM
@@ -25,7 +25,7 @@ cd /vagrant/crypto-strats-server/script
 sudo ./start.sh
 ```
 
-Now that all dependencies are installed and the data server is running, you can visit localhost:8888 to view the charts. You can use the same process to quickly launch an instance in the cloud.
+Now that all dependencies are installed and the data server is running, you can visit localhost:8080 to view the charts. You can use the same process to quickly launch an instance in the cloud.
 
 1. `git clone`
 2. `bootstrap.sh`
