@@ -15,7 +15,7 @@ git clone https://github.com/hbar-digital/hbar.git
 cd crypto-strats
 env MYSQL_ROOT_PASS='new_password' vagrant up
 ```
-`vagrant up` will startup an Ubuntu 14.04 virtual machine. If this is the first time using vagrant, it will take a while to download Ubuntu. Next we log into the vm with `vagrant ssh` and move to the script directory. `bootstrap.sh` simply installs all of our dependencies. Default mysql root password and phpmyadmin password are 'vagrant'. You must set the MYSQL_ROOT_PASS environment variable to override this default. 
+`vagrant up` will startup an Ubuntu 14.04 virtual machine. If this is the first time using vagrant, it will take a while to download Ubuntu. Once Ubuntu is setup, vagrant will run the `bootstrap.sh` provisioning script found in the scripts directory. This provisioning script will download all of the project dependencies. The default mysql root password and phpmyadmin password are 'vagrant'. You must set the MYSQL_ROOT_PASS environment variable to override this default. 
 
 ## Running the Server
 ### Running on the VM
