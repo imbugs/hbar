@@ -64,7 +64,7 @@ ChartStackManager.prototype.addChart = function(stack, chart)
 	}
 
 	this.stacks[stack].addChart(chart);
-}
+};
 
 ChartStackManager.prototype.setPeriod = function(period, timestamp)
 {
@@ -74,7 +74,7 @@ ChartStackManager.prototype.setPeriod = function(period, timestamp)
 	{
 		this.stacks[stack].draw();
 	}
-}
+};
 
 ChartStackManager.prototype.refreshLastTick = function()
 {
@@ -82,7 +82,7 @@ ChartStackManager.prototype.refreshLastTick = function()
 	{
 		this.stacks[stack].refreshLastTick();
 	}
-}
+};
 
 ChartStackManager.prototype.scroll = function(scrollX, scrollY)
 {
@@ -92,7 +92,7 @@ ChartStackManager.prototype.scroll = function(scrollX, scrollY)
 	{
 		this.stacks[stack].draw();
 	}
-}
+};
 
 ChartStackManager.prototype.resize = function()
 {
@@ -102,7 +102,7 @@ ChartStackManager.prototype.resize = function()
 	{
 		this.stacks[stack].resize();
 	}
-}
+};
 
 ChartStackManager.prototype.drawCrosshair = function(x, y) 
 {
@@ -111,6 +111,6 @@ ChartStackManager.prototype.drawCrosshair = function(x, y)
 		this.stacks[stack].setVerticalCrosshair(x);
 		this.stacks[stack].render();
 	}
-}
+};
 
 export default ChartStackManager;

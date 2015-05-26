@@ -1,4 +1,6 @@
 var gulp = require('gulp');
+var jshint = require('gulp-jshint');
+var stylish = require('jshint-stylish');
 var sass = require('gulp-sass');
 var cssimport = require("gulp-cssimport");
 var browserify = require('browserify');
@@ -33,6 +35,12 @@ gulp.task('fonts', function() {
 gulp.task('proto', function() {
 	return gulp.src('../protobuf/*.proto')
 		.pipe(gulp.dest('./public/resources/protobuf'));
+});
+
+gulp.task('lint', function() {
+    return gulp.src('./resources/js/**/*.js')
+        .pipe(jshint({ browserify : true }))
+        .pipe(jshint.reporter(stylish));
 });
 
 gulp.task('build', [

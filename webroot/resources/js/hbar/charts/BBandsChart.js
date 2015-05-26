@@ -1,4 +1,4 @@
-import LineChart from "./LineChart"
+import LineChart from "./LineChart";
 
 function BBandsChart(name, dataSource, symbol, indicator) {
 	LineChart.call(this, name, dataSource, symbol, indicator);

@@ -14,7 +14,6 @@ import SARChart from './hbar/charts/SARChart';
 import MACDChart from './hbar/charts/MACDChart';
 
 
-
 var hbar = new HBAR(document.getElementById("hbar"), function() 
 {
 	var ohlcChart = new OHLCChart("OHLCChart", hbar.protoSock, "BTCUSD:Bitfinex", "OHLCV");

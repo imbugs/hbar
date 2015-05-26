@@ -3,7 +3,7 @@
 import glob, os, re
 from subprocess import call
 
-JAVA_BASE_DIR = '../crypto-strats-server/src/main/java'
+JAVA_BASE_DIR = './crypto-strats-server/src/main/java'
 TYPE_DIR = JAVA_BASE_DIR + '/io/hbar/fx/data/series/types'
 
 TYPE_REGEX = re.compile('\s(\w*)\s*\{')

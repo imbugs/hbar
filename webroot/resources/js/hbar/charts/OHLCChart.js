@@ -16,7 +16,7 @@ OHLCChart.prototype = Object.create(BaseChart.prototype);
 OHLCChart.prototype.draw = function() {
 	BaseChart.prototype.draw.call(this);
 
-	if(this.data.length == 0) return;
+	if(this.data.length === 0) return;
 
 
 	for(var t = this.timeAxis.min; t <= this.timeAxis.max; t += this.timeAxis.period) {
@@ -39,6 +39,6 @@ OHLCChart.prototype.draw = function() {
 		this.drawRect(this.timeAxis.getMinPosition(t), this.valueAxis.getPosition(low), this.timeAxis.barSize - 1, this.valueAxis.getDelta(this.data[t].open, this.data[t].close));
 	}
 
-}
+};
 
 export default OHLCChart;

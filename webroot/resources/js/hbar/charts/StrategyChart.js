@@ -10,7 +10,7 @@ StrategyChart.prototype = Object.create(BaseChart.prototype);
 StrategyChart.prototype.draw = function() {
 	BaseChart.prototype.draw.call(this);
 
-	if(this.data.length == 0) return;
+	if(this.data.length === 0) return;
 
 	var volume = 0;
 	var price = 0;
@@ -18,7 +18,7 @@ StrategyChart.prototype.draw = function() {
 
 	for(var f in this.fields) {
 
-		for(t in this.data) {
+		for(var t in this.data) {
 
 			if(!this.data[t]) continue;
 
@@ -44,20 +44,20 @@ StrategyChart.prototype.draw = function() {
 	}
 	// if(Math.abs(volume) > 1e-5)
 		// console.log("Volume:", volume, "Price:", price);
-}
+};
 
 StrategyChart.prototype.getRadius = function(timestamp, field) {
-	return Math.max(3, (6 + Math.sqrt(Math.abs(this.data[timestamp].volume))) / 2)
-}
+	return Math.max(3, (6 + Math.sqrt(Math.abs(this.data[timestamp].volume))) / 2);
+};
 
 BaseChart.prototype.getLineColor = function(timestamp, field) {
 	return 0X666666;
-}
+};
 
 StrategyChart.prototype.getFillColor = function(timestamp, field) {
 	return this.data[timestamp].volume > 0 ? 0X066800 : 0Xce0000;
-}
+};
 
 StrategyChart.prototype.getFillAlpha = function(timestamp, field) {
 	return Math.min(0.75, Math.abs(this.data[timestamp].volume) / 20);
-}
+};

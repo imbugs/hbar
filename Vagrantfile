@@ -2,7 +2,7 @@ Vagrant.configure("2") do |config|
 
     config.vm.box = "ubuntu/trusty64"
 
-    config.vm.provision :shell, path: "script/bootstrap.sh"
+    config.vm.provision :shell, path: "scripts/bootstrap.sh", args:ENV['MYSQL_ROOT_PASS']||'vagrant'
 
 	config.vm.provider "virtualbox" do |v|
 		v.memory = 2048

@@ -15,7 +15,7 @@ LineChart.prototype = Object.create(BaseChart.prototype);
 LineChart.prototype.draw = function() {
 	BaseChart.prototype.draw.call(this);
 
-	if(this.data.length == 0) return;
+	if(this.data.length === 0) return;
 
 	var firstTime = this.timeAxis.min;
 	while(!this.data[firstTime] && firstTime <= this.timeAxis.max) firstTime += this.timeAxis.period;
@@ -32,6 +32,6 @@ LineChart.prototype.draw = function() {
 			this.lineTo(this.timeAxis.getPosition(t), this.valueAxis.getPosition(this.data[t][this.fields[f]]));
 		}
 	}
-}
+};
 
 export default LineChart;

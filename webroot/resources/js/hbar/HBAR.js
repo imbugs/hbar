@@ -24,7 +24,7 @@ function HBAR(container, onReady)
 		"HilbertTrendline" : ProtoBuf.loadProtoFile("./resources/protobuf/HilbertTrendlineSeries.proto").build("HilbertTrendlineSeries"),
 		"HilbertTrendMode" : ProtoBuf.loadProtoFile("./resources/protobuf/HilbertTrendModeSeries.proto").build("HilbertTrendModeSeries"),
 		"SarStrategy" : ProtoBuf.loadProtoFile("./resources/protobuf/StrategyStatsSeries.proto").build("StrategyStatsSeries"),
-	}
+	};
 
 	this.protoSock = new ProtoSock('http://localhost:8888/api', this.builders, function() {
 		this.chartStackManager = new ChartStackManager(container, this.protoSock);
@@ -87,40 +87,40 @@ function HBAR(container, onReady)
 HBAR.prototype.addChart = function(stack, chart) 
 {
 	this.chartStackManager.addChart(stack, chart);
-}
+};
 
 HBAR.prototype.setPeriod = function(period)
 {
 	this.chartStackManager.setPeriod(period);
-}
+};
 
 HBAR.prototype.setSpeed = function(speed)
 {
 	this.speed = speed;
-}
+};
 
 HBAR.prototype.simulate = function()
 {
 	this.play();
-}
+};
 
 HBAR.prototype.play = function() {
 	this.intervalId = setTimeout(function() {
 		this.tick();
 		this.play();
 	}.bind(this), 250);
-}
+};
 
 HBAR.prototype.stopSimulation = function()
 {
 	clearTimeout(this.intervalId);
-}
+};
 
 HBAR.prototype.tick = function()
 {
 	this.protoSock.tick(this.speed, function() {
 		this.chartStackManager.refreshLastTick();
 	}.bind(this));
-}
+};
 
 export default HBAR;

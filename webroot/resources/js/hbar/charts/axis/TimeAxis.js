@@ -32,31 +32,31 @@ TimeAxis.prototype.setPeriod = function(period, maxTime) {
 	this.bars = Math.floor(this.w / this.delta);
 	this.min = maxTime - this.bars * this.period;
 	this.max = this.min + this.period * this.bars;
-}
+};
 
 TimeAxis.prototype.getPosition = function(value) {
 	return this.getMinPosition(value) + Math.floor(this.barSize / 2);
-}
+};
 
 TimeAxis.prototype.getMinPosition = function(value) {
-	return this.getPeriod(value) * this.delta
-}
+	return this.getPeriod(value) * this.delta;
+};
 
 TimeAxis.prototype.getMaxPosition = function(value) {
 	return this.getMinPosition(value) + this.barSize;
-}
+};
 
 
 TimeAxis.prototype.getPeriod = function(value) {
 	return (value - this.min) / this.period;
-}
+};
 
 TimeAxis.prototype.resize = function(width, height) {
 	this.w = width;
 	this.h = height;
 	this.delta = this.barSize + this.barSpacing;
 	this.bars = Math.round(this.w / this.delta);
-}
+};
 
 TimeAxis.prototype.scroll = function(scrollX, scrollY) {
 	if(Math.abs(scrollX) > Math.abs(scrollY)) {
@@ -82,10 +82,10 @@ TimeAxis.prototype.scroll = function(scrollX, scrollY) {
 		this.min = mid - halfBars * this.period;
 		this.max = this.min + this.period * this.bars;
 	}
-}
+};
 
 TimeAxis.prototype.periodize = function(time) {
 	return Math.floor(time / this.period + 0.5) * this.period;
-}
+};
 
 export default TimeAxis;

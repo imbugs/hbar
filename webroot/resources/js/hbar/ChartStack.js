@@ -20,7 +20,7 @@ function ChartStack(container, timeAxis)
 		antialiasing : false,
 		transparent : true,
 		resolution : 1
-	}
+	};
 
 	this.renderer = PIXI.autoDetectRenderer(this.container.clientWidth, this.container.clientHeight, rendererOptions);
 	this.renderer.view.className += "hbar-chart";
@@ -47,7 +47,7 @@ ChartStack.prototype.addChart = function(chart)
 	this.chartContainer.addChild(chart);
 
 	this.draw();
-}
+};
 
 ChartStack.prototype.draw = function()
 {
@@ -59,7 +59,7 @@ ChartStack.prototype.draw = function()
 	}
 
 	this.render();
-}
+};
 
 ChartStack.prototype.refreshLastTick = function()
 {
@@ -67,12 +67,12 @@ ChartStack.prototype.refreshLastTick = function()
 	{
 		this.charts[i].refreshLastTick();
 	}
-}
+};
 
 ChartStack.prototype.render = function() 
 {
 	this.renderer.render(this.stage);
-}
+};
 
 
 ChartStack.prototype.scroll = function(scrollX, scrollY)
@@ -83,7 +83,7 @@ ChartStack.prototype.scroll = function(scrollX, scrollY)
 	}
 
 	this.draw();
-}
+};
 
 ChartStack.prototype.resize = function()
 {
@@ -103,21 +103,21 @@ ChartStack.prototype.resize = function()
 	}
 
 	this.draw();
-}
+};
 
 ChartStack.prototype.setVerticalCrosshair = function(x)
 {
 	this.crosshairPoint.x = x;
 
 	this.drawCrosshair();
-}
+};
 
 ChartStack.prototype.setHorizontalCrosshair = function(y)
 {
 	this.crosshairPoint.y = y;
 
 	this.drawCrosshair();
-}
+};
 
 ChartStack.prototype.drawCrosshair = function()
 {
@@ -130,7 +130,7 @@ ChartStack.prototype.drawCrosshair = function()
 
 	this.crosshair.moveTo(0, this.crosshairPoint.y);
 	this.crosshair.lineTo(this.renderer.width, this.crosshairPoint.y);
-}
+};
 
 ChartStack.prototype.getLow = function() 
 {
@@ -142,7 +142,7 @@ ChartStack.prototype.getLow = function()
 	}
 
 	return low;
-}
+};
 
 ChartStack.prototype.getHigh = function() 
 {
@@ -155,7 +155,7 @@ ChartStack.prototype.getHigh = function()
 	}
 
 	return high;
-}
+};
 
 export default ChartStack;
 

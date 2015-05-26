@@ -43,7 +43,7 @@ ProtoSock.prototype.getData = function(request, cb)
 	}
 
 	return seriesData.data;
-}
+};
 
 ProtoSock.prototype.tick = function(steps, cb)
 {
@@ -51,7 +51,7 @@ ProtoSock.prototype.tick = function(steps, cb)
 	{
 		if(cb) cb();
 	}.bind(this));
-}
+};
 
 ProtoSock.prototype.refreshLastTick = function(request, cb)
 {
@@ -68,7 +68,7 @@ ProtoSock.prototype.refreshLastTick = function(request, cb)
 	request.endTime = seriesData.max;
 
 	this.sendDataRequest(request, seriesData, cb);
-}
+};
 
 ProtoSock.prototype.sendDataRequest = function(request, seriesData, cb)
 {
@@ -85,14 +85,14 @@ ProtoSock.prototype.sendDataRequest = function(request, seriesData, cb)
 
 			if(cb) cb();
 		}.bind(this));
-}
+};
 
 ProtoSock.prototype.sendMaxTimeRequest = function(cb) {
 	this.eventBus.send('maxTime', {}, function(data)
 		{
 			if(cb) cb(data.timestamp);
 		}.bind(this));
-}
+};
 
 ProtoSock.prototype.getMin = function(request, fields)
 {
@@ -105,7 +105,7 @@ ProtoSock.prototype.getMin = function(request, fields)
 			if(seriesData[t]) low = Math.min(low, seriesData[t][fields[f]]);
 
 	return low;
-}
+};
 
 ProtoSock.prototype.getMax = function(request, fields)
 {
@@ -118,14 +118,14 @@ ProtoSock.prototype.getMax = function(request, fields)
 			if(seriesData[t]) high = Math.max(high, seriesData[t][fields[f]]);
 
 	return high;
-}
+};
 
 ProtoSock.prototype.getSymbolData = function(symbol)
 {
 	if(!this.cache[symbol]) this.cache[symbol] = {};
 
 	return this.cache[symbol];
-}
+};
 
 ProtoSock.prototype.getIndicatorData = function(symbol, indicator)
 {
@@ -134,7 +134,7 @@ ProtoSock.prototype.getIndicatorData = function(symbol, indicator)
 	if(!symbolData[indicator]) symbolData[indicator] = {};
 
 	return symbolData[indicator];
-}
+};
 
 ProtoSock.prototype.getPeriodData = function(symbol, indicator, period)
 {
@@ -143,7 +143,7 @@ ProtoSock.prototype.getPeriodData = function(symbol, indicator, period)
 	if(!indicatorData[period]) indicatorData[period] = {};
 
 	return indicatorData[period];
-}
+};
 
 ProtoSock.prototype.getSeriesData = function(symbol, indicator, period, optionsHash)
 {
@@ -156,12 +156,12 @@ ProtoSock.prototype.getSeriesData = function(symbol, indicator, period, optionsH
 	};
 
 	return periodData[optionsHash];
-}
+};
 
 ProtoSock.prototype.hashCode = function(obj)
 {
 	var s = JSON.stringify(obj);
-	return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);              
-}
+	return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a;},0);
+};
 
 export default ProtoSock;

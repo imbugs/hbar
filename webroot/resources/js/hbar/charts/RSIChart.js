@@ -26,19 +26,19 @@ RSIChart.prototype.draw = function() {
 	this.beginFill(this.valueColor, 0.1);
 
 	this.drawRect(-1, lowLine, this.timeAxis.w + 1, this.valueAxis.getDelta(this.lowValue, this.highValue));
-}
+};
 
 RSIChart.prototype.getLow = function() {
 	return 0;
-}
+};
 
 RSIChart.prototype.getHigh = function() {
 	return 100;
-}
+};
 
 RSIChart.prototype.setValueAxis = function(valueAxis) {
 	LineChart.prototype.setValueAxis.call(this, valueAxis);
 	this.valueAxis.padding = 0;
-}
+};
 
 export default RSIChart;

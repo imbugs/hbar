@@ -17,14 +17,14 @@ VolumeChart.prototype = Object.create(HistogramChart.prototype);
 VolumeChart.prototype.setValueAxis = function(valueAxis) {
 	HistogramChart.prototype.setValueAxis.call(this, valueAxis);
 	this.valueAxis.padding = 0;
-}
+};
 
 VolumeChart.prototype.getLow = function() {
 	return 0;
-}
+};
 
 VolumeChart.prototype.getHigh = function() {
 	return 10 * HistogramChart.prototype.getHigh.call(this);
-}
+};
 
 export default VolumeChart;

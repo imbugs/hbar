@@ -13,7 +13,7 @@ HistogramChart.prototype = Object.create(BaseChart.prototype);
 HistogramChart.prototype.draw = function() {
 	BaseChart.prototype.draw.call(this);
 
-	if(this.data.length == 0) return;
+	if(this.data.length === 0) return;
 
 	for(var f in this.fields) {
 		this.lineStyle(1, this[this.fields[f] + "Color"], 0.5);
@@ -33,6 +33,6 @@ HistogramChart.prototype.draw = function() {
 			}
 		}
 	}
-}
+};
 
 export default HistogramChart;
