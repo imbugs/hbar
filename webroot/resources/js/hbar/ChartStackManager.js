@@ -76,6 +76,11 @@ ChartStackManager.prototype.setPeriod = function(period, timestamp)
 	}
 };
 
+ChartStackManager.prototype.getPeriod = function()
+{
+	return this.timeAxis.getPeriod();
+};
+
 ChartStackManager.prototype.refreshLastTick = function()
 {
 	for(var stack in this.stacks)

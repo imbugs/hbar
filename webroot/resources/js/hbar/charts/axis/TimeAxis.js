@@ -34,12 +34,16 @@ TimeAxis.prototype.setPeriod = function(period, maxTime) {
 	this.max = this.min + this.period * this.bars;
 };
 
+TimeAxis.prototype.getPeriod = function() {
+	return this.period;
+};
+
 TimeAxis.prototype.getPosition = function(value) {
 	return this.getMinPosition(value) + Math.floor(this.barSize / 2);
 };
 
 TimeAxis.prototype.getMinPosition = function(value) {
-	return this.getPeriod(value) * this.delta;
+	return this.getPeriodOffset(value) * this.delta;
 };
 
 TimeAxis.prototype.getMaxPosition = function(value) {
@@ -47,7 +51,7 @@ TimeAxis.prototype.getMaxPosition = function(value) {
 };
 
 
-TimeAxis.prototype.getPeriod = function(value) {
+TimeAxis.prototype.getPeriodOffset = function(value) {
 	return (value - this.min) / this.period;
 };
 

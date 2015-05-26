@@ -98,8 +98,8 @@ var hbar = new _hbarHBAR2['default'](document.getElementById('hbar'), function (
 	hbar.addChart('macd-chart', macdChart);
 
 	$('#hbar-ui .period-btn-group .btn').click(function (event) {
-		$('#hbar-ui .period-btn-group .btn').removeClass('disabled');
-		$(event.target).toggleClass('disabled');
+		$('#hbar-ui .period-btn-group .btn').removeClass('disabled btn-primary');
+		$(event.target).toggleClass('disabled btn-primary');
 		hbar.setPeriod(parseInt($(event.target).attr('data-period')));
 	});
 
@@ -124,6 +124,8 @@ var hbar = new _hbarHBAR2['default'](document.getElementById('hbar'), function (
 		$(event.target).toggleClass('disabled');
 		hbar.setSpeed(parseInt($(event.target).attr('data-speed')));
 	});
+
+	$('#hbar-ui .period-btn-group .btn[data-period^=\'' + hbar.getPeriod() + '\']').toggleClass('disabled btn-primary');
 });
 
 },{"./hbar/HBAR":205,"./hbar/charts/BBandsChart":206,"./hbar/charts/LineChart":210,"./hbar/charts/MACDChart":211,"./hbar/charts/MAChart":212,"./hbar/charts/OHLCChart":213,"./hbar/charts/RSIChart":215,"./hbar/charts/SARChart":216,"./hbar/charts/VolumeChart":217,"./lib/extend/jquery-ui-reversible-resizable":223,"bootstrap":2,"jquery":15,"jquery-ui":14}],2:[function(require,module,exports){
@@ -67098,6 +67100,10 @@ ChartStackManager.prototype.setPeriod = function (period, timestamp) {
 	}
 };
 
+ChartStackManager.prototype.getPeriod = function () {
+	return this.timeAxis.getPeriod();
+};
+
 ChartStackManager.prototype.refreshLastTick = function () {
 	for (var stack in this.stacks) {
 		this.stacks[stack].refreshLastTick();
@@ -67225,6 +67231,10 @@ HBAR.prototype.addChart = function (stack, chart) {
 
 HBAR.prototype.setPeriod = function (period) {
 	this.chartStackManager.setPeriod(period);
+};
+
+HBAR.prototype.getPeriod = function () {
+	return this.chartStackManager.getPeriod();
 };
 
 HBAR.prototype.setSpeed = function (speed) {
@@ -67457,7 +67467,7 @@ HistogramChart.prototype = Object.create(_BaseChart2["default"].prototype);
 HistogramChart.prototype.draw = function () {
 	_BaseChart2["default"].prototype.draw.call(this);
 
-	if (this.data.length == 0) return;
+	if (this.data.length === 0) return;
 
 	for (var f in this.fields) {
 		this.lineStyle(1, this[this.fields[f] + "Color"], 0.5);
@@ -67506,7 +67516,7 @@ LineChart.prototype = Object.create(_BaseChart2["default"].prototype);
 LineChart.prototype.draw = function () {
 	_BaseChart2["default"].prototype.draw.call(this);
 
-	if (this.data.length == 0) return;
+	if (this.data.length === 0) return;
 
 	var firstTime = this.timeAxis.min;
 	while (!this.data[firstTime] && firstTime <= this.timeAxis.max) firstTime += this.timeAxis.period;
@@ -67635,7 +67645,7 @@ OHLCChart.prototype = Object.create(_BaseChart2["default"].prototype);
 OHLCChart.prototype.draw = function () {
 	_BaseChart2["default"].prototype.draw.call(this);
 
-	if (this.data.length == 0) return;
+	if (this.data.length === 0) return;
 
 	for (var t = this.timeAxis.min; t <= this.timeAxis.max; t += this.timeAxis.period) {
 		if (!this.data[t]) continue;
@@ -67688,7 +67698,7 @@ PointChart.prototype = Object.create(_BaseChart2["default"].prototype);
 PointChart.prototype.draw = function () {
 	_BaseChart2["default"].prototype.draw.call(this);
 
-	if (this.data.length == 0) return;
+	if (this.data.length === 0) return;
 
 	for (var f in this.fields) {
 		for (var t = this.timeAxis.min + this.timeAxis.period; t <= this.timeAxis.max; t += this.timeAxis.period) {
@@ -67935,19 +67945,23 @@ TimeAxis.prototype.setPeriod = function (period, maxTime) {
 	this.max = this.min + this.period * this.bars;
 };
 
+TimeAxis.prototype.getPeriod = function () {
+	return this.period;
+};
+
 TimeAxis.prototype.getPosition = function (value) {
 	return this.getMinPosition(value) + Math.floor(this.barSize / 2);
 };
 
 TimeAxis.prototype.getMinPosition = function (value) {
-	return this.getPeriod(value) * this.delta;
+	return this.getPeriodOffset(value) * this.delta;
 };
 
 TimeAxis.prototype.getMaxPosition = function (value) {
 	return this.getMinPosition(value) + this.barSize;
 };
 
-TimeAxis.prototype.getPeriod = function (value) {
+TimeAxis.prototype.getPeriodOffset = function (value) {
 	return (value - this.min) / this.period;
 };
 

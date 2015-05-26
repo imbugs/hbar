@@ -75,8 +75,8 @@ var hbar = new HBAR(document.getElementById("hbar"), function()
 
 
 	$("#hbar-ui .period-btn-group .btn").click(function(event) {
-		$("#hbar-ui .period-btn-group .btn").removeClass('disabled');
-		$(event.target).toggleClass('disabled');
+		$("#hbar-ui .period-btn-group .btn").removeClass('disabled btn-primary');
+		$(event.target).toggleClass('disabled btn-primary');
 		hbar.setPeriod(parseInt($(event.target).attr('data-period')));
 	});
 
@@ -101,6 +101,9 @@ var hbar = new HBAR(document.getElementById("hbar"), function()
 		$(event.target).toggleClass('disabled');
 		hbar.setSpeed(parseInt($(event.target).attr('data-speed')));
 	});
+
+
+	$("#hbar-ui .period-btn-group .btn[data-period^='" + hbar.getPeriod() + "']").toggleClass('disabled btn-primary');
 	
 	
 

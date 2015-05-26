@@ -94,6 +94,11 @@ HBAR.prototype.setPeriod = function(period)
 	this.chartStackManager.setPeriod(period);
 };
 
+HBAR.prototype.getPeriod = function()
+{
+	return this.chartStackManager.getPeriod();
+};
+
 HBAR.prototype.setSpeed = function(speed)
 {
 	this.speed = speed;

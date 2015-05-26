@@ -44,6 +44,7 @@ gulp.task('lint', function() {
 });
 
 gulp.task('build', [
+	'lint',
 	'clean',
 	'sass',
 	'fonts',
