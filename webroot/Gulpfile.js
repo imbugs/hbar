@@ -38,7 +38,7 @@ gulp.task('proto', function() {
 });
 
 gulp.task('lint', function() {
-    return gulp.src('./resources/js/**/*.js')
+    return gulp.src(['./resources/js/**/*.js', '!./resources/js/lib/**/*.js'])
         .pipe(jshint({ browserify : true }))
         .pipe(jshint.reporter(stylish));
 });
