@@ -67181,7 +67181,7 @@ function HBAR(container, onReady) {
 		'HilbertTrendMode': ProtoBuf.loadProtoFile('./resources/protobuf/HilbertTrendModeSeries.proto').build('HilbertTrendModeSeries'),
 		'SarStrategy': ProtoBuf.loadProtoFile('./resources/protobuf/StrategyStatsSeries.proto').build('StrategyStatsSeries') };
 
-	this.protoSock = new _dataProtoSock2['default']('http://localhost:8888/api', this.builders, (function () {
+	this.protoSock = new _dataProtoSock2['default']('http://charts.hbar.io:8888/api', this.builders, (function () {
 		this.chartStackManager = new _ChartStackManager2['default'](container, this.protoSock);
 
 		container.addEventListener('mousewheel', (function (event) {
