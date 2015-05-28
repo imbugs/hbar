@@ -26,7 +26,7 @@ function HBAR(container, onReady)
 		"SarStrategy" : ProtoBuf.loadProtoFile("./resources/protobuf/StrategyStatsSeries.proto").build("StrategyStatsSeries"),
 	};
 
-	this.protoSock = new ProtoSock('http://localhost:8888/api', this.builders, function() {
+	this.protoSock = new ProtoSock('http://charts.hbar.io:8888/api', this.builders, function() {
 		this.chartStackManager = new ChartStackManager(container, this.protoSock);
 
 		container.addEventListener('mousewheel',

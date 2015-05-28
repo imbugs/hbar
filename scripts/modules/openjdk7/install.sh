@@ -1,3 +1,3 @@
 #!/bin/bash
 
-apt-get install openjdk-7-jdk
+apt-get -y install openjdk-7-jdk
