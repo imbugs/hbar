@@ -34,7 +34,6 @@ ChartStackManager.prototype.addChart = function(stack, chart)
 		for(var s in this.stacks)
 		{
 			this.stacks[s].container.style.height = height;
-			this.stacks[s].resize();
 		}
 
 		this.container.appendChild(div);
@@ -64,6 +63,8 @@ ChartStackManager.prototype.addChart = function(stack, chart)
 	}
 
 	this.stacks[stack].addChart(chart);
+
+	this.resize();
 };
 
 ChartStackManager.prototype.setPeriod = function(period, timestamp)

@@ -63,15 +63,17 @@ var hbar = new HBAR(document.getElementById("hbar"), function()
 	hbar.addChart("hilbert-chart", hilbertPhaseChart);
 	hbar.addChart("hilbert-chart", hilbertTrendline);
 
+	var macdChart = new MACDChart("MACDChart", hbar.protoSock, "BTCUSD:Bitfinex", "MACD");
+
+	hbar.addChart("macd-chart", macdChart);
+
 
 	var rsiChart = new RSIChart("RSIChart", hbar.protoSock, "BTCUSD:Bitfinex", "RSI");
 
 	hbar.addChart("rsi-chart", rsiChart);
 
 
-	var macdChart = new MACDChart("MACDChart", hbar.protoSock, "BTCUSD:Bitfinex", "MACD");
-
-	hbar.addChart("macd-chart", macdChart);
+	
 
 
 	$("#hbar-ui .period-btn-group .btn").click(function(event) {

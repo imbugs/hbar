@@ -29,7 +29,7 @@ TimeAxis.prototype.setPeriod = function(period, maxTime) {
 		}
 	} else maxTime = this.periodize(this.maxTime);
 	
-	this.bars = Math.floor(this.w / this.delta);
+	this.bars = Math.floor(this.parentW / this.delta);
 	this.min = maxTime - this.bars * this.period;
 	this.max = this.min + this.period * this.bars;
 };
@@ -56,10 +56,10 @@ TimeAxis.prototype.getPeriodOffset = function(value) {
 };
 
 TimeAxis.prototype.resize = function(width, height) {
-	this.w = width;
-	this.h = height;
+	this.parentW = width;
+	this.parentH = height;
 	this.delta = this.barSize + this.barSpacing;
-	this.bars = Math.round(this.w / this.delta);
+	this.bars = Math.round(this.parentW / this.delta);
 };
 
 TimeAxis.prototype.scroll = function(scrollX, scrollY) {
@@ -78,7 +78,7 @@ TimeAxis.prototype.scroll = function(scrollX, scrollY) {
 		this.barSize = Math.max(1, this.barSize * (1 + scrollY * this.zoomSpeed));
 
 		this.delta = this.barSize + this.barSpacing;
-		this.bars = Math.round(this.w / this.delta);
+		this.bars = Math.round(this.parentW / this.delta);
 
 		var halfBars = Math.round(this.bars / 2);
 		var mid = this.periodize(this.min + (this.max - this.min) / 2);

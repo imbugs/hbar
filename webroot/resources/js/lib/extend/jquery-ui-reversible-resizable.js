@@ -35,7 +35,7 @@ $.ui.plugin.add("resizable", "alsoResizeReverse", {
       os = that.originalSize,
       op = that.originalPosition,
       delta = {
-        height: (that.size.height - os.height) || 0,
+        height: (that.size.height - os.height - 2) || 0,
         width: (that.size.width - os.width) || 0,
         top: (that.position.top - op.top) || 0,
         left: (that.position.left - op.left) || 0
@@ -43,15 +43,21 @@ $.ui.plugin.add("resizable", "alsoResizeReverse", {
 
       _alsoResizeReverse = function(exp, c) {
         $(exp).each(function() {
+          var cssOpts = [];
+
+          if(o.handles && (o.handles.indexOf("s") >= 0 || o.handles.indexOf("n") >= 0))
+            cssOpts = cssOpts.concat(ui.originalElement[0].length ? [ "height" ] : [ "height", "top" ]);
+          
+          if(o.handles && (o.handles.indexOf("e") >= 0 || o.handles.indexOf("w") >= 0))
+            cssOpts = cssOpts.concat(ui.originalElement[0].length ? [ "width" ] : [ "width", "left" ]);
+
           var el = $(this),
             start = $(this).data("ui-resizable-alsoResizeReverse"),
             style = {},
-            css = c && c.length ?
-            c :
-            el.parents(ui.originalElement[0]).length ? ["width", "height"] : ["width", "height", "top", "left"];
+            css = c && c.length ? c : cssOpts;
 
           $.each(css, function(i, prop) {
-            var sum = (start[prop] || 0) - (delta[prop] || 0) + 2;
+            var sum = (start[prop] || 0) - (delta[prop] || 0);
             if (sum && sum >= 0) {
               style[prop] = sum || null;
             }

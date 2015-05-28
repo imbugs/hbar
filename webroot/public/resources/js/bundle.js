@@ -89,13 +89,13 @@ var hbar = new _hbarHBAR2['default'](document.getElementById('hbar'), function (
 	hbar.addChart('hilbert-chart', hilbertPhaseChart);
 	hbar.addChart('hilbert-chart', hilbertTrendline);
 
-	var rsiChart = new _hbarChartsRSIChart2['default']('RSIChart', hbar.protoSock, 'BTCUSD:Bitfinex', 'RSI');
-
-	hbar.addChart('rsi-chart', rsiChart);
-
 	var macdChart = new _hbarChartsMACDChart2['default']('MACDChart', hbar.protoSock, 'BTCUSD:Bitfinex', 'MACD');
 
 	hbar.addChart('macd-chart', macdChart);
+
+	var rsiChart = new _hbarChartsRSIChart2['default']('RSIChart', hbar.protoSock, 'BTCUSD:Bitfinex', 'RSI');
+
+	hbar.addChart('rsi-chart', rsiChart);
 
 	$('#hbar-ui .period-btn-group .btn').click(function (event) {
 		$('#hbar-ui .period-btn-group .btn').removeClass('disabled btn-primary');
@@ -66884,6 +66884,8 @@ var _chartsAxisValueAxis2 = _interopRequireDefault(_chartsAxisValueAxis);
 var PIXI = require('pixi.js');
 
 function ChartStack(container, timeAxis) {
+	this.displayResolution = window.devicePixelRatio;
+
 	this.container = container;
 
 	this.stage = new PIXI.Container();
@@ -66899,7 +66901,7 @@ function ChartStack(container, timeAxis) {
 	var rendererOptions = {
 		antialiasing: false,
 		transparent: true,
-		resolution: 1
+		resolution: this.displayResolution
 	};
 
 	this.renderer = PIXI.autoDetectRenderer(this.container.clientWidth, this.container.clientHeight, rendererOptions);
@@ -66910,6 +66912,8 @@ function ChartStack(container, timeAxis) {
 	this.timeAxis = timeAxis;
 
 	this.valueAxis = new _chartsAxisValueAxis2['default'](this.renderer.width, this.renderer.height, this.paddingY);
+
+	this.stage.addChild(this.valueAxis);
 
 	this.charts = [];
 }
@@ -66929,6 +66933,7 @@ ChartStack.prototype.addChart = function (chart) {
 
 ChartStack.prototype.draw = function () {
 	this.valueAxis.setMinMax(this.getLow(), this.getHigh());
+	this.valueAxis.draw();
 
 	for (var i = 0; i < this.charts.length; i++) {
 		this.charts[i].draw();
@@ -67065,7 +67070,6 @@ ChartStackManager.prototype.addChart = function (stack, chart) {
 
 		for (var s in this.stacks) {
 			this.stacks[s].container.style.height = height;
-			this.stacks[s].resize();
 		}
 
 		this.container.appendChild(div);
@@ -67090,6 +67094,8 @@ ChartStackManager.prototype.addChart = function (stack, chart) {
 	}
 
 	this.stacks[stack].addChart(chart);
+
+	this.resize();
 };
 
 ChartStackManager.prototype.setPeriod = function (period, timestamp) {
@@ -67688,7 +67694,7 @@ function PointChart(name, dataSource, symbol, indicator) {
 	_BaseChart2["default"].call(this, name, dataSource, symbol, indicator);
 
 	this.valueLineColor = 43571;
-	this.valueFillColor = 13421772;
+	this.valueFillColor = 16777215;
 	this.valueRadius = 1;
 }
 
@@ -67769,7 +67775,7 @@ RSIChart.prototype.draw = function () {
 	this.lineStyle(1, this.valueColor, 1);
 	this.beginFill(this.valueColor, 0.1);
 
-	this.drawRect(-1, lowLine, this.timeAxis.w + 1, this.valueAxis.getDelta(this.lowValue, this.highValue));
+	this.drawRect(-1, lowLine, this.timeAxis.parentW + 1, this.valueAxis.getDelta(this.lowValue, this.highValue));
 };
 
 RSIChart.prototype.getLow = function () {
@@ -67867,8 +67873,8 @@ var PIXI = require('pixi.js');
 function BaseAxis(width, height) {
 	PIXI.Graphics.call(this);
 
-	this.w = width;
-	this.h = height;
+	this.parentW = width;
+	this.parentH = height;
 
 	this.min = 0;
 	this.max = 0;
@@ -67878,8 +67884,8 @@ BaseAxis.constructor = BaseAxis;
 BaseAxis.prototype = Object.create(PIXI.Graphics.prototype);
 
 BaseAxis.prototype.resize = function (width, height) {
-	this.w = width;
-	this.h = height;
+	this.parentW = width;
+	this.parentH = height;
 };
 
 BaseAxis.prototype.getPosition = function (value) {
@@ -67893,6 +67899,10 @@ BaseAxis.prototype.getDelta = function (value1, value2) {
 BaseAxis.prototype.setMinMax = function (min, max) {
 	this.min = min;
 	this.max = max;
+};
+
+BaseAxis.prototype.draw = function () {
+	this.clear();
 };
 
 exports['default'] = BaseAxis;
@@ -67940,7 +67950,7 @@ TimeAxis.prototype.setPeriod = function (period, maxTime) {
 		}
 	} else maxTime = this.periodize(this.maxTime);
 
-	this.bars = Math.floor(this.w / this.delta);
+	this.bars = Math.floor(this.parentW / this.delta);
 	this.min = maxTime - this.bars * this.period;
 	this.max = this.min + this.period * this.bars;
 };
@@ -67966,10 +67976,10 @@ TimeAxis.prototype.getPeriodOffset = function (value) {
 };
 
 TimeAxis.prototype.resize = function (width, height) {
-	this.w = width;
-	this.h = height;
+	this.parentW = width;
+	this.parentH = height;
 	this.delta = this.barSize + this.barSpacing;
-	this.bars = Math.round(this.w / this.delta);
+	this.bars = Math.round(this.parentW / this.delta);
 };
 
 TimeAxis.prototype.scroll = function (scrollX, scrollY) {
@@ -67988,7 +67998,7 @@ TimeAxis.prototype.scroll = function (scrollX, scrollY) {
 		this.barSize = Math.max(1, this.barSize * (1 + scrollY * this.zoomSpeed));
 
 		this.delta = this.barSize + this.barSpacing;
-		this.bars = Math.round(this.w / this.delta);
+		this.bars = Math.round(this.parentW / this.delta);
 
 		var halfBars = Math.round(this.bars / 2);
 		var mid = this.periodize(this.min + (this.max - this.min) / 2);
@@ -68024,13 +68034,56 @@ function ValueAxis(width, height, padding) {
 	this.parentValueType = "price";
 
 	this.padding = padding;
+
+	this.w = 50;
+
+	this.INCREMENTS = [100, 50, 25, 20, 10, 5, 2, 1, 0.5, 0.25, 0.1];
+	this.FONT_SIZE = 10;
+	this.TICK_SIZE = 2;
+	this.PADDING_LEFT = 10;
 }
 
 ValueAxis.constructor = ValueAxis;
 ValueAxis.prototype = Object.create(_BaseAxis2["default"].prototype);
 
+ValueAxis.prototype.draw = function () {
+	_BaseAxis2["default"].prototype.draw.call(this);
+
+	while (this.children.length > 0) this.removeChild(this.getChildAt(0));
+
+	this.lineStyle(1, 0, 1);
+	this.beginFill(16777215, 0.5);
+	this.drawRect(this.parentW - this.w, -1, this.w, this.parentH + 1);
+
+	var delta = this.max - this.min;
+
+	var bestInc = this.INCREMENTS[0];
+
+	var maxIncs = this.parentH / 20;
+
+	for (var i = 1; i < this.INCREMENTS.length; i++) {
+		if (delta / this.INCREMENTS[i] < maxIncs) bestInc = this.INCREMENTS[i];
+	}
+
+	for (var value = Math.ceil((this.min + (this.padding === 0 ? 1 : 0)) / bestInc) * bestInc; value < this.max; value += bestInc) {
+		var text = new PIXI.Text(value, {
+			font: "10px Arial",
+			fill: "black",
+			dropShadow: true,
+			dropShadowDistance: 1,
+			dropShadowColor: 16777215
+		});
+		text.y = this.getPosition(value) - (this.FONT_SIZE / 2 + 2);
+		text.x = this.parentW - this.w + this.PADDING_LEFT;
+		this.addChild(text);
+
+		this.moveTo(this.parentW - this.w - this.TICK_SIZE, this.getPosition(value));
+		this.lineTo(this.parentW - this.w + this.TICK_SIZE, this.getPosition(value));
+	}
+};
+
 ValueAxis.prototype.getPosition = function (value) {
-	return this.h - (value - this.min) * this.getScale() - this.padding;
+	return this.parentH - (value - this.min) * this.getScale() - this.padding;
 };
 
 ValueAxis.prototype.getDelta = function (value1, value2, preserveSign) {
@@ -68038,7 +68091,7 @@ ValueAxis.prototype.getDelta = function (value1, value2, preserveSign) {
 };
 
 ValueAxis.prototype.getScale = function () {
-	return (this.h - 2 * this.padding) / (this.max - this.min);
+	return (this.parentH - 2 * this.padding) / (this.max - this.min);
 };
 
 exports["default"] = ValueAxis;
@@ -68259,20 +68312,26 @@ $.ui.plugin.add("resizable", "alsoResizeReverse", {
         os = that.originalSize,
         op = that.originalPosition,
         delta = {
-      height: that.size.height - os.height || 0,
+      height: that.size.height - os.height - 2 || 0,
       width: that.size.width - os.width || 0,
       top: that.position.top - op.top || 0,
       left: that.position.left - op.left || 0
     },
         _alsoResizeReverse = function _alsoResizeReverse(exp, c) {
       $(exp).each(function () {
+        var cssOpts = [];
+
+        if (o.handles && (o.handles.indexOf("s") >= 0 || o.handles.indexOf("n") >= 0)) cssOpts = cssOpts.concat(ui.originalElement[0].length ? ["height"] : ["height", "top"]);
+
+        if (o.handles && (o.handles.indexOf("e") >= 0 || o.handles.indexOf("w") >= 0)) cssOpts = cssOpts.concat(ui.originalElement[0].length ? ["width"] : ["width", "left"]);
+
         var el = $(this),
             start = $(this).data("ui-resizable-alsoResizeReverse"),
             style = {},
-            css = c && c.length ? c : el.parents(ui.originalElement[0]).length ? ["width", "height"] : ["width", "height", "top", "left"];
+            css = c && c.length ? c : cssOpts;
 
         $.each(css, function (i, prop) {
-          var sum = (start[prop] || 0) - (delta[prop] || 0) + 2;
+          var sum = (start[prop] || 0) - (delta[prop] || 0);
           if (sum && sum >= 0) {
             style[prop] = sum || null;
           }

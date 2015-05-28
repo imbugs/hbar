@@ -4,6 +4,8 @@ var PIXI = require('pixi.js');
 
 function ChartStack(container, timeAxis) 
 {
+	this.displayResolution = window.devicePixelRatio;
+
 	this.container = container;
 
 	this.stage = new PIXI.Container();
@@ -19,8 +21,9 @@ function ChartStack(container, timeAxis)
 	var rendererOptions = {
 		antialiasing : false,
 		transparent : true,
-		resolution : 1
+		resolution : this.displayResolution
 	};
+
 
 	this.renderer = PIXI.autoDetectRenderer(this.container.clientWidth, this.container.clientHeight, rendererOptions);
 	this.renderer.view.className += "hbar-chart";
@@ -30,6 +33,8 @@ function ChartStack(container, timeAxis)
 	this.timeAxis = timeAxis;
 
 	this.valueAxis = new ValueAxis(this.renderer.width, this.renderer.height, this.paddingY);
+
+	this.stage.addChild(this.valueAxis);
 
 	this.charts = [];
 }
@@ -52,6 +57,7 @@ ChartStack.prototype.addChart = function(chart)
 ChartStack.prototype.draw = function()
 {
 	this.valueAxis.setMinMax(this.getLow(), this.getHigh());
+	this.valueAxis.draw();
 
 	for(var i = 0; i < this.charts.length; i++)
 	{

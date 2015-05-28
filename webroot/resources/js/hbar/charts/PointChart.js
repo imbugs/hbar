@@ -4,7 +4,7 @@ function PointChart(name, dataSource, symbol, indicator) {
 	BaseChart.call(this, name, dataSource, symbol, indicator);
 
 	this.valueLineColor = 0x00AA33;
-	this.valueFillColor = 0xCCCCCC;
+	this.valueFillColor = 0xFFFFFF;
 	this.valueRadius = 1;
 }
 

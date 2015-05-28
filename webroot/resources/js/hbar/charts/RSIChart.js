@@ -25,7 +25,7 @@ RSIChart.prototype.draw = function() {
 	this.lineStyle(1, this.valueColor, 1);
 	this.beginFill(this.valueColor, 0.1);
 
-	this.drawRect(-1, lowLine, this.timeAxis.w + 1, this.valueAxis.getDelta(this.lowValue, this.highValue));
+	this.drawRect(-1, lowLine, this.timeAxis.parentW + 1, this.valueAxis.getDelta(this.lowValue, this.highValue));
 };
 
 RSIChart.prototype.getLow = function() {
