@@ -51,6 +51,11 @@ gulp.task('fonts', function() {
 		.pipe(gulp.dest('./public/resources/fonts'));
 });
 
+gulp.task('images', function() {
+	return gulp.src('./resources/img/**/*.{jpg,png}')
+		.pipe(gulp.dest('./public/resources/img'));
+});
+
 gulp.task('proto', function() {
 	return gulp.src('../protobuf/*.proto')
 		.pipe(gulp.dest('./public/resources/protobuf'));
@@ -67,6 +72,7 @@ gulp.task('build', [
 	'clean',
 	'sass',
 	'fonts',
+	'images',
 	'proto',
 	'browserify'
 ]);

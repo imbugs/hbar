@@ -7029,6 +7029,11 @@ body, html {
   overflow: hidden;
   background-color: #FFFFFF; }
 
+#hbar-logo {
+  height: 40px;
+  margin-top: -11px;
+  float: left; }
+
 #hbar-ui {
   position: absolute;
   top: 0px;
