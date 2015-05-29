@@ -4,7 +4,7 @@ function LineChart(name, dataSource, symbol, indicator) {
 	BaseChart.call(this, name, dataSource, symbol, indicator);
 
 	this.valueColor = 0x0099FF;
-	this.lineThickness = 2;
+	this.lineThickness = 1.5;
 	this.lineAlpha = 0.5;
 }
 

@@ -67,6 +67,20 @@ ChartStackManager.prototype.addChart = function(stack, chart)
 	this.resize();
 };
 
+ChartStackManager.prototype.setStackSizeRatios = function(ratios) {
+	if(Object.keys(ratios).length != Object.keys(this.stacks).length) return;
+
+	var sum = Object.keys(ratios).reduce(function(p, k) { return p + ratios[k]; }, 0);
+
+	for(var s in this.stacks)
+	{
+		var height = (100 * ratios[s] / sum) + "%";
+		this.stacks[s].container.style.height = height;
+	}
+
+	this.resize();
+};
+
 ChartStackManager.prototype.setPeriod = function(period, timestamp)
 {
 	this.timeAxis.setPeriod(period, timestamp);

@@ -63,6 +63,22 @@ var hbar = new _hbarHBAR2['default'](document.getElementById('hbar'), function (
 
 	var sarChart = new _hbarChartsSARChart2['default']('SARChart', hbar.protoSock, 'BTCUSD:Bitfinex', 'SAR');
 
+	hbar.addChart('ohlc-chart', ohlcChart);
+	hbar.addChart('ohlc-chart', volumeChart);
+	// hbar.addChart("ohlc-chart", smaChart);
+	// hbar.addChart("ohlc-chart", emaChart);
+	// hbar.addChart("ohlc-chart", linearRegChart);
+	hbar.addChart('ohlc-chart', bbandsChart);
+	hbar.addChart('ohlc-chart', sarChart);
+
+	var macdChart = new _hbarChartsMACDChart2['default']('MACDChart', hbar.protoSock, 'BTCUSD:Bitfinex', 'MACD');
+
+	hbar.addChart('macd-chart', macdChart);
+
+	var rsiChart = new _hbarChartsRSIChart2['default']('RSIChart', hbar.protoSock, 'BTCUSD:Bitfinex', 'RSI');
+
+	hbar.addChart('rsi-chart', rsiChart);
+
 	var hilbertCycleChart = new _hbarChartsLineChart2['default']('HilbertCycleChart', hbar.protoSock, 'BTCUSD:Bitfinex', 'HilbertDominantCyclePeriod');
 	hilbertCycleChart.valueType = 'hilbertCycle';
 
@@ -74,28 +90,9 @@ var hbar = new _hbarHBAR2['default'](document.getElementById('hbar'), function (
 	hilbertTrendline.valueType = 'hilbertTrendline';
 	hilbertTrendline.valueColor = 56279;
 
-	// var strategyChart = new StrategyChart("StrategyChart", hbar.protoSock, "BTCUSD:Bitfinex", "SarStrategy");
-
-	hbar.addChart('ohlc-chart', ohlcChart);
-	hbar.addChart('ohlc-chart', volumeChart);
-	// hbar.addChart("ohlc-chart", strategyChart);
-	hbar.addChart('ohlc-chart', smaChart);
-	hbar.addChart('ohlc-chart', emaChart);
-	hbar.addChart('ohlc-chart', linearRegChart);
-	hbar.addChart('ohlc-chart', bbandsChart);
-	hbar.addChart('ohlc-chart', sarChart);
-
 	hbar.addChart('hilbert-chart', hilbertCycleChart);
 	hbar.addChart('hilbert-chart', hilbertPhaseChart);
 	hbar.addChart('hilbert-chart', hilbertTrendline);
-
-	var macdChart = new _hbarChartsMACDChart2['default']('MACDChart', hbar.protoSock, 'BTCUSD:Bitfinex', 'MACD');
-
-	hbar.addChart('macd-chart', macdChart);
-
-	var rsiChart = new _hbarChartsRSIChart2['default']('RSIChart', hbar.protoSock, 'BTCUSD:Bitfinex', 'RSI');
-
-	hbar.addChart('rsi-chart', rsiChart);
 
 	$('#hbar-ui .period-btn-group .btn').click(function (event) {
 		$('#hbar-ui .period-btn-group .btn').removeClass('disabled btn-primary');
@@ -125,11 +122,18 @@ var hbar = new _hbarHBAR2['default'](document.getElementById('hbar'), function (
 		hbar.setSpeed(parseInt($(event.target).attr('data-speed')));
 	});
 
+	hbar.setStackSizeRatios({
+		'ohlc-chart': 5,
+		'macd-chart': 1.5,
+		'rsi-chart': 1.5,
+		'hilbert-chart': 1
+	});
+
 	$('#hbar-ui .period-btn-group .btn[data-period^=\'' + hbar.getPeriod() + '\']').toggleClass('disabled btn-primary');
 });
 
 },{"./hbar/HBAR":206,"./hbar/charts/BBandsChart":207,"./hbar/charts/LineChart":211,"./hbar/charts/MACDChart":212,"./hbar/charts/MAChart":213,"./hbar/charts/OHLCChart":214,"./hbar/charts/RSIChart":216,"./hbar/charts/SARChart":217,"./hbar/charts/VolumeChart":218,"./lib/extend/jquery-ui-reversible-resizable":224,"bootstrap":3,"jquery":16,"jquery-ui":15}],2:[function(require,module,exports){
-module.exports={"env":"dev","hosts":{"vertx":{"dev":"localhost:8888","prod":"charts.hbar.io:8888"},"www":{"dev":"localhost:8080","prod":"charts.hbar.io"}}}
+module.exports={"env":"prod","hosts":{"vertx":{"dev":"localhost:8888","prod":"charts.hbar.io:8888"},"www":{"dev":"localhost:8080","prod":"charts.hbar.io"}}}
 },{}],3:[function(require,module,exports){
 (function (global){
 
@@ -67100,6 +67104,21 @@ ChartStackManager.prototype.addChart = function (stack, chart) {
 	this.resize();
 };
 
+ChartStackManager.prototype.setStackSizeRatios = function (ratios) {
+	if (Object.keys(ratios).length != Object.keys(this.stacks).length) return;
+
+	var sum = Object.keys(ratios).reduce(function (p, k) {
+		return p + ratios[k];
+	}, 0);
+
+	for (var s in this.stacks) {
+		var height = 100 * ratios[s] / sum + '%';
+		this.stacks[s].container.style.height = height;
+	}
+
+	this.resize();
+};
+
 ChartStackManager.prototype.setPeriod = function (period, timestamp) {
 	this.timeAxis.setPeriod(period, timestamp);
 
@@ -67241,6 +67260,10 @@ HBAR.prototype.addChart = function (stack, chart) {
 	this.chartStackManager.addChart(stack, chart);
 };
 
+HBAR.prototype.setStackSizeRatios = function (ratios) {
+	this.chartStackManager.setStackSizeRatios(ratios);
+};
+
 HBAR.prototype.setPeriod = function (period) {
 	this.chartStackManager.setPeriod(period);
 };
@@ -67294,7 +67317,7 @@ function BBandsChart(name, dataSource, symbol, indicator) {
 	_LineChart2["default"].call(this, name, dataSource, symbol, indicator);
 
 	this.upperColor = 39423;
-	this.middleColor = 6724095;
+	this.middleColor = 26316;
 	this.lowerColor = 39423;
 
 	this.fields = ["upper", "lower", "middle"];
@@ -67518,7 +67541,7 @@ function LineChart(name, dataSource, symbol, indicator) {
 	_BaseChart2["default"].call(this, name, dataSource, symbol, indicator);
 
 	this.valueColor = 39423;
-	this.lineThickness = 2;
+	this.lineThickness = 1.5;
 	this.lineAlpha = 0.5;
 }
 
@@ -67927,6 +67950,10 @@ var _BaseAxis = require('./BaseAxis');
 
 var _BaseAxis2 = _interopRequireDefault(_BaseAxis);
 
+var _ValueAxis = require('./ValueAxis');
+
+var _ValueAxis2 = _interopRequireDefault(_ValueAxis);
+
 function TimeAxis(width, height) {
 	_BaseAxis2['default'].call(this, width, height);
 
@@ -67934,31 +67961,28 @@ function TimeAxis(width, height) {
 	this.barSpacing = 1;
 	this.delta = this.barSize + this.barSpacing;
 
-	this.scrollSpeed = 0.001;
-	this.maxScrollSpeed = 0.5;
-
-	this.zoomSpeed = 0.001;
-
-	this.setPeriod(3600);
+	this.setPeriod(TimeAxis.DEFAULT_PERIOD);
 }
 
 TimeAxis.constructor = TimeAxis;
 TimeAxis.prototype = Object.create(_BaseAxis2['default'].prototype);
 
+TimeAxis.SCROLL_SPEED = 0.001;
+TimeAxis.MAX_SCROLL_SPEED = 0.5;
+TimeAxis.ZOOM_SPEED = 0.001;
+TimeAxis.DEFAULT_PERIOD = 3600;
+
 TimeAxis.prototype.setPeriod = function (period, maxTime) {
 	this.period = period;
+	this.bars = Math.floor(this.parentW / this.delta);
 
 	if (!this.maxTime) {
-		if (maxTime) {
-			this.maxTime = maxTime = this.periodize(maxTime);
-		} else {
-			maxTime = this.periodize(new Date().getTime() / 1000);
-		}
+		if (maxTime) this.maxTime = maxTime = this.periodize(maxTime);else maxTime = this.periodize(new Date().getTime() / 1000);
 	} else maxTime = this.periodize(this.maxTime);
 
-	this.bars = Math.floor(this.parentW / this.delta);
-	this.min = maxTime - this.bars * this.period;
-	this.max = this.min + this.period * this.bars;
+	var offset = this.periodize(period * this.bars * _ValueAxis2['default'].WIDTH / this.parentW);
+	this.min = maxTime - this.bars * this.period + offset;
+	this.max = this.min + this.period * this.bars + offset;
 };
 
 TimeAxis.prototype.getPeriod = function () {
@@ -67990,18 +68014,18 @@ TimeAxis.prototype.resize = function (width, height) {
 
 TimeAxis.prototype.scroll = function (scrollX, scrollY) {
 	if (Math.abs(scrollX) > Math.abs(scrollY)) {
-		var barDelta = this.bars * scrollX * this.scrollSpeed;
+		var barDelta = this.bars * scrollX * TimeAxis.SCROLL_SPEED;
 
 		if (scrollX > 0) {
-			barDelta = Math.floor(Math.max(1, Math.min(this.bars * this.maxScrollSpeed, barDelta)));
+			barDelta = Math.floor(Math.max(1, Math.min(this.bars * TimeAxis.MAX_SCROLL_SPEED, barDelta)));
 		} else {
-			barDelta = Math.floor(Math.min(-1, Math.max(-this.bars * this.maxScrollSpeed, barDelta)));
+			barDelta = Math.floor(Math.min(-1, Math.max(-this.bars * TimeAxis.MAX_SCROLL_SPEED, barDelta)));
 		}
 
 		this.min -= barDelta * this.period;
 		this.max = this.min + this.period * this.bars;
 	} else {
-		this.barSize = Math.max(1, this.barSize * (1 + scrollY * this.zoomSpeed));
+		this.barSize = Math.max(1, this.barSize * (1 + scrollY * TimeAxis.ZOOM_SPEED));
 
 		this.delta = this.barSize + this.barSpacing;
 		this.bars = Math.round(this.parentW / this.delta);
@@ -68021,7 +68045,7 @@ TimeAxis.prototype.periodize = function (time) {
 exports['default'] = TimeAxis;
 module.exports = exports['default'];
 
-},{"./BaseAxis":219}],221:[function(require,module,exports){
+},{"./BaseAxis":219,"./ValueAxis":221}],221:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -68040,18 +68064,17 @@ function ValueAxis(width, height, padding) {
 	this.parentValueType = "price";
 
 	this.padding = padding;
-
-	this.w = 50;
-
-	this.INCREMENTS = [500, 250, 200, 100, 50, 25, 20, 10, 5, 2, 1, 0.5, 0.25, 0.1];
-	this.PRECISION = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2];
-	this.FONT_SIZE = 10;
-	this.TICK_SIZE = 2;
-	this.PADDING_LEFT = 10;
 }
 
 ValueAxis.constructor = ValueAxis;
 ValueAxis.prototype = Object.create(_BaseAxis2["default"].prototype);
+
+ValueAxis.WIDTH = 40;
+ValueAxis.INCREMENTS = [500, 250, 200, 100, 50, 25, 20, 10, 5, 2, 1, 0.5, 0.25, 0.1];
+ValueAxis.PRECISION = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2];
+ValueAxis.FONT_SIZE = 10;
+ValueAxis.TICK_SIZE = 2;
+ValueAxis.PADDING_LEFT = 10;
 
 ValueAxis.prototype.draw = function () {
 	_BaseAxis2["default"].prototype.draw.call(this);
@@ -68060,20 +68083,20 @@ ValueAxis.prototype.draw = function () {
 
 	this.lineStyle(1, 0, 1);
 	this.beginFill(16777215, 0.5);
-	this.drawRect(this.parentW - this.w, -1, this.w, this.parentH + 1);
+	this.drawRect(this.parentW - ValueAxis.WIDTH, -1, ValueAxis.WIDTH, this.parentH + 1);
 
 	var delta = this.max - this.min;
 
-	var bestInc = this.INCREMENTS[0];
+	var bestInc = ValueAxis.INCREMENTS[0];
 
-	var bestPrecision = this.PRECISION[0];
+	var bestPrecision = ValueAxis.PRECISION[0];
 
 	var maxIncs = this.parentH / 20;
 
-	for (var i = 1; i < this.INCREMENTS.length; i++) {
-		if (delta / this.INCREMENTS[i] < maxIncs) {
-			bestInc = this.INCREMENTS[i];
-			bestPrecision = this.PRECISION[i];
+	for (var i = 1; i < ValueAxis.INCREMENTS.length; i++) {
+		if (delta / ValueAxis.INCREMENTS[i] < maxIncs) {
+			bestInc = ValueAxis.INCREMENTS[i];
+			bestPrecision = ValueAxis.PRECISION[i];
 		}
 	}
 
@@ -68085,12 +68108,12 @@ ValueAxis.prototype.draw = function () {
 			dropShadowDistance: 1,
 			dropShadowColor: 16777215
 		});
-		text.y = this.getPosition(value) - (this.FONT_SIZE / 2 + 2);
-		text.x = this.parentW - this.w + this.PADDING_LEFT;
+		text.y = this.getPosition(value) - (ValueAxis.FONT_SIZE / 2 + 2);
+		text.x = this.parentW - ValueAxis.WIDTH + ValueAxis.PADDING_LEFT;
 		this.addChild(text);
 
-		this.moveTo(this.parentW - this.w - this.TICK_SIZE, this.getPosition(value));
-		this.lineTo(this.parentW - this.w + this.TICK_SIZE, this.getPosition(value));
+		this.moveTo(this.parentW - ValueAxis.WIDTH - ValueAxis.TICK_SIZE, this.getPosition(value));
+		this.lineTo(this.parentW - ValueAxis.WIDTH + ValueAxis.TICK_SIZE, this.getPosition(value));
 	}
 };
 

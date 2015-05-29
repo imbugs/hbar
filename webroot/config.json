@@ -1,1 +1,1 @@
-{"env":"dev","hosts":{"vertx":{"dev":"localhost:8888","prod":"charts.hbar.io:8888"},"www":{"dev":"localhost:8080","prod":"charts.hbar.io"}}}
+{"env":"prod","hosts":{"vertx":{"dev":"localhost:8888","prod":"charts.hbar.io:8888"},"www":{"dev":"localhost:8080","prod":"charts.hbar.io"}}}

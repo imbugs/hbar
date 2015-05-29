@@ -93,6 +93,10 @@ HBAR.prototype.addChart = function(stack, chart)
 	this.chartStackManager.addChart(stack, chart);
 };
 
+HBAR.prototype.setStackSizeRatios = function(ratios) {
+	this.chartStackManager.setStackSizeRatios(ratios);
+};
+
 HBAR.prototype.setPeriod = function(period)
 {
 	this.chartStackManager.setPeriod(period);

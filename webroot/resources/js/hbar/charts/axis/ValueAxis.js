@@ -6,18 +6,17 @@ function ValueAxis(width, height, padding) {
 	this.parentValueType = "price";
 
 	this.padding = padding;
-
-	this.w = 50;
-
-	this.INCREMENTS = [ 500, 250, 200, 100, 50, 25, 20, 10, 5, 2, 1, 0.5, 0.25, 0.1 ];
-	this.PRECISION  = [   0,   0,   0,   0,  0,  0,  0,  0, 0, 0, 0,   1,    2,   2 ];
-	this.FONT_SIZE = 10;
-	this.TICK_SIZE = 2;
-	this.PADDING_LEFT = 10;
 }
 
 ValueAxis.constructor = ValueAxis;
 ValueAxis.prototype = Object.create(BaseAxis.prototype);
+
+ValueAxis.WIDTH = 40;
+ValueAxis.INCREMENTS = [ 500, 250, 200, 100, 50, 25, 20, 10, 5, 2, 1, 0.5, 0.25, 0.1 ];
+ValueAxis.PRECISION  = [   0,   0,   0,   0,  0,  0,  0,  0, 0, 0, 0,   1,    2,   2 ];
+ValueAxis.FONT_SIZE = 10;
+ValueAxis.TICK_SIZE = 2;
+ValueAxis.PADDING_LEFT = 10;
 
 ValueAxis.prototype.draw = function() {
 	BaseAxis.prototype.draw.call(this);
@@ -26,20 +25,20 @@ ValueAxis.prototype.draw = function() {
 
 	this.lineStyle(1, 0x000000, 1);
 	this.beginFill(0xFFFFFF, 0.5);
-	this.drawRect(this.parentW - this.w, -1, this.w, this.parentH + 1);
+	this.drawRect(this.parentW - ValueAxis.WIDTH, -1, ValueAxis.WIDTH, this.parentH + 1);
 
 	var delta = this.max - this.min;
 
-	var bestInc = this.INCREMENTS[0];
+	var bestInc = ValueAxis.INCREMENTS[0];
 
-	var bestPrecision = this.PRECISION[0];
+	var bestPrecision = ValueAxis.PRECISION[0];
 
 	var maxIncs = this.parentH / 20;
 
-	for(var i = 1; i < this.INCREMENTS.length; i++) {
-		if(delta / this.INCREMENTS[i] < maxIncs) {
-			bestInc = this.INCREMENTS[i];
-			bestPrecision = this.PRECISION[i];
+	for(var i = 1; i < ValueAxis.INCREMENTS.length; i++) {
+		if(delta / ValueAxis.INCREMENTS[i] < maxIncs) {
+			bestInc = ValueAxis.INCREMENTS[i];
+			bestPrecision = ValueAxis.PRECISION[i];
 		}
 	}
 
@@ -51,12 +50,12 @@ ValueAxis.prototype.draw = function() {
 			dropShadowDistance : 1, 
 			dropShadowColor : 0xFFFFFF
 		});
-		text.y = this.getPosition(value) - (this.FONT_SIZE / 2 + 2);
-		text.x = this.parentW - this.w + this.PADDING_LEFT;
+		text.y = this.getPosition(value) - (ValueAxis.FONT_SIZE / 2 + 2);
+		text.x = this.parentW - ValueAxis.WIDTH + ValueAxis.PADDING_LEFT;
 		this.addChild(text);
 
-		this.moveTo(this.parentW - this.w - this.TICK_SIZE, this.getPosition(value));
-		this.lineTo(this.parentW - this.w + this.TICK_SIZE, this.getPosition(value));
+		this.moveTo(this.parentW - ValueAxis.WIDTH - ValueAxis.TICK_SIZE, this.getPosition(value));
+		this.lineTo(this.parentW - ValueAxis.WIDTH + ValueAxis.TICK_SIZE, this.getPosition(value));
 	}
 
 	

@@ -34,6 +34,25 @@ var hbar = new HBAR(document.getElementById("hbar"), function()
 
 	var sarChart = new SARChart("SARChart", hbar.protoSock, "BTCUSD:Bitfinex", "SAR");
 
+	hbar.addChart("ohlc-chart", ohlcChart);
+	hbar.addChart("ohlc-chart", volumeChart);
+	// hbar.addChart("ohlc-chart", smaChart);
+	// hbar.addChart("ohlc-chart", emaChart);
+	// hbar.addChart("ohlc-chart", linearRegChart);
+	hbar.addChart("ohlc-chart", bbandsChart);
+	hbar.addChart("ohlc-chart", sarChart);
+
+	
+	var macdChart = new MACDChart("MACDChart", hbar.protoSock, "BTCUSD:Bitfinex", "MACD");
+
+	hbar.addChart("macd-chart", macdChart);
+
+
+	var rsiChart = new RSIChart("RSIChart", hbar.protoSock, "BTCUSD:Bitfinex", "RSI");
+
+	hbar.addChart("rsi-chart", rsiChart);
+
+
 	var hilbertCycleChart = new LineChart("HilbertCycleChart", hbar.protoSock, "BTCUSD:Bitfinex", "HilbertDominantCyclePeriod");
 	hilbertCycleChart.valueType = "hilbertCycle";
 
@@ -45,34 +64,9 @@ var hbar = new HBAR(document.getElementById("hbar"), function()
 	hilbertTrendline.valueType = "hilbertTrendline";
 	hilbertTrendline.valueColor = 0x00DBD7;
 
-
-	// var strategyChart = new StrategyChart("StrategyChart", hbar.protoSock, "BTCUSD:Bitfinex", "SarStrategy");
-
-
-
-	hbar.addChart("ohlc-chart", ohlcChart);
-	hbar.addChart("ohlc-chart", volumeChart);
-	// hbar.addChart("ohlc-chart", strategyChart);
-	hbar.addChart("ohlc-chart", smaChart);
-	hbar.addChart("ohlc-chart", emaChart);
-	hbar.addChart("ohlc-chart", linearRegChart);
-	hbar.addChart("ohlc-chart", bbandsChart);
-	hbar.addChart("ohlc-chart", sarChart);
-
 	hbar.addChart("hilbert-chart", hilbertCycleChart);
 	hbar.addChart("hilbert-chart", hilbertPhaseChart);
 	hbar.addChart("hilbert-chart", hilbertTrendline);
-
-	var macdChart = new MACDChart("MACDChart", hbar.protoSock, "BTCUSD:Bitfinex", "MACD");
-
-	hbar.addChart("macd-chart", macdChart);
-
-
-	var rsiChart = new RSIChart("RSIChart", hbar.protoSock, "BTCUSD:Bitfinex", "RSI");
-
-	hbar.addChart("rsi-chart", rsiChart);
-
-
 	
 
 
@@ -104,6 +98,12 @@ var hbar = new HBAR(document.getElementById("hbar"), function()
 		hbar.setSpeed(parseInt($(event.target).attr('data-speed')));
 	});
 
+	hbar.setStackSizeRatios({
+		"ohlc-chart" : 5,
+		"macd-chart" : 1.5,
+		"rsi-chart" : 1.5,
+		"hilbert-chart" : 1
+	});
 
 	$("#hbar-ui .period-btn-group .btn[data-period^='" + hbar.getPeriod() + "']").toggleClass('disabled btn-primary');
 	

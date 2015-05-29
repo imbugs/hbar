@@ -1,4 +1,5 @@
 import BaseAxis from './BaseAxis';
+import ValueAxis from './ValueAxis';
 
 function TimeAxis(width, height) {
 	BaseAxis.call(this, width, height);
@@ -7,31 +8,30 @@ function TimeAxis(width, height) {
 	this.barSpacing = 1;
 	this.delta = this.barSize + this.barSpacing;
 
-	this.scrollSpeed = 0.001;
-	this.maxScrollSpeed = 0.5;
-
-	this.zoomSpeed = 0.001;
-
-	this.setPeriod(3600);
+	this.setPeriod(TimeAxis.DEFAULT_PERIOD);
 }
 
 TimeAxis.constructor = TimeAxis;
 TimeAxis.prototype = Object.create(BaseAxis.prototype);
 
+TimeAxis.SCROLL_SPEED = 0.001;
+TimeAxis.MAX_SCROLL_SPEED = 0.5;
+TimeAxis.ZOOM_SPEED = 0.001;
+TimeAxis.DEFAULT_PERIOD = 3600;
+
+
 TimeAxis.prototype.setPeriod = function(period, maxTime) {
 	this.period = period;
+	this.bars = Math.floor(this.parentW / this.delta);
 
 	if(!this.maxTime) {
-		if(maxTime) {
-			this.maxTime = maxTime = this.periodize(maxTime);
-		} else {
-			maxTime = this.periodize(new Date().getTime() / 1000);
-		}
+		if(maxTime) this.maxTime = maxTime = this.periodize(maxTime);
+		else maxTime = this.periodize(new Date().getTime() / 1000);
 	} else maxTime = this.periodize(this.maxTime);
 	
-	this.bars = Math.floor(this.parentW / this.delta);
-	this.min = maxTime - this.bars * this.period;
-	this.max = this.min + this.period * this.bars;
+	var offset = this.periodize(period * this.bars * ValueAxis.WIDTH / this.parentW);
+	this.min = maxTime - this.bars * this.period + offset;
+	this.max = this.min + this.period * this.bars + offset;
 };
 
 TimeAxis.prototype.getPeriod = function() {
@@ -64,18 +64,18 @@ TimeAxis.prototype.resize = function(width, height) {
 
 TimeAxis.prototype.scroll = function(scrollX, scrollY) {
 	if(Math.abs(scrollX) > Math.abs(scrollY)) {
-		var barDelta = this.bars * scrollX * this.scrollSpeed;
+		var barDelta = this.bars * scrollX * TimeAxis.SCROLL_SPEED;
 
 		if(scrollX > 0) {
-			barDelta = Math.floor(Math.max(1, Math.min(this.bars * this.maxScrollSpeed, barDelta)));	
+			barDelta = Math.floor(Math.max(1, Math.min(this.bars * TimeAxis.MAX_SCROLL_SPEED, barDelta)));	
 		} else {
-			barDelta = Math.floor(Math.min(-1, Math.max(-this.bars * this.maxScrollSpeed, barDelta)));
+			barDelta = Math.floor(Math.min(-1, Math.max(-this.bars * TimeAxis.MAX_SCROLL_SPEED, barDelta)));
 		}
 		
 		this.min -= barDelta * this.period;
 		this.max = this.min + this.period * this.bars;
 	} else {
-		this.barSize = Math.max(1, this.barSize * (1 + scrollY * this.zoomSpeed));
+		this.barSize = Math.max(1, this.barSize * (1 + scrollY * TimeAxis.ZOOM_SPEED));
 
 		this.delta = this.barSize + this.barSpacing;
 		this.bars = Math.round(this.parentW / this.delta);

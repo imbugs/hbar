@@ -4,7 +4,7 @@ function BBandsChart(name, dataSource, symbol, indicator) {
 	LineChart.call(this, name, dataSource, symbol, indicator);
 
 	this.upperColor = 0x0099FF;
-	this.middleColor = 0x6699FF;
+	this.middleColor = 0x0066CC;
 	this.lowerColor = 0x0099FF;
 
 	this.fields = ["upper", "lower", "middle"];
