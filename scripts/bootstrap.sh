@@ -42,7 +42,7 @@ apt-get update
 
 ### NODE.JS / NPM / BOWER ###
 
-# ./modules/nodejs/install.sh
+./modules/nodejs/install.sh
 
 
 

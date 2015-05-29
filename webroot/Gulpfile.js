@@ -7,12 +7,31 @@ var browserify = require('browserify');
 var babelify = require('babelify');
 var source = require('vinyl-source-stream');
 var del = require('del');
+var fs = require('fs');
+var util = require('gulp-util');
+
+
+gulp.task('create-config', function(cb) {
+  fs.writeFile('config.json', JSON.stringify({
+    env: util.env.env || 'dev',
+    hosts: {
+    	vertx: {
+    		dev: 'localhost:8888',
+    		prod: 'charts.hbar.io:8888'
+    	},
+    	www: {
+    		dev: 'localhost:8080',
+    		prod: 'charts.hbar.io'
+    	}
+    }
+  }), cb);
+});
 
 gulp.task('clean', function() {
 	return del.sync(['./public/resources/*']);
 });
 
-gulp.task('browserify', function() {
+gulp.task('browserify', ['create-config'], function() {
 	return browserify('./resources/js/app.js')
 		.transform(babelify, { stage : 0 })
 		.bundle()
