@@ -129,7 +129,7 @@ var hbar = new _hbarHBAR2['default'](document.getElementById('hbar'), function (
 });
 
 },{"./hbar/HBAR":206,"./hbar/charts/BBandsChart":207,"./hbar/charts/LineChart":211,"./hbar/charts/MACDChart":212,"./hbar/charts/MAChart":213,"./hbar/charts/OHLCChart":214,"./hbar/charts/RSIChart":216,"./hbar/charts/SARChart":217,"./hbar/charts/VolumeChart":218,"./lib/extend/jquery-ui-reversible-resizable":224,"bootstrap":3,"jquery":16,"jquery-ui":15}],2:[function(require,module,exports){
-module.exports={"env":"prod","hosts":{"vertx":{"dev":"localhost:8888","prod":"charts.hbar.io:8888"},"www":{"dev":"localhost:8080","prod":"charts.hbar.io"}}}
+module.exports={"env":"dev","hosts":{"vertx":{"dev":"localhost:8888","prod":"charts.hbar.io:8888"},"www":{"dev":"localhost:8080","prod":"charts.hbar.io"}}}
 },{}],3:[function(require,module,exports){
 (function (global){
 
@@ -68043,7 +68043,8 @@ function ValueAxis(width, height, padding) {
 
 	this.w = 50;
 
-	this.INCREMENTS = [100, 50, 25, 20, 10, 5, 2, 1, 0.5, 0.25, 0.1];
+	this.INCREMENTS = [500, 250, 200, 100, 50, 25, 20, 10, 5, 2, 1, 0.5, 0.25, 0.1];
+	this.PRECISION = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2];
 	this.FONT_SIZE = 10;
 	this.TICK_SIZE = 2;
 	this.PADDING_LEFT = 10;
@@ -68065,14 +68066,19 @@ ValueAxis.prototype.draw = function () {
 
 	var bestInc = this.INCREMENTS[0];
 
+	var bestPrecision = this.PRECISION[0];
+
 	var maxIncs = this.parentH / 20;
 
 	for (var i = 1; i < this.INCREMENTS.length; i++) {
-		if (delta / this.INCREMENTS[i] < maxIncs) bestInc = this.INCREMENTS[i];
+		if (delta / this.INCREMENTS[i] < maxIncs) {
+			bestInc = this.INCREMENTS[i];
+			bestPrecision = this.PRECISION[i];
+		}
 	}
 
 	for (var value = Math.ceil((this.min + (this.padding === 0 ? 1 : 0)) / bestInc) * bestInc; value < this.max; value += bestInc) {
-		var text = new PIXI.Text(value, {
+		var text = new PIXI.Text(value.toFixed(bestPrecision), {
 			font: "10px Arial",
 			fill: "black",
 			dropShadow: true,
