@@ -17,7 +17,7 @@ gulp.task('create-config', function(cb) {
     hosts: {
     	vertx: {
     		dev: 'localhost:8888',
-    		prod: 'charts.hbar.io:8888'
+    		prod: 'api.hbar.io'
     	},
     	www: {
     		dev: 'localhost:8080',

@@ -133,7 +133,7 @@ var hbar = new _hbarHBAR2['default'](document.getElementById('hbar'), function (
 });
 
 },{"./hbar/HBAR":206,"./hbar/charts/BBandsChart":207,"./hbar/charts/LineChart":211,"./hbar/charts/MACDChart":212,"./hbar/charts/MAChart":213,"./hbar/charts/OHLCChart":214,"./hbar/charts/RSIChart":216,"./hbar/charts/SARChart":217,"./hbar/charts/VolumeChart":218,"./lib/extend/jquery-ui-reversible-resizable":224,"bootstrap":3,"jquery":16,"jquery-ui":15}],2:[function(require,module,exports){
-module.exports={"env":"prod","hosts":{"vertx":{"dev":"localhost:8888","prod":"charts.hbar.io:8888"},"www":{"dev":"localhost:8080","prod":"charts.hbar.io"}}}
+module.exports={"env":"prod","hosts":{"vertx":{"dev":"localhost:8888","prod":"api.hbar.io"},"www":{"dev":"localhost:8080","prod":"charts.hbar.io"}}}
 },{}],3:[function(require,module,exports){
 (function (global){
 
